@@ -17,6 +17,7 @@ Create a Laravel Blade layout file named `app.blade.php` using the HTML structur
 Respond ONLY with the content of app.blade.php inside a ```blade code block.
 
 📌 Page name: `{plan['page']}`
+📌 Dont create component UI again, because Already Created: `{plan['components']}`
 
 📎 HTML Reference:
 ```html

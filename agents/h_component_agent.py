@@ -39,7 +39,7 @@ Your task is to extract and convert relevant HTML into Laravel Blade components.
 
 Return clean Blade markup using Tailwind CSS, and DO NOT include any explanations or markdown outside the code.
 
-Check 'src', if dummy value, u must change to real source
+Change 'src' image to real link/url
 """
         stream_response = client.chat.stream(
             model=model,

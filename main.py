@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import webbrowser
+import datetime
 
 from agents.clean_history import clean_history
 
@@ -16,6 +17,17 @@ from agents.h_component_agent import list_components
 from agents.i_validator_agent import validate
 from agents.j_move_to_project import move_to_laravel_project
 
+
+def save_history(prompt, draft):
+    os.makedirs("history", exist_ok=True)
+    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    filename = f"history/{timestamp}.json"
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump({
+            "prompt": prompt,
+            "draft": draft
+        }, f, indent=2)
+
 def main():
 
     if os.path.exists("output"):
@@ -23,11 +35,21 @@ def main():
         print("🧹 Folder 'output' lama telah dihapus.")
         
     clean_history()
+    prev_draft = None
         
     while True:
         prompt = input("Prompt: ")
         
-        preprompt = prompt_expander(prompt)
+        if prev_draft:
+            revised_prompt = f"""
+{prompt}
+
+{prev_draft}
+            """
+        else:
+            revised_prompt = prompt
+        
+        preprompt = prompt_expander(revised_prompt)
         draft = draft_agent(preprompt)
 
         # 📂 Simpan draft HTML
@@ -44,6 +66,7 @@ def main():
         if confirm.lower() == "y":
             break
         else:
+            prev_draft = draft["draft"]
             print("\n🔁 OK, Please describe again your expectation.\n")
 
     # 🧠 Build proses setelah konfirmasi
