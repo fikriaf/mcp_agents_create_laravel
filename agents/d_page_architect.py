@@ -1,9 +1,14 @@
+import time
 def design_layout(plan):
-    print("[PAGE ARCHITECT] Structuring layout...")
+    print("\n\n🟡 [PAGE ARCHITECT] Structuring layout...")
+
+    components = plan.get("components", [])
+
+    time.sleep(1)
     return {
         "extends": "layouts.app",
         "sections": {
-            "sidebar": "components.sidebar",
-            "content": "components.user_table"
-        }
+            "content": components
+        },
+        "page": plan.get("page", "untitled")
     }

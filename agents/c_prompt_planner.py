@@ -1,23 +1,38 @@
-import re, json
+import re, json, os
 from mistralai import Mistral
+from dotenv import load_dotenv
 
-api_key = "mBng7pAtolwotaZRyOQxB5RclArjyM4P"
+# Load .env file
+load_dotenv()
+
+# Ambil API key dari environment
+api_key = os.getenv("MISTRAL_API_KEY")
 model = "mistral-large-latest"
 
 client = Mistral(api_key=api_key)
 
 def plan_prompt(user_prompt: str):
-    print("[PROMPT PLANNER] Interpreting prompt...")
+    print("\n🔵 [PROMPT PLANNER] Interpreting prompt...")
 
     sys_prompt = """
 You are an expert Laravel UI analyst.
-Given a user request to create a web page, break it down into:
-- "page": the name of the view (string)
-- "components": list of UI components needed (array)
+
+Given a user request to create a web page, break it down into a JSON object with:
+- "page": the name of the view (string, lowercase)
+- "components": list of **distinct and essential** UI component names in PascalCase (e.g., "EmailInput", "LoginButton")
 - "route": suggested route path (e.g. "/dashboard")
 
-Respond in strict JSON format ONLY, without explanations or comments.
+Guidelines:
+- Be minimalist. Only include essential UI components.
+- Avoid listing generic HTML tags (like "Input", "Button") — use descriptive and reusable names like "SearchForm" or "AuthCard".
+- Group related elements under a higher-level component when possible, e.g., use "LoginForm" instead of listing "EmailInput", "PasswordInput", and "SubmitButton" separately.
+- Do NOT duplicate similar components.
+- Do NOT include raw HTML, CSS classes, or descriptions — only semantic component names used in Laravel Blade.
+- Prefer abstract or high-level components that represent purpose or function (e.g., "Navbar", "TaskCard", "UserProfileSection").
+
+Respond ONLY with valid JSON, without explanations or formatting. No markdown. No comments.
 """
+
 
     stream_response = client.chat.stream(
         model=model,

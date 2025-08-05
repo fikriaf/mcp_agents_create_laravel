@@ -1,0 +1,1 @@
+<img src="{{ $src }}" alt="Profile" class="w-36 h-36 rounded-full mx-auto mb-6 border-4 border-white shadow-lg">

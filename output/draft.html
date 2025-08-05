@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Roboto', 'sans-serif'],
+          },
+          colors: {
+            primary: '#333333',
+            secondary: '#666666',
+            accent: '#F5F5F5',
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-in-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    .hero-section {
+      background-image: url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .skill-item {
+      transition: all 0.3s ease;
+    }
+
+    .skill-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="font-sans bg-accent text-primary">
+  <!-- Header -->
+  <header class="fixed w-full bg-white shadow-sm z-10">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="/" class="text-2xl font-bold">Portfolio</a>
+      <nav>
+        <ul class="flex space-x-8">
+          <li><a href="/about" class="hover:bg-gray-100 px-4 py-2 rounded transition">About</a></li>
+          <li><a href="/projects" class="hover:bg-gray-100 px-4 py-2 rounded transition">Projects</a></li>
+          <li><a href="/contact" class="hover:bg-gray-100 px-4 py-2 rounded transition">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="pt-20">
+    <!-- Hero Section -->
+    <section class="hero-section h-screen flex items-center justify-center text-white">
+      <div class="text-center animate-fade-in">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Profile" class="w-36 h-36 rounded-full mx-auto mb-6 border-4 border-white shadow-lg">
+        <h1 class="text-5xl font-bold mb-4">John Doe</h1>
+        <p class="text-2xl mb-8">Web Developer & Designer</p>
+        <p class="text-xl max-w-2xl mx-auto">Passionate about creating beautiful, functional, and user-centered digital experiences. With 5+ years of experience in web development, I specialize in front-end technologies and have a strong background in UI/UX design.</p>
+      </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section class="py-20 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Featured Projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Project Card 1 -->
+          <div class="project-card bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300">
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 1" class="w-full h-52 object-cover">
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">E-commerce Platform</h3>
+              <p class="text-secondary mb-4">A fully responsive e-commerce website built with React and Node.js, featuring product listings, shopping cart, and secure checkout.</p>
+              <a href="#" class="btn inline-block bg-primary text-white px-6 py-2 rounded hover:bg-gray-800 transition">View Project</a>
+            </div>
+          </div>
+
+          <!-- Project Card 2 -->
+          <div class="project-card bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 2" class="w-full h-52 object-cover">
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Dashboard Application</h3>
+              <p class="text-secondary mb-4">An interactive dashboard built with Vue.js and Chart.js, providing data visualization and analytics for business metrics.</p>
+              <a href="#" class="btn inline-block bg-primary text-white px-6 py-2 rounded hover:bg-gray-800 transition">View Project</a>
+            </div>
+          </div>
+
+          <!-- Project Card 3 -->
+          <div class="project-card bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Project 3" class="w-full h-52 object-cover">
+            <div class="p-6">
+              <h3 class="text-xl font-bold mb-2">Mobile App UI</h3>
+              <p class="text-secondary mb-4">A modern mobile app UI design created with Figma, focusing on intuitive navigation and beautiful visual hierarchy.</p>
+              <a href="#" class="btn inline-block bg-primary text-white px-6 py-2 rounded hover:bg-gray-800 transition">View Project</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Me -->
+    <section class="py-20 bg-accent">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">About Me</h2>
+        <div class="max-w-3xl mx-auto text-center animate-fade-in">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Profile" class="w-36 h-36 rounded-full mx-auto mb-6 border-4 border-white shadow-lg">
+          <p class="text-lg text-secondary mb-8">I'm a passionate web developer with a strong background in front-end technologies and UI/UX design. With 5+ years of experience, I've worked on a variety of projects ranging from small business websites to large-scale web applications.</p>
+          <p class="text-lg text-secondary mb-8">My approach to development is centered around creating beautiful, functional, and user-centered digital experiences. I believe that great design should be intuitive, accessible, and enjoyable to use.</p>
+          <p class="text-lg text-secondary">When I'm not coding, you can find me hiking, reading, or experimenting with new recipes in the kitchen.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="py-20 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Skills</h2>
+        <div class="flex flex-wrap justify-center gap-4">
+          <div class="skill-item bg-white px-6 py-3 rounded-lg shadow-md">HTML5</div>
+          <div class="skill-item bg-white px-6 py-3 rounded-lg shadow-md">CSS3</div>
+          <div class="skill-item bg-white px-6 py-3 rounded-lg shadow-md">JavaScript</div>
+          <div class="skill-item bg-white px-6 py-3 rounded-lg shadow-md">React</div>
+          <div class="skill-item bg-white px-6 py-3 rounded-lg shadow-md">Vue.js</div>
+          <div class="skill-item bg-white px-6 py-3 rounded-lg shadow-md">Node.js</div>
+          <div class="skill-item bg-white px-6 py-3 rounded-lg shadow-md">UI/UX Design</div>
+          <div class="skill-item bg-white px-6 py-3 rounded-lg shadow-md">Responsive Design</div>
+          <div class="skill-item bg-white px-6 py-3 rounded-lg shadow-md">Git</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="py-20 bg-accent">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Get In Touch</h2>
+        <form class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-md animate-fade-in">
+          <div class="mb-6">
+            <label for="name" class="block text-lg font-medium mb-2">Name</label>
+            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary" required>
+          </div>
+          <div class="mb-6">
+            <label for="email" class="block text-lg font-medium mb-2">Email</label>
+            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary" required>
+          </div>
+          <div class="mb-6">
+            <label for="message" class="block text-lg font-medium mb-2">Message</label>
+            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary" required></textarea>
+          </div>
+          <button type="submit" class="btn w-full bg-primary text-white py-3 px-6 rounded hover:bg-gray-800 transition">Send Message</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-primary text-white py-8">
+    <div class="container mx-auto px-4 text-center">
+      <p>&copy; 2023 John Doe. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Add fade-in animation to elements when they come into view
+    const animateOnScroll = () => {
+      const elements = document.querySelectorAll('.animate-fade-in');
+      elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+
+        if (elementPosition < windowHeight - 100) {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }
+      });
+    };
+
+    window.addEventListener('scroll', animateOnScroll);
+    window.addEventListener('load', animateOnScroll);
+  </script>
+</body>
+</html>
