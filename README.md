@@ -6,10 +6,11 @@
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![Code Style](https://img.shields.io/badge/code%20style-black-black.svg)
 ![Agents](https://img.shields.io/badge/agents-10-purple.svg)
-![AI Powered](https://img.shields.io/badge/AI-Mistral-orange.svg)
+![AI Powered](https://img.shields.io/badge/AI-Cerebras%20Qwen%20Code-orange.svg)
+![Fallback AI](https://img.shields.io/badge/fallback-Mistral-yellow.svg)
 ![Platform](https://img.shields.io/badge/platform-windows%20%7C%20linux%20%7C%20macOS-lightgrey.svg)
 
-An intelligent multi-agent system that automatically generates Laravel UI components from natural language prompts using AI agents.
+An intelligent multi-agent system that automatically generates Laravel UI components from natural language prompts using AI agents powered by Cerebras Qwen Code with Mistral as fallback.
 
 ## 🚀 Features
 
@@ -43,12 +44,15 @@ The system uses multiple specialized agents working in sequence:
 
 ![Python](https://img.shields.io/badge/python-3.7%2B-blue)
 ![Laravel](https://img.shields.io/badge/laravel-8%2B-red)
-![Mistral AI](https://img.shields.io/badge/mistral%20AI-API%20key%20required-orange)
+![Cerebras AI](https://img.shields.io/badge/cerebras%20AI-API%20key%20required-orange)
+![Mistral AI](https://img.shields.io/badge/mistral%20AI-fallback-yellow)
 
 - Python 3.7+
 - Laravel project (in `my-laravel/` directory)
-- Mistral AI API key
+- Cerebras API key (primary)
+- Mistral AI API key (fallback)
 - Required Python packages:
+  - `cerebras-cloud-sdk`
   - `mistralai`
   - `python-dotenv`
 
@@ -64,11 +68,12 @@ cd mcp_agents_create_laravel
 
 2. Install dependencies:
 ```bash
-pip install mistralai python-dotenv
+pip install cerebras-cloud-sdk mistralai python-dotenv
 ```
 
-3. Create a `.env` file with your Mistral API key:
+3. Create a `.env` file with your API keys:
 ```env
+CEREBRAS_API_KEY=your_cerebras_api_key_here
 MISTRAL_API_KEY=your_mistral_api_key_here
 ```
 
@@ -160,12 +165,14 @@ The main orchestrator function that:
 
 ### Agent Functions
 ![Agent Functions](https://img.shields.io/badge/agents-specialized-purple)
+![AI Model](https://img.shields.io/badge/primary%20AI-Qwen%203%20Coder%20480B-orange)
 
-Each agent in the [`agents/`](agents/) directory handles specific tasks:
+Each agent in the [`agents/`](agents/) directory handles specific tasks using Cerebras Qwen Code model:
 - **UI Generation**: Creates modern, responsive Blade templates
 - **Route Management**: Generates appropriate Laravel routes
 - **Component Architecture**: Designs reusable component structures
 - **Validation**: Ensures code quality and syntax correctness
+- **Fallback System**: Automatically switches to Mistral if Cerebras encounters errors
 
 ## 📝 Output Files
 
@@ -198,6 +205,32 @@ Generated files are placed in your Laravel project:
 4. Watch as the system creates your complete Laravel UI
 5. Access your new page at `http://localhost:8000/your-route`
 
+## 🤖 AI Configuration
+
+![Primary Model](https://img.shields.io/badge/primary-Qwen%203%20Coder%20480B-orange)
+![Fallback Model](https://img.shields.io/badge/fallback-Mistral-yellow)
+![Max Tokens](https://img.shields.io/badge/max%20tokens-80000-blue)
+![Temperature](https://img.shields.io/badge/temperature-0.7-green)
+
+### Cerebras Qwen Code Configuration
+```python
+import os
+from cerebras.cloud.sdk import Cerebras
+
+client = Cerebras(
+    api_key=os.environ.get("CEREBRAS_API_KEY")
+)
+
+stream = client.chat.completions.create(
+    messages=[{"role": "system", "content": ""}],
+    model="qwen-3-coder-480b",
+    stream=True,
+    max_completion_tokens=80000,
+    temperature=0.7,
+    top_p=0.8
+)
+```
+
 ## 📊 Statistics
 
 ![Lines of Code](https://img.shields.io/badge/lines%20of%20code-1000%2B-blue)
@@ -219,3 +252,8 @@ This project is licensed under the MIT License.
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
+
+![Made with Love](https://img.shields.io/badge/made%20with-❤️-red)
+![Python](https://img.shields.io/badge/made%20with-python-blue)
+![Laravel](https://img.shields.io/badge/for-laravel-red)
+![Powered by](https://img.shields.io/badge/powered%20by-Cerebras%20%26%20Mistral-orange)

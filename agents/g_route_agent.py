@@ -1,13 +1,11 @@
 import os
 import re
 from dotenv import load_dotenv
-from mistralai import Mistral
+from .llm_client import get_llm_response
 
 # Load .env
 load_dotenv()
-api_key = os.getenv("MISTRAL_API_KEY")
-model = "codestral-latest"
-client = Mistral(api_key=api_key)
+
 
 def generate_route(plan: dict, draft_html: str):
     print("\n\n⚫ [ROUTE AGENT] Generating Laravel routes...")
@@ -37,22 +35,25 @@ Requirements:
 - Respond ONLY with the complete PHP code wrapped inside a ```php code block.
 """
 
-    stream_response = client.chat.stream(
-        model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ]
-    )
+    # Use unified LLM client (prioritizes Cerebras, falls back to Mistral)
+    try:
+        full_response = get_llm_response(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            temperature=0.7,
+            max_tokens=8000,
+        )
 
-    full_response = ""
-    for chunk in stream_response:
-        content = chunk.data.choices[0].delta.content
-        if content:
-            print(content, end="", flush=True)
-            full_response += content
+        # Display response character by character for visual feedback
+        for char in full_response:
+            print(char, end="", flush=True)
+
+    except Exception as e:
+        print(f"\n❌ Failed to generate response: {e}")
+        return ""
 
     match = re.findall(r"```php\s*(.*?)```", full_response, re.DOTALL | re.IGNORECASE)
     with open("output/web.php", "w", encoding="utf-8") as f:
         f.write(match[0].strip() if match else full_response.strip())
+    return match[0].strip() if match else full_response.strip()
     return match[0].strip() if match else full_response.strip()

@@ -1,15 +1,10 @@
-import re, json, os
-from mistralai import Mistral
+import re, json
 from dotenv import load_dotenv
+from agents.llm_client import get_llm_response
 
 # Load .env file
 load_dotenv()
 
-# Ambil API key dari environment
-api_key = os.getenv("MISTRAL_API_KEY")
-model = "mistral-large-latest"
-
-client = Mistral(api_key=api_key)
 
 def plan_prompt(user_prompt: str):
     print("\n🔵 [PROMPT PLANNER] Interpreting prompt...")
@@ -33,22 +28,20 @@ Guidelines:
 Respond ONLY with valid JSON, without explanations or formatting. No markdown. No comments.
 """
 
+    # Use the new LLM client with Cerebras/Mistral fallback
+    try:
+        full_response = get_llm_response(
+            system_prompt=sys_prompt,
+            user_prompt=user_prompt,
+            max_tokens=8000,
+            temperature=0.3,  # Lower temperature for more consistent JSON
+        )
+        print("\n✅ Plan created successfully")
 
-    stream_response = client.chat.stream(
-        model=model,
-        messages=[
-            {"role": "system", "content": sys_prompt},
-            {"role": "user", "content": user_prompt}
-        ]
-    )
-
-    full_response = ""
-
-    for chunk in stream_response:
-        content = chunk.data.choices[0].delta.content
-        if content:
-            print(content, end="", flush=True)
-            full_response += content
+    except Exception as e:
+        print(f"\n❌ Error creating plan: {e}")
+        # Fallback response
+        full_response = '{"page": "unknown", "components": [], "route": "/unknown"}'
 
     # Ambil hanya blok JSON
     try:
@@ -61,12 +54,8 @@ Respond ONLY with valid JSON, without explanations or formatting. No markdown. N
         if json_block:
             try:
                 return json.loads(json_block.group(0))
-            except:
+            except Exception:
                 pass
 
     print("\n[ERROR] Gagal parsing JSON dari model.")
-    return {
-        "page": "unknown",
-        "components": [],
-        "route": "/unknown"
-    }
+    return {"page": "unknown", "components": [], "route": "/unknown"}

@@ -1,26 +1,29 @@
 import os, sys
 import re
 from dotenv import load_dotenv
-from mistralai import Mistral
+from .llm_client import get_llm_response
 
 # Load .env
 load_dotenv()
-api_key = os.getenv("MISTRAL_API_KEY")
-model = "codestral-latest"
-client = Mistral(api_key=api_key)
+
 
 def generate_blade(layout: dict, components: dict):
     print("\n🟤 [UI GENERATOR AGENT] Generating Blade template using AI...")
 
     # 🔧 Build layout description
     section_desc = "\n".join(
-        [f"- Section `{k}` contains component `{v}`" for k, v in layout.get("sections", {}).items()]
+        [
+            f"- Section `{k}` contains component `{v}`"
+            for k, v in layout.get("sections", {}).items()
+        ]
     )
 
     # 🔧 Sertakan isi semua komponen apa adanya
     component_info = "\n\n".join(
-        [f"🔹 {name}.blade.php:\n```blade\n{code.strip()}\n```"
-        for name, code in components.items()]
+        [
+            f"🔹 {name}.blade.php:\n```blade\n{code.strip()}\n```"
+            for name, code in components.items()
+        ]
     )
 
     user_prompt = f"""
@@ -50,7 +53,6 @@ Warning:
 {component_info}
 """
 
-
     system_prompt = """
 You are a Laravel Blade view generator AI.
 
@@ -67,32 +69,30 @@ Requirements:
 <!-- blade content -->
 ```
 """
-    # Kirim ke Mistral
-    stream_response = client.chat.stream(
-        model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
-        ]
-    )
 
-    full_response = ""
-    prev_len = 0
+    # Use unified LLM client (prioritizes Cerebras, falls back to Mistral)
+    try:
+        full_response = get_llm_response(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            temperature=0.7,
+            max_tokens=8000,
+        )
 
-    for chunk in stream_response:
-        content = chunk.data.choices[0].delta.content
-        if content:
-            full_response += content  # Simpan utuh (termasuk \n)
-
-            # Untuk tampil sementara: hanya karakter terbaru, bersihkan newline
-            sanitized = content.replace("\n", " ").replace("\r", " ")
-            pad = max(prev_len - len(sanitized), 0)
-            sys.stdout.write("\r" + sanitized + " " * pad)
+        # Display response character by character for visual feedback
+        for i, char in enumerate(full_response):
+            sanitized_char = char.replace("\n", " ").replace("\r", " ")
+            sys.stdout.write(sanitized_char)
             sys.stdout.flush()
-            prev_len = len(sanitized)
+
+        print()  # New line after streaming display
+
+    except Exception as e:
+        print(f"\n❌ Failed to generate response: {e}")
+        return ""
 
     # Ambil isi dalam ```blade ... ``` jika ada
     match = re.findall(r"```blade\s*(.*?)```", full_response, re.DOTALL | re.IGNORECASE)
     with open(f"output/{layout['page']}.blade.php", "w", encoding="utf-8") as f:
-      f.write(match[0].strip() if match else full_response.strip())
+        f.write(match[0].strip() if match else full_response.strip())
     return match[0].strip() if match else full_response.strip()

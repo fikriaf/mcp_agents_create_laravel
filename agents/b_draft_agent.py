@@ -1,12 +1,9 @@
-import re, os, sys
+import re
 from dotenv import load_dotenv
-from mistralai import Mistral
+from agents.llm_client import get_llm_response
 
 # Load API key dari .env
 load_dotenv()
-api_key = os.getenv("MISTRAL_API_KEY")
-model = "codestral-latest"
-client = Mistral(api_key=api_key)
 
 def draft_agent(prompt_expander: dict):
     print("\n\n🟢 [DRAFT UI AGENT] Creating a draft UI...")
@@ -47,45 +44,52 @@ Your task is to generate a complete, high-quality HTML file that reflects modern
 """
 
     # ✅ Bisa tambah penguatan juga di user prompt
-    user_prompt = (
-        f"{prompt_expander['new_prompt']}"
-    )
+    user_prompt = f"{prompt_expander['new_prompt']}"
 
-    stream_response = client.chat.stream(
-        model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ]
-    )
+    # Use the new LLM client with Cerebras/Mistral fallback
+    try:
+        full_response = get_llm_response(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            max_tokens=8000,
+            temperature=0.7,
+        )
+        print("\n✅ Draft created successfully")
 
-    full_response = ""
-    prev_len = 0
-
-    for chunk in stream_response:
-        content = chunk.data.choices[0].delta.content
-        if content:
-            full_response += content  # Simpan utuh (termasuk \n)
-
-            # Untuk tampil sementara: hanya karakter terbaru, bersihkan newline
-            sanitized = content.replace("\n", " ").replace("\r", " ")
-            pad = max(prev_len - len(sanitized), 0)
-            sys.stdout.write("\r" + sanitized + " " * pad)
-            sys.stdout.flush()
-            prev_len = len(sanitized)
-
+    except Exception as e:
+        print(f"\n❌ Error creating draft: {e}")
+        # Fallback response
+        full_response = """
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-8">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Generated UI</h1>
+        <p class="text-gray-600">This is a fallback template. Please check your LLM configuration.</p>
+    </div>
+</body>
+</html>
+```"""
 
     # Ambil isi dari blok ```html ... ```
-    code_matches = re.findall(r"```html\s*(.*?)```", full_response, re.DOTALL | re.IGNORECASE)
+    code_matches = re.findall(
+        r"```html\s*(.*?)```", full_response, re.DOTALL | re.IGNORECASE
+    )
 
     if code_matches:
         get_draft = code_matches[0].strip()
     else:
         # Fallback kalau blok tidak ditemukan
-        tag_match = re.search(r"<html.*?>.*?</html>", full_response, re.DOTALL | re.IGNORECASE)
+        tag_match = re.search(
+            r"<html.*?>.*?</html>", full_response, re.DOTALL | re.IGNORECASE
+        )
         get_draft = tag_match.group(0).strip() if tag_match else full_response.strip()
 
-    return {
-        "prompt": prompt_expander["new_prompt"],
-        "draft": get_draft
-    }
+    return {"prompt": prompt_expander["new_prompt"], "draft": get_draft}

@@ -1,12 +1,11 @@
-from mistralai import Mistral
+from .llm_client import get_llm_response
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-client = Mistral(api_key=os.getenv("MISTRAL_API_KEY"))
+
 
 def validate(blade: str):
-    
     system_prompt = """
 You are a Laravel Blade syntax validator.
 
@@ -22,19 +21,21 @@ If invalid, return: INVALID + brief reason.
 Only output this result. No code block.
 """
 
-    stream = client.chat.stream(
-        model="codestral-latest",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": blade},
-        ]
-    )
+    # Use unified LLM client (prioritizes Cerebras, falls back to Mistral)
+    try:
+        result = get_llm_response(
+            system_prompt=system_prompt,
+            user_prompt=blade,
+            temperature=0.3,
+            max_tokens=8000,
+        )
 
-    result = ""
-    for chunk in stream:
-        content = chunk.data.choices[0].delta.content
-        if content:
-            print(content, end="", flush=True)
-            result += content
+        # Display response character by character for visual feedback
+        for char in result:
+            print(char, end="", flush=True)
+
+    except Exception as e:
+        print(f"❌ Failed to validate: {e}")
+        result = "INVALID - Validation service unavailable"
 
     return result.strip().upper().startswith("VALID")

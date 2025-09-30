@@ -1,14 +1,9 @@
-import json, os, sys
+import json
 from dotenv import load_dotenv
-from mistralai import Mistral
 
 # Load .env file
 load_dotenv()
 
-# Ambil API key dari environment
-api_key = os.getenv("MISTRAL_API_KEY")
-model = "mistral-large-latest"
-client = Mistral(api_key=api_key)
 
 def prompt_expander(user_prompt: str):
     print("\n🟠 [PROMPT EXPANDER] describing prompt...")
@@ -18,7 +13,7 @@ def prompt_expander(user_prompt: str):
         prompt_history = json.loads(user_prompt)
         current_prompt = prompt_history.get("prompt", "")
         again = prompt_history.get("again", False)
-    except:
+    except Exception:
         # Jika bukan JSON, anggap prompt asli
         current_prompt = user_prompt
         again = False
@@ -29,34 +24,25 @@ def prompt_expander(user_prompt: str):
         "Your task is to transform the user's brief request into a highly detailed, clear, and specific UI description that can be directly used by developers."
     )
 
+    # Use the new LLM client with Cerebras/Mistral fallback
+    from agents.llm_client import get_llm_response
 
-    stream_response = client.chat.stream(
-        model=model,
-        messages=[
-            {"role": "system", "content": sys_prompt},
-            {"role": "user", "content": current_prompt}
-        ]
-    )
+    try:
+        full_response = get_llm_response(
+            system_prompt=sys_prompt,
+            user_prompt=current_prompt,
+            max_tokens=8000,
+            temperature=0.7,
+        )
 
+        print("\n✅ Prompt expanded successfully")
 
-
-    full_response = ""
-    prev_len = 0
-
-    for chunk in stream_response:
-        content = chunk.data.choices[0].delta.content
-        if content:
-            full_response += content  # Simpan utuh (termasuk \n)
-
-            # Untuk tampil sementara: hanya karakter terbaru, bersihkan newline
-            sanitized = content.replace("\n", " ").replace("\r", " ")
-            pad = max(prev_len - len(sanitized), 0)
-            sys.stdout.write("\r" + sanitized + " " * pad)
-            sys.stdout.flush()
-            prev_len = len(sanitized)
-
+    except Exception as e:
+        print(f"\n❌ Error expanding prompt: {e}")
+        # Fallback to original prompt if expansion fails
+        full_response = current_prompt
 
     return {
         "history": user_prompt if again else None,
-        "new_prompt": full_response.strip()
+        "new_prompt": full_response.strip(),
     }

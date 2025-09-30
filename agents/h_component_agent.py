@@ -1,13 +1,11 @@
 import os, sys
 import re
 from dotenv import load_dotenv
-from mistralai import Mistral
+from .llm_client import get_llm_response
 
 # Load API key
 load_dotenv()
-api_key = os.getenv("MISTRAL_API_KEY")
-model = "codestral-latest"
-client = Mistral(api_key=api_key)
+
 
 def list_components(plan: dict, draft_html: str):
     print("\n\n⚪ [COMPONENT AGENT] Generating components...")
@@ -41,30 +39,33 @@ Return clean Blade markup using Tailwind CSS, and DO NOT include any explanation
 
 Change 'src' image to real link/url
 """
-        stream_response = client.chat.stream(
-            model=model,
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ]
-        )
 
-        full_response = ""
-        prev_len = 0
+        # Use unified LLM client (prioritizes Cerebras, falls back to Mistral)
+        try:
+            full_response = get_llm_response(
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                temperature=0.7,
+                max_tokens=8000,
+            )
 
-        for chunk in stream_response:
-            content = chunk.data.choices[0].delta.content
-            if content:
-                full_response += content  # Simpan utuh (termasuk \n)
-
+            # Display response character by character for visual feedback
+            prev_len = 0
+            for i, char in enumerate(full_response):
                 # Untuk tampil sementara: hanya karakter terbaru, bersihkan newline
-                sanitized = content.replace("\n", " ").replace("\r", " ")
+                sanitized = char.replace("\n", " ").replace("\r", " ")
                 pad = max(prev_len - len(sanitized), 0)
                 sys.stdout.write("\r" + sanitized + " " * pad)
                 sys.stdout.flush()
                 prev_len = len(sanitized)
 
-        match = re.findall(r"```blade\s*(.*?)```", full_response, re.DOTALL | re.IGNORECASE)
+        except Exception as e:
+            print(f"\n❌ Failed to generate component {comp}: {e}")
+            full_response = ""
+
+        match = re.findall(
+            r"```blade\s*(.*?)```", full_response, re.DOTALL | re.IGNORECASE
+        )
         blade_code = match[0].strip() if match else full_response.strip()
 
         result[comp] = blade_code
