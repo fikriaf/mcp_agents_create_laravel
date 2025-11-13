@@ -6,7 +6,7 @@
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![Code Style](https://img.shields.io/badge/code%20style-black-black.svg)
 ![Agents](https://img.shields.io/badge/agents-10-purple.svg)
-![AI Powered](https://img.shields.io/badge/AI-Cerebras%20Qwen%20Code-orange.svg)
+![AI Powered](https://img.shields.io/badge/AI-Cerebras%20Qwen-orange.svg)
 ![Fallback AI](https://img.shields.io/badge/fallback-Mistral-yellow.svg)
 ![Platform](https://img.shields.io/badge/platform-windows%20%7C%20linux%20%7C%20macOS-lightgrey.svg)
 
