@@ -1,0 +1,246 @@
+@startuml MCP_Agents_Laravel_Generator_Architecture
+!theme aws-orange
+!define AWS_COLOR #FF9900
+!define AGENT_COLOR #2E86AB
+!define PROCESS_COLOR #A23B72
+!define OUTPUT_COLOR #F18F01
+!define VALIDATION_COLOR #C73E1D
+
+title MCP Agents Create Laravel - Complex Architecture Flow
+
+skinparam backgroundColor #F8F9FA
+skinparam class {
+    BackgroundColor<<Agent>> AGENT_COLOR
+    BackgroundColor<<Process>> PROCESS_COLOR
+    BackgroundColor<<Output>> OUTPUT_COLOR
+    BackgroundColor<<Validation>> VALIDATION_COLOR
+    FontColor white
+    BorderColor #2C3E50
+    ArrowColor #34495E
+}
+
+skinparam note {
+    BackgroundColor #ECF0F1
+    BorderColor #BDC3C7
+    FontColor #2C3E50
+}
+
+package "Entry Point & Control Flow" {
+    class MainController <<Process>> {
+        + main()
+        + save_history()
+        - user_input_loop()
+        - confirmation_process()
+        - build_process()
+    }
+    
+    class HistoryManager <<Process>> {
+        + clean_history()
+        + save_history()
+        - manage_sessions()
+    }
+}
+
+package "LLM Infrastructure" {
+    class LLMClient <<Process>> {
+        + get_llm_response()
+        - cerebras_client
+        - mistral_client
+        - fallback_mechanism()
+    }
+    
+    note right of LLMClient
+        Primary: Cerebras Qwen Code
+        Fallback: Mistral AI
+        Handles API failures gracefully
+    end note
+}
+
+package "Agent Pipeline - Sequential Processing" {
+    class PromptExpander <<Agent>> {
+        + prompt_expander()
+        - expand_user_prompt()
+        - handle_revisions()
+    }
+    
+    class DraftAgent <<Agent>> {
+        + draft_agent()
+        - generate_html_draft()
+        - extract_html_blocks()
+        - tailwind_integration()
+    }
+    
+    class PromptPlanner <<Agent>> {
+        + plan_prompt()
+        - analyze_requirements()
+        - extract_components()
+        - generate_route_plan()
+    }
+    
+    class PageArchitect <<Agent>> {
+        + design_layout()
+        - structure_layout()
+        - organize_sections()
+    }
+    
+    class ComponentAgent <<Agent>> {
+        + list_components()
+        - generate_blade_components()
+        - extract_html_sections()
+        - create_component_files()
+    }
+    
+    class UIGenerator <<Agent>> {
+        + generate_blade()
+        - create_main_view()
+        - integrate_components()
+        - handle_blade_syntax()
+    }
+    
+    class LayoutGenerator <<Agent>> {
+        + generate_layout_app()
+        - create_app_layout()
+        - setup_yield_sections()
+    }
+    
+    class RouteAgent <<Agent>> {
+        + generate_route()
+        - create_laravel_routes()
+        - setup_web_routes()
+    }
+    
+    class ValidatorAgent <<Validation>> {
+        + validate()
+        - check_blade_syntax()
+        - validate_components()
+        - structural_validation()
+    }
+    
+    class ProjectMover <<Agent>> {
+        + move_to_laravel_project()
+        - copy_views()
+        - copy_components()
+        - integrate_routes()
+    }
+}
+
+package "Output Generation" {
+    class OutputManager <<Output>> {
+        - draft.html
+        - blade_templates/
+        - components/
+        - routes/
+        - layouts/
+    }
+    
+    class LaravelProject <<Output>> {
+        - resources/views/
+        - resources/views/components/
+        - resources/views/layouts/
+        - routes/web.php
+    }
+}
+
+package "User Interaction" {
+    class BrowserInterface <<Process>> {
+        + open_draft()
+        + preview_results()
+        - auto_launch()
+    }
+    
+    class UserFeedback <<Process>> {
+        + confirmation_loop()
+        + revision_handling()
+        - input_validation()
+    }
+}
+
+' === MAIN CONTROL FLOW ===
+MainController --> HistoryManager : clean_history()
+MainController --> PromptExpander : 1. expand_prompt
+PromptExpander --> DraftAgent : 2. generate_draft
+DraftAgent --> OutputManager : save draft.html
+OutputManager --> BrowserInterface : preview draft
+BrowserInterface --> UserFeedback : user confirmation
+UserFeedback --> MainController : continue/revise
+
+' === BUILD PIPELINE ===
+MainController --> PromptPlanner : 3. plan_components
+PromptPlanner --> PageArchitect : 4. design_layout
+PageArchitect --> ComponentAgent : 5. list_components
+ComponentAgent --> UIGenerator : 6. generate_blade
+UIGenerator --> LayoutGenerator : 7. generate_layout_app
+LayoutGenerator --> RouteAgent : 8. generate_route
+
+' === VALIDATION PIPELINE ===
+RouteAgent --> ValidatorAgent : 9. validate_all
+ValidatorAgent --> ValidatorAgent : validate_each_component
+ValidatorAgent --> ProjectMover : 10. move_if_valid
+ProjectMover --> LaravelProject : integrate_files
+
+' === LLM DEPENDENCIES ===
+PromptExpander ..> LLMClient : uses
+DraftAgent ..> LLMClient : uses
+PromptPlanner ..> LLMClient : uses
+ComponentAgent ..> LLMClient : uses
+UIGenerator ..> LLMClient : uses
+LayoutGenerator ..> LLMClient : uses
+RouteAgent ..> LLMClient : uses
+ValidatorAgent ..> LLMClient : uses
+
+' === DATA FLOW ANNOTATIONS ===
+note top of PromptExpander
+    INPUT: Raw user prompt
+    OUTPUT: Expanded detailed prompt
+    PURPOSE: Transform brief requests into
+    comprehensive UI specifications
+end note
+
+note top of DraftAgent
+    INPUT: Expanded prompt
+    OUTPUT: Complete HTML with Tailwind CSS
+    PURPOSE: Generate visual prototype for
+    user confirmation before Laravel build
+end note
+
+note top of PromptPlanner
+    INPUT: Final approved prompt + draft
+    OUTPUT: JSON plan (page, components, route)
+    PURPOSE: Break down UI into Laravel
+    components and structure
+end note
+
+note top of ComponentAgent
+    INPUT: Component list + HTML draft
+    OUTPUT: Individual Blade components
+    PURPOSE: Extract and convert HTML sections
+    into reusable Laravel Blade components
+end note
+
+note top of ValidatorAgent
+    INPUT: Generated Blade templates
+    OUTPUT: Validation status per component
+    PURPOSE: Ensure syntactic correctness
+    before Laravel integration
+end note
+
+' === REVISION FLOW ===
+UserFeedback --> PromptExpander : revision_prompt
+note on link : If user rejects draft
+
+' === ERROR HANDLING ===
+LLMClient --> LLMClient : cerebras_fallback_to_mistral
+note on link : Automatic fallback on API failure
+
+' === FILE SYSTEM OPERATIONS ===
+ComponentAgent --> OutputManager : save_components
+UIGenerator --> OutputManager : save_main_view  
+LayoutGenerator --> OutputManager : save_app_layout
+RouteAgent --> OutputManager : save_routes
+ProjectMover --> LaravelProject : copy_all_files
+
+' === BROWSER INTEGRATION ===
+MainController --> BrowserInterface : auto_open_draft
+ProjectMover --> BrowserInterface : open_localhost:8000
+
+@enduml

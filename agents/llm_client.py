@@ -104,9 +104,9 @@ class LLMClient:
         # Cerebras configuration
         config = {
             "messages": messages,
-            "model": "qwen-3-coder-480b",
+            "model": "zai-glm-4.6",
             "stream": True,
-            "max_completion_tokens": kwargs.get("max_tokens", 80000),
+            "max_completion_tokens": kwargs.get("max_tokens", 40000),
             "temperature": kwargs.get("temperature", 0.7),
             "top_p": kwargs.get("top_p", 0.8),
         }
@@ -132,7 +132,7 @@ class LLMClient:
 
         # Use streaming approach like in the example
         stream_response = self.mistral_client.chat.stream(
-            model=kwargs.get("model", "mistral-large-latest"), messages=messages
+            model=kwargs.get("model", "codestral-latest"), messages=messages
         )
 
         full_response = ""

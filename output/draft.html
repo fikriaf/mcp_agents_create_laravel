@@ -1,891 +1,579 @@
+```html
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laravel Forge AI | Auto-Generate Projects</title>
+    <title>Ahmad Rizki - Full Stack Developer</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        primary: {
-                            50: '#f5f3ff',
-                            100: '#ede9fe',
-                            500: '#8b5cf6',
-                            600: '#7c3aed',
-                            700: '#6d28d9',
-                        },
-                        dark: {
-                            800: '#1e293b',
-                            900: '#0f172a',
-                        },
+                        'sans': ['Inter', 'sans-serif'],
+                        'display': ['Poppins', 'sans-serif'],
                     },
                     animation: {
-                        'blink': 'blink 1s step-end infinite',
-                        'typing': 'typing 0.5s steps(40, end) forwards',
-                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     },
                     keyframes: {
-                        blink: {
-                            'from, to': { opacity: '1' },
-                            '50%': { opacity: '0' },
-                        },
-                        typing: {
-                            'from': { width: '0' },
-                            'to': { width: '100%' },
-                        },
-                        fadeIn: {
-                            'from': { opacity: '0', transform: 'translateY(10px)' },
-                            'to': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                    },
-                },
-            },
-        };
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    
     <style>
-        :root {
-            --terminal-bg: #111827;
-            --terminal-text: #e5e7eb;
-            --terminal-success: #10b981;
-            --terminal-error: #ef4444;
-            --terminal-warning: #f59e0b;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        .terminal {
-            background-color: var(--terminal-bg);
-            color: var(--terminal-text);
-            font-family: 'JetBrains Mono', monospace;
-            line-height: 1.5;
+        
+        body {
+            font-family: 'Inter', sans-serif;
         }
-
-        .terminal-line {
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-
-        .typing-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 16px;
-            background-color: var(--terminal-text);
-            animation: blink 1s step-end infinite;
-        }
-
-        .skeleton {
-            background: linear-gradient(90deg, #f3f3f3 25%, #e5e5e5 50%, #f3f3f3 75%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 1.5s infinite;
-        }
-
-        @keyframes skeleton-loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        .scrollbar-thin::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-            background-color: #6b7280;
-            border-radius: 3px;
-        }
-
-        .scrollbar-thin::-webkit-scrollbar-track {
-            background-color: #374151;
-        }
-
-        .floating-glow {
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
-        }
-
+        
         .gradient-text {
-            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+        
+        .gradient-border {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2px;
+            border-radius: 1rem;
+        }
+        
+        .blob-shape {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation: blob 8s ease-in-out infinite;
+        }
+        
+        @keyframes blob {
+            0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            50% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; }
+        }
+        
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 1.5rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .masonry-grid { column-count: 2; }
+        }
+        
+        @media (max-width: 640px) {
+            .masonry-grid { column-count: 1; }
+        }
+        
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+        }
+        
+        .timeline-line {
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .slide-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .slide-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .skill-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .skill-card:hover {
+            transform: translateY(-8px) scale(1.05);
+        }
+        
+        .project-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+        }
+        
+        .nav-blur {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .dark .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-dark-900 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
-    <!-- Overlay for mobile sidebar -->
-    <div id="mobile-sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden" onclick="closeMobileSidebar()"></div>
-
-    <!-- Sidebar -->
-    <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white dark:bg-dark-800 border-r border-gray-200 dark:border-gray-700 z-40 transform transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0 md:w-20 md:hover:w-64 lg:w-64">
-        <div class="flex flex-col h-full">
-            <!-- Logo -->
-            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center text-white font-bold">
-                        LF
-                    </div>
-                    <h1 class="text-xl font-bold hidden md:block gradient-text">Laravel Forge AI</h1>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    
+    <!-- Navigation -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold font-display">
+                    <span class="gradient-text">AR.</span>
                 </div>
-            </div>
-
-            <!-- Navigation -->
-            <nav class="flex-1 p-2 overflow-y-auto scrollbar-thin">
-                <ul class="space-y-1">
-                    <li>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                            <span class="mdi mdi-home text-lg"></span>
-                            <span class="hidden md:block">Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary-50 dark:bg-gray-700 text-primary-600 dark:text-primary-400">
-                            <span class="mdi mdi-robot text-lg"></span>
-                            <span class="hidden md:block">Agents</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                            <span class="mdi mdi-folder text-lg"></span>
-                            <span class="hidden md:block">Projects</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                            <span class="mdi mdi-file-document-multiple text-lg"></span>
-                            <span class="hidden md:block">Templates</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- Footer -->
-            <div class="p-4 border-t border-gray-200 dark:border-gray-700">
-                <div class="flex items-center justify-between">
-                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                        <span class="mdi mdi-moon-waning-crescent text-lg dark:hidden"></span>
-                        <span class="mdi mdi-white-balance-sunny text-lg hidden dark:inline"></span>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Beranda</a>
+                    <a href="#about" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Tentang</a>
+                    <a href="#skills" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Keahlian</a>
+                    <a href="#portfolio" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Portfolio</a>
+                    <a href="#experience" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Pengalaman</a>
+                    <a href="#contact" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Kontak</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <i class="fas fa-moon dark:hidden text-xl"></i>
+                        <i class="fas fa-sun hidden dark:block text-xl"></i>
                     </button>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 hidden md:block">
-                        v1.0.0-beta
-                    </div>
+                    
+                    <button id="mobileMenuToggle" class="md:hidden p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
                 </div>
             </div>
-        </div>
-    </aside>
-
-    <!-- Mobile Sidebar Button -->
-    <button id="mobile-sidebar-button" class="md:hidden fixed top-4 left-4 z-30 p-2 rounded-md bg-white dark:bg-dark-800 shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-        <span class="mdi mdi-menu text-lg"></span>
-    </button>
-
-    <!-- Main Content -->
-    <div class="md:ml-20 lg:ml-64 min-h-screen">
-        <!-- Header -->
-        <header class="sticky top-0 bg-white dark:bg-dark-800 border-b border-gray-200 dark:border-gray-700 z-20">
-            <div class="p-4 flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <h2 class="text-xl font-semibold">Agents</h2>
-                </div>
-                <div class="flex items-center gap-4">
-                    <div class="relative">
-                        <input type="text" placeholder="Search agents..." class="pl-10 pr-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all w-64">
-                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 mdi mdi-magnify"></span>
-                        <kbd class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 dark:bg-gray-600 px-1.5 py-0.5 rounded text-xs text-gray-600 dark:text-gray-300">⌘K</kbd>
+            
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+                <a href="#home" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Beranda</a>
+                <a href="#about" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Tentang</a>
+                <a href="#skills" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Keahlian</a>
+                <a href="#portfolio" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Portfolio</a>
+                <a href="#experience" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Pengalaman</a>
+                <a href="#contact" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Kontak</a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center justify-center px-6 pt-20">
+        <div class="container mx-auto max-w-7xl">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="fade-in">
+                    <h1 class="text-5xl lg:text-7xl font-bold font-display mb-6 text-shadow">
+                        Halo, Saya <span class="gradient-text">Ahmad Rizki</span>
+                    </h1>
+                    <h2 class="text-2xl lg:text-3xl font-medium mb-8 text-gray-600 dark:text-gray-300">
+                        Seorang Full Stack Developer yang menciptakan pengalaman digital yang intuitif dan berkesan.
+                    </h2>
+                    <p class="text-lg mb-8 text-gray-600 dark:text-gray-400 leading-relaxed">
+                        Berpengalaman lebih dari 5 tahun dalam mengembangkan aplikasi web modern dengan fokus pada performa, 
+                        user experience, dan kode yang bersih. Passion saya adalah mengubah ide kompleks menjadi solusi digital yang elegan.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#portfolio" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full font-medium hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                            Lihat Portfolio
+                        </a>
+                        <a href="#contact" class="px-8 py-3 border-2 border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400 rounded-full font-medium hover:bg-purple-600 hover:text-white transition-all duration-300">
+                            Hubungi Saya
+                        </a>
                     </div>
+                </div>
+                
+                <div class="flex justify-center lg:justify-end">
                     <div class="relative">
-                        <button id="user-menu-button" class="flex items-center gap-2 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-medium">
-                                AB
-                            </div>
-                            <span class="mdi mdi-chevron-down text-sm"></span>
-                        </button>
-                        <div id="user-menu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-dark-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 hidden z-50">
-                            <div class="p-2 border-b border-gray-200 dark:border-gray-700">
-                                <p class="text-sm font-medium">Alex Brown</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">alex@example.com</p>
-                            </div>
-                            <div class="py-1">
-                                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                    <span class="mdi mdi-account-outline mr-2"></span> Profile
-                                </a>
-                                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                    <span class="mdi mdi-cog-outline mr-2"></span> Settings
-                                </a>
-                            </div>
-                            <div class="py-1 border-t border-gray-200 dark:border-gray-700">
-                                <button class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                    <span class="mdi mdi-logout mr-2"></span> Logout
-                                </button>
-                            </div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full blur-3xl opacity-30 animate-pulse-slow"></div>
+                        <div class="gradient-border">
+                            <img src="https://picsum.photos/seed/profile123/400/400" alt="Ahmad Rizki" class="blob-shape w-80 h-80 object-cover bg-white dark:bg-gray-800">
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
-
-        <!-- Main Container -->
-        <main class="p-4 md:p-6">
-            <!-- Agent List Header -->
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
+            
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 scroll-indicator">
+                <i class="fas fa-chevron-down text-2xl text-gray-400"></i>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-20 px-6">
+        <div class="container mx-auto max-w-6xl">
+            <div class="fade-in">
+                <h2 class="text-4xl font-bold font-display text-center mb-4">Tentang Saya</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 mx-auto mb-12"></div>
+                
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1">
+                        <p class="text-lg leading-relaxed mb-6 text-gray-600 dark:text-gray-300">
+                            Saya adalah seorang developer yang passionate tentang teknologi dan desain. Perjalanan saya dimulai 
+                            dari ketertarikan pada bagaimana hal-hal bekerja di dunia digital, yang kemudian berkembang menjadi 
+                            karir profesional dalam pengembangan web.
+                        </p>
+                        <p class="text-lg leading-relaxed mb-8 text-gray-600 dark:text-gray-300">
+                            Filosofi saya sederhana: kode harus bersih, desain harus intuitif, dan pengalaman pengguna harus 
+                            selalu menjadi prioritas. Saya percaya bahwa teknologi seharusnya mempermudah hidup, bukan mempersulitnya.
+                        </p>
+                        
+                        <div class="grid grid-cols-3 gap-6">
+                            <div class="text-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-lg transition-shadow">
+                                <div class="text-3xl font-bold gradient-text">5+</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mt-2">Tahun Pengalaman</div>
+                            </div>
+                            <div class="text-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-lg transition-shadow">
+                                <div class="text-3xl font-bold gradient-text">30+</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mt-2">Proyek Selesai</div>
+                            </div>
+                            <div class="text-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-lg transition-shadow">
+                                <div class="text-3xl font-bold gradient-text">10+</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400 mt-2">Klien Puas</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="order-1 lg:order-2">
+                        <img src="https://picsum.photos/seed/about456/500/600" alt="About Me" class="rounded-2xl shadow-2xl">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 px-6 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto max-w-6xl">
+            <div class="fade-in">
+                <h2 class="text-4xl font-bold font-display text-center mb-4">Keahlian</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 mx-auto mb-12"></div>
+                
+                <div class="mb-12">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Frontend Development</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fab fa-react text-4xl mb-3 text-blue-500"></i>
+                            <div class="font-medium">React</div>
+                        </div>
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fab fa-vuejs text-4xl mb-3 text-green-500"></i>
+                            <div class="font-medium">Vue.js</div>
+                        </div>
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fab fa-js text-4xl mb-3 text-yellow-500"></i>
+                            <div class="font-medium">JavaScript</div>
+                        </div>
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fab fa-html5 text-4xl mb-3 text-orange-500"></i>
+                            <div class="font-medium">HTML5</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-12">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Backend Development</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fab fa-node text-4xl mb-3 text-green-600"></i>
+                            <div class="font-medium">Node.js</div>
+                        </div>
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fab fa-python text-4xl mb-3 text-blue-600"></i>
+                            <div class="font-medium">Python</div>
+                        </div>
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fas fa-database text-4xl mb-3 text-purple-500"></i>
+                            <div class="font-medium">MongoDB</div>
+                        </div>
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fas fa-database text-4xl mb-3 text-blue-700"></i>
+                            <div class="font-medium">PostgreSQL</div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div>
-                    <h3 class="text-2xl font-bold">Auto-Generate Agents</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Create Laravel projects with AI-powered agents</p>
-                </div>
-                <div class="flex gap-2">
-                    <button class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
-                        <span class="mdi mdi-filter-outline"></span>
-                        <span>Filters</span>
-                    </button>
-                    <button id="new-agent-btn" class="px-4 py-2 rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors flex items-center gap-2">
-                        <span class="mdi mdi-plus"></span>
-                        <span>New Agent</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Tabs -->
-            <div class="mb-6">
-                <div class="flex space-x-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                    <button class="flex-1 px-4 py-2 text-sm font-medium rounded-md bg-white dark:bg-dark-900 shadow-sm text-primary-600 dark:text-primary-400">
-                        All Agents
-                    </button>
-                    <button class="flex-1 px-4 py-2 text-sm font-medium rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                        My Agents
-                    </button>
-                    <button class="flex-1 px-4 py-2 text-sm font-medium rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                        Favorites
-                    </button>
-                </div>
-            </div>
-
-            <!-- Agent List & Generator Panel -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Agent List -->
-                <div class="lg:col-span-1 space-y-4">
-                    <!-- Skeleton Loaders (hidden when data loaded) -->
-                    <div id="agent-skeletons" class="grid grid-cols-1 gap-4">
-                        <div class="skeleton h-32 rounded-lg"></div>
-                        <div class="skeleton h-32 rounded-lg"></div>
-                        <div class="skeleton h-32 rounded-lg"></div>
-                    </div>
-
-                    <!-- Agent Cards -->
-                    <div id="agent-list" class="grid grid-cols-1 gap-4 hidden">
-                        <!-- CRUD Generator -->
-                        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all hover:shadow-md hover:-translate-y-1 floating-glow">
-                            <div class="p-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="p-3 rounded-lg bg-purple-100 dark:bg-purple-900/50">
-                                        <span class="mdi mdi-robot text-purple-600 dark:text-purple-400 text-xl"></span>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-gray-900 dark:text-white">CRUD Generator</h4>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">Full CRUD with models, controllers, and views</p>
-                                    </div>
-                                </div>
-                                <div class="mt-4 flex flex-wrap gap-1">
-                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">#crud</span>
-                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">#model</span>
-                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">#controller</span>
-                                </div>
-                            </div>
-                            <div class="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex gap-2">
-                                <button onclick="openGenerator('crud-generator')" class="flex-1 px-3 py-1.5 bg-primary-600 text-white text-sm rounded-md hover:bg-primary-700 transition-colors flex items-center justify-center gap-1">
-                                    <span class="mdi mdi-play text-xs"></span>
-                                    <span>Run</span>
-                                </button>
-                                <button class="w-10 h-10 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center">
-                                    <span class="mdi mdi-pencil text-gray-600 dark:text-gray-300"></span>
-                                </button>
-                                <button class="w-10 h-10 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center">
-                                    <span class="mdi mdi-star-outline text-gray-600 dark:text-gray-300"></span>
-                                </button>
-                            </div>
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Tools & Design</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fab fa-figma text-4xl mb-3 text-purple-600"></i>
+                            <div class="font-medium">Figma</div>
                         </div>
-
-                        <!-- Auth Scaffold -->
-                        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all hover:shadow-md hover:-translate-y-1 floating-glow">
-                            <div class="p-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="p-3 rounded-lg bg-blue-100 dark:bg-blue-900/50">
-                                        <span class="mdi mdi-key text-blue-600 dark:text-blue-400 text-xl"></span>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-gray-900 dark:text-white">Auth Scaffold</h4>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">Bootstrap authentication with Breeze/Jetstream</p>
-                                    </div>
-                                </div>
-                                <div class="mt-4 flex flex-wrap gap-1">
-                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">#auth</span>
-                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">#breeze</span>
-                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">#jetstream</span>
-                                </div>
-                            </div>
-                            <div class="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex gap-2">
-                                <button onclick="openGenerator('auth-scaffold')" class="flex-1 px-3 py-1.5 bg-primary-600 text-white text-sm rounded-md hover:bg-primary-700 transition-colors flex items-center justify-center gap-1">
-                                    <span class="mdi mdi-play text-xs"></span>
-                                    <span>Run</span>
-                                </button>
-                                <button class="w-10 h-10 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center">
-                                    <span class="mdi mdi-pencil text-gray-600 dark:text-gray-300"></span>
-                                </button>
-                                <button class="w-10 h-10 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center">
-                                    <span class="mdi mdi-star-outline text-gray-600 dark:text-gray-300"></span>
-                                </button>
-                            </div>
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fab fa-git-alt text-4xl mb-3 text-red-500"></i>
+                            <div class="font-medium">Git</div>
                         </div>
-
-                        <!-- API Generator -->
-                        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all hover:shadow-md hover:-translate-y-1 floating-glow">
-                            <div class="p-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="p-3 rounded-lg bg-green-100 dark:bg-green-900/50">
-                                        <span class="mdi mdi-api text-green-600 dark:text-green-400 text-xl"></span>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-gray-900 dark:text-white">API Generator</h4>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400">Create RESTful or GraphQL APIs</p>
-                                    </div>
-                                </div>
-                                <div class="mt-4 flex flex-wrap gap-1">
-                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">#api</span>
-                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">#rest</span>
-                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs rounded-full">#graphql</span>
-                                </div>
-                            </div>
-                            <div class="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex gap-2">
-                                <button onclick="openGenerator('api-generator')" class="flex-1 px-3 py-1.5 bg-primary-600 text-white text-sm rounded-md hover:bg-primary-700 transition-colors flex items-center justify-center gap-1">
-                                    <span class="mdi mdi-play text-xs"></span>
-                                    <span>Run</span>
-                                </button>
-                                <button class="w-10 h-10 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center">
-                                    <span class="mdi mdi-pencil text-gray-600 dark:text-gray-300"></span>
-                                </button>
-                                <button class="w-10 h-10 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center justify-center">
-                                    <span class="mdi mdi-star-outline text-gray-600 dark:text-gray-300"></span>
-                                </button>
-                            </div>
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fab fa-docker text-4xl mb-3 text-blue-500"></i>
+                            <div class="font-medium">Docker</div>
+                        </div>
+                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                            <i class="fab fa-aws text-4xl mb-3 text-orange-600"></i>
+                            <div class="font-medium">AWS</div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Generator Panel & Terminal (hidden by default) -->
-                <div id="generator-panel" class="lg:col-span-2 space-y-4 hidden">
-                    <!-- Generator Form -->
-                    <div class="bg-white dark:bg-dark-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-6">
-                            <div class="flex items-center gap-3 mb-4">
-                                <button onclick="closeGenerator()" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
-                                    <span class="mdi mdi-arrow-left"></span>
-                                </button>
-                                <div>
-                                    <h3 class="text-xl font-semibold" id="generator-title">CRUD Generator</h3>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">Configure your project settings</p>
-                                </div>
-                            </div>
-
-                            <form id="generate-form" class="space-y-4">
-                                <div>
-                                    <label for="project-name" class="block text-sm font-medium mb-1">Project Name</label>
-                                    <div class="relative">
-                                        <input type="text" id="project-name" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" placeholder="e.g., blog-system" required>
-                                        <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs">kebab-case</span>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label for="template" class="block text-sm font-medium mb-1">Template</label>
-                                    <select id="template" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all">
-                                        <option value="breeze">Laravel Breeze</option>
-                                        <option value="jetstream">Laravel Jetstream</option>
-                                        <option value="custom">Custom</option>
-                                    </select>
-                                </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="flex items-center gap-3">
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" class="sr-only peer" checked>
-                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary-500 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
-                                        </label>
-                                        <span class="text-sm">Dark Mode</span>
-                                    </div>
-
-                                    <div class="flex items-center gap-3">
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" class="sr-only peer">
-                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary-500 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
-                                        </label>
-                                        <span class="text-sm">API Routes</span>
-                                    </div>
-
-                                    <div class="flex items-center gap-3">
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" class="sr-only peer" checked>
-                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary-500 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
-                                        </label>
-                                        <span class="text-sm">Testing</span>
-                                    </div>
-
-                                    <div class="flex items-center gap-3">
-                                        <label class="relative inline-flex items-center cursor-pointer">
-                                            <input type="checkbox" class="sr-only peer">
-                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary-500 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
-                                        </label>
-                                        <span class="text-sm">Docker Setup</span>
-                                    </div>
-                                </div>
-
-                                <!-- Advanced Options (Collapsible) -->
-                                <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
-                                    <button type="button" onclick="toggleAdvancedOptions()" class="flex items-center gap-2 text-sm font-medium text-primary-600 dark:text-primary-400 mb-2">
-                                        <span id="advanced-icon" class="mdi mdi-chevron-down transition-transform"></span>
-                                        <span>Advanced Options</span>
-                                    </button>
-
-                                    <div id="advanced-options" class="hidden space-y-3">
-                                        <div>
-                                            <label for="dependencies" class="block text-sm font-medium mb-1">Custom Dependencies</label>
-                                            <select id="dependencies" multiple class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all">
-                                                <option value="spatie/laravel-permission">spatie/laravel-permission</option>
-                                                <option value="laravel/sanctum">laravel/sanctum</option>
-                                                <option value="barryvdh/laravel-debugbar">barryvdh/laravel-debugbar</option>
-                                                <option value="tightenco/ziggy">tightenco/ziggy</option>
-                                            </select>
-                                        </div>
-
-                                        <div>
-                                            <label for="environment" class="block text-sm font-medium mb-1">Environment</label>
-                                            <select id="environment" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all">
-                                                <option value="local">Local</option>
-                                                <option value="production">Production</option>
-                                                <option value="staging">Staging</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="pt-4">
-                                    <button type="submit" id="generate-btn" class="w-full px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors flex items-center justify-center gap-2">
-                                        <span>Generate Project</span>
-                                        <span id="generate-btn-icon" class="mdi mdi-robot-happy-outline"></span>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Terminal Output -->
-                    <div class="bg-white dark:bg-dark-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                        <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <h4 class="font-semibold">Output Terminal</h4>
-                                <div class="flex items-center gap-2">
-                                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">Running</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                    <span class="mdi mdi-content-copy text-sm"></span>
-                                </button>
-                                <button class="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                    <span class="mdi mdi-trash-can-outline text-sm"></span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="terminal p-4 h-96 overflow-y-auto scrollbar-thin" id="terminal-output">
-                            <div class="terminal-line"><span class="text-green-400">$</span> <span>php artisan forge:generate blog-system</span></div>
-                            <div class="terminal-line mt-2"><span class="text-blue-400">[Forge AI]</span> <span>Initializing project...</span></div>
-                            <div class="terminal-line"><span class="text-blue-400">[Forge AI]</span> <span>Creating directory structure...</span></div>
-                            <div class="terminal-line"><span class="text-green-400">✓</span> <span>Directory created: /app/Models</span></div>
-                            <div class="terminal-line"><span class="text-green-400">✓</span> <span>Directory created: /app/Http/Controllers</span></div>
-                            <div class="terminal-line mt-2"><span class="text-blue-400">[Forge AI]</span> <span>Generating models...</span></div>
-                            <div class="terminal-line typing-container">
-                                <span class="text-yellow-400">Generating</span> <span>Post.php</span>
-                                <span class="typing-indicator"></span>
-                            </div>
-                        </div>
-                        <div class="p-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between text-sm">
-                            <div class="flex items-center gap-4">
-                                <span>Generating... (3/10 steps)</span>
-                                <div class="w-32 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                                    <div class="h-full w-3/10 bg-primary-500 rounded-full"></div>
-                                </div>
-                            </div>
-                            <div class="text-gray-500 dark:text-gray-400">
-                                <span class="mdi mdi-clock-outline mr-1"></span>
-                                <span>00:00:15</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- New Agent Modal -->
-    <div id="new-agent-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
-        <div class="bg-white dark:bg-dark-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-thin">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold">Create New Agent</h3>
-                    <button onclick="closeNewAgentModal()" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors">
-                        <span class="mdi mdi-close text-lg"></span>
-                    </button>
-                </div>
-
-                <form class="space-y-4">
-                    <div>
-                        <label for="agent-name" class="block text-sm font-medium mb-1">Agent Name</label>
-                        <input type="text" id="agent-name" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" placeholder="e.g., API Generator">
-                    </div>
-
-                    <div>
-                        <label for="agent-description" class="block text-sm font-medium mb-1">Description</label>
-                        <textarea id="agent-description" rows="3" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" placeholder="Describe what this agent does..."></textarea>
-                    </div>
-
-                    <div>
-                        <label for="agent-tags" class="block text-sm font-medium mb-1">Tags</label>
-                        <select id="agent-tags" multiple class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all">
-                            <option value="crud">CRUD</option>
-                            <option value="api">API</option>
-                            <option value="auth">Auth</option>
-                            <option value="model">Model</option>
-                            <option value="controller">Controller</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label for="agent-template" class="block text-sm font-medium mb-1">Template Code</label>
-                        <div class="relative">
-                            <div class="absolute top-2 right-2 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-xs text-gray-600 dark:text-gray-300">blade.php</div>
-                            <textarea id="agent-template" rows="10" class="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all font-mono text-sm" spellcheck="false">
-&lt;!-- app/Resources/views/{model}/index.blade.php --&gt;
-@extends('layouts.app')
-
-@section('content')
-    &lt;div class="container"&gt;
-        &lt;h1&gt;{{ $model }} List&lt;/h1&gt;
-
-        &lt;a href="{{ route('{{ $model }}.create') }}" class="btn btn-primary"&gt;
-            Create New {{ $model }}
-        &lt;/a&gt;
-
-        &lt;table class="table"&gt;
-            &lt;thead&gt;
-                &lt;tr&gt;
-                    @foreach($fields as $field)
-                        &lt;th&gt;{{ ucfirst($field) }}&lt;/th&gt;
-                    @endforeach
-                    &lt;th&gt;Actions&lt;/th&gt;
-                &lt;/tr&gt;
-            &lt;/thead&gt;
-            &lt;tbody&gt;
-                @foreach(${{ $model }} as $item)
-                    &lt;tr&gt;
-                        @foreach($fields as $field)
-                            &lt;td&gt;{{ $item->{$field} }}&lt;/td&gt;
-                        @endforeach
-                        &lt;td&gt;
-                            &lt;a href="{{ route('{{ $model }}.edit', $item) }}"&gt;Edit&lt;/a&gt;
-                            &lt;form action="{{ route('{{ $model }}.destroy', $item) }}" method="POST"&gt;
-                                @csrf
-                                @method('DELETE')
-                                &lt;button type="submit"&gt;Delete&lt;/button&gt;
-                            &lt;/form&gt;
-                        &lt;/td&gt;
-                    &lt;/tr&gt;
-                @endforeach
-            &lt;/tbody&gt;
-        &lt;/table&gt;
-    &lt;/div&gt;
-@endsection
-                            </textarea>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end gap-2 pt-4">
-                        <button type="button" onclick="closeNewAgentModal()" class="px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-dark-900 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                            Cancel
-                        </button>
-                        <button type="submit" class="px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 transition-colors">
-                            Save Agent
-                        </button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
-
-    <!-- Success Toast -->
-    <div id="success-toast" class="fixed bottom-4 right-4 z-50 hidden">
-        <div class="bg-white dark:bg-dark-800 border-l-4 border-green-500 shadow-lg rounded-md p-4 flex items-start gap-3 max-w-sm w-full">
-            <div class="text-green-500">
-                <span class="mdi mdi-check-circle-outline text-xl"></span>
+    </section>
+    
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-20 px-6">
+        <div class="container mx-auto max-w-6xl">
+            <div class="fade-in">
+                <h2 class="text-4xl font-bold font-display text-center mb-4">Portfolio</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 mx-auto mb-12"></div>
+                
+                <div class="flex justify-center mb-8 flex-wrap gap-4">
+                    <button class="filter-btn px-6 py-2 rounded-full bg-purple-600 text-white" data-filter="all">Semua</button>
+                    <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-purple-600 hover:text-white transition-all" data-filter="web">Web App</button>
+                    <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-purple-600 hover:text-white transition-all" data-filter="mobile">Mobile</button>
+                    <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-purple-600 hover:text-white transition-all" data-filter="design">UI/UX</button>
+                </div>
+                
+                <div class="masonry-grid">
+                    <div class="masonry-item project-item" data-category="web">
+                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
+                            <img src="https://picsum.photos/seed/project1/400/500" alt="E-Commerce Platform" class="w-full">
+                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <h3 class="text-white text-xl font-bold mb-2">E-Commerce Platform</h3>
+                                <p class="text-gray-200 text-sm mb-3">Platform e-commerce modern dengan fitur payment gateway dan inventory management</p>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">React</span>
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Node.js</span>
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">MongoDB</span>
+                                </div>
+                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
+                                    Lihat Detail <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="masonry-item project-item" data-category="mobile">
+                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
+                            <img src="https://picsum.photos/seed/project2/400/300" alt="Fitness Tracker App" class="w-full">
+                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <h3 class="text-white text-xl font-bold mb-2">Fitness Tracker App</h3>
+                                <p class="text-gray-200 text-sm mb-3">Aplikasi mobile untuk tracking aktivitas fitness dan nutrisi harian</p>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">React Native</span>
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Firebase</span>
+                                </div>
+                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
+                                    Lihat Detail <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="masonry-item project-item" data-category="design">
+                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
+                            <img src="https://picsum.photos/seed/project3/400/400" alt="Banking Dashboard" class="w-full">
+                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <h3 class="text-white text-xl font-bold mb-2">Banking Dashboard</h3>
+                                <p class="text-gray-200 text-sm mb-3">Desain dashboard perbankan dengan visualisasi data yang interaktif</p>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Figma</span>
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Prototyping</span>
+                                </div>
+                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
+                                    Lihat Detail <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="masonry-item project-item" data-category="web">
+                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
+                            <img src="https://picsum.photos/seed/project4/400/350" alt="SaaS Management Tool" class="w-full">
+                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <h3 class="text-white text-xl font-bold mb-2">SaaS Management Tool</h3>
+                                <p class="text-gray-200 text-sm mb-3">Tool manajemen proyek dan tim untuk startup teknologi</p>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Vue.js</span>
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Laravel</span>
+                                </div>
+                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
+                                    Lihat Detail <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="masonry-item project-item" data-category="mobile">
+                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
+                            <img src="https://picsum.photos/seed/project5/400/450" alt="Food Delivery App" class="w-full">
+                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <h3 class="text-white text-xl font-bold mb-2">Food Delivery App</h3>
+                                <p class="text-gray-200 text-sm mb-3">Aplikasi pesan antar makanan dengan real-time tracking</p>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Flutter</span>
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Google Maps API</span>
+                                </div>
+                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
+                                    Lihat Detail <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="masonry-item project-item" data-category="design">
+                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
+                            <img src="https://picsum.photos/seed/project6/400/320" alt="Social Media Redesign" class="w-full">
+                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                                <h3 class="text-white text-xl font-bold mb-2">Social Media Redesign</h3>
+                                <p class="text-gray-200 text-sm mb-3">Redesign lengkap UI/UX untuk platform media sosial</p>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">UI Design</span>
+                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">User Research</span>
+                                </div>
+                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
+                                    Lihat Detail <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <h4 class="font-medium">Project Generated Successfully!</h4>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Your Laravel project has been created at <span class="font-mono bg-gray-100 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">~/projects/blog-system</span></p>
-            </div>
-            <button onclick="closeToast()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors ml-auto">
-                <span class="mdi mdi-close text-lg"></span>
-            </button>
         </div>
-    </div>
-
-    <script>
-        // Toggle mobile sidebar
-        function toggleMobileSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('mobile-sidebar-overlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
-
-        function closeMobileSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('mobile-sidebar-overlay');
-            sidebar.classList.add('-translate-x-full');
-            overlay.classList.add('hidden');
-        }
-
-        // Toggle theme
-        document.getElementById('theme-toggle').addEventListener('click', function() {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-        });
-
-        // Check for saved theme preference
-        if (localStorage.getItem('theme') === 'dark') {
-            document.documentElement.classList.add('dark');
-        }
-
-        // Toggle mobile sidebar button
-        document.getElementById('mobile-sidebar-button').addEventListener('click', toggleMobileSidebar);
-
-        // User menu dropdown
-        document.getElementById('user-menu-button').addEventListener('click', function() {
-            document.getElementById('user-menu').classList.toggle('hidden');
-        });
-
-        // Close user menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const userMenu = document.getElementById('user-menu');
-            const userMenuButton = document.getElementById('user-menu-button');
-
-            if (!userMenu.contains(event.target) && !userMenuButton.contains(event.target)) {
-                userMenu.classList.add('hidden');
-            }
-        });
-
-        // Show agent list after "loading"
-        setTimeout(() => {
-            document.getElementById('agent-skeletons').classList.add('hidden');
-            document.getElementById('agent-list').classList.remove('hidden');
-        }, 1000);
-
-        // Open generator panel
-        function openGenerator(agentId) {
-            const generatorPanel = document.getElementById('generator-panel');
-            generatorPanel.classList.remove('hidden');
-
-            // Set title based on agent
-            const titleMap = {
-                'crud-generator': 'CRUD Generator',
-                'auth-scaffold': 'Auth Scaffold',
-                'api-generator': 'API Generator'
-            };
-            document.getElementById('generator-title').textContent = titleMap[agentId] || 'Agent';
-
-            // Scroll to generator panel
-            generatorPanel.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Close generator panel
-        function closeGenerator() {
-            document.getElementById('generator-panel').classList.add('hidden');
-        }
-
-        // Toggle advanced options
-        function toggleAdvancedOptions() {
-            const options = document.getElementById('advanced-options');
-            const icon = document.getElementById('advanced-icon');
-
-            options.classList.toggle('hidden');
-            icon.classList.toggle('rotate-180');
-        }
-
-        // New agent modal
-        document.getElementById('new-agent-btn').addEventListener('click', function() {
-            document.getElementById('new-agent-modal').classList.remove('hidden');
-        });
-
-        function closeNewAgentModal() {
-            document.getElementById('new-agent-modal').classList.add('hidden');
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('new-agent-modal').addEventListener('click', function(event) {
-            if (event.target === this) {
-                closeNewAgentModal();
-            }
-        });
-
-        // Handle form submission
-        document.getElementById('generate-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const generateBtn = document.getElementById('generate-btn');
-            const generateBtnIcon = document.getElementById('generate-btn-icon');
-            const terminal = document.getElementById('terminal-output');
-
-            // Disable button and show loading state
-            generateBtn.disabled = true;
-            generateBtn.classList.add('bg-purple-400', 'cursor-not-allowed');
-            generateBtn.classList.remove('bg-primary-600', 'hover:bg-primary-700');
-            generateBtnIcon.className = 'mdi mdi-loading mdi-spin';
-
-            // Clear terminal
-            terminal.innerHTML = '';
-
-            // Add initial command
-            const projectName = document.getElementById('project-name').value;
-            addTerminalLine(`<span class="text-green-400">$</span> <span>php artisan forge:generate ${projectName}</span>`);
-
-            // Simulate generation steps
-            simulateGeneration(projectName);
-        });
-
-        function addTerminalLine(html, typing = false) {
-            const terminal = document.getElementById('terminal-output');
-            const line = document.createElement('div');
-            line.className = `terminal-line ${typing ? 'typing-container' : ''}`;
-            line.innerHTML = html;
-
-            if (typing) {
-                line.innerHTML += '<span class="typing-indicator"></span>';
-            }
-
-            terminal.appendChild(line);
-            terminal.scrollTop = terminal.scrollHeight;
-        }
-
-        function simulateGeneration(projectName) {
-            const steps = [
-                { type: 'info', text: `[Forge AI] Initializing project...`, delay: 500 },
-                { type: 'info', text: `[Forge AI] Creating directory structure...`, delay: 800 },
-                { type: 'success', text: `✓ Directory created: /app/Models`, delay: 1000 },
-                { type: 'success', text: `✓ Directory created: /app/Http/Controllers`, delay: 500 },
-                { type: 'info', text: `[Forge AI] Generating models...`, delay: 1200 },
-                { type: 'typing', text: `<span class="text-yellow-400">Generating</span> <span>Post.php</span>`, delay: 1500 },
-                { type: 'success', text: `✓ Model created: app/Models/Post.php`, delay: 2000 },
-                { type: 'info', text: `[Forge AI] Generating controllers...`, delay: 1000 },
-                { type: 'typing', text: `<span class="text-yellow-400">Generating</span> <span>PostController.php</span>`, delay: 1500 },
-                { type: 'success', text: `✓ Controller created: app/Http/Controllers/PostController.php`, delay: 2000 },
-                { type: 'info', text: `[Forge AI] Generating migrations...`, delay: 1000 },
-                { type: 'success', text: `✓ Migration created: database/migrations/2023_01_01_create_posts_table.php`, delay: 1500 },
-                { type: 'info', text: `[Forge AI] Generating views...`, delay: 1000 },
-                { type: 'success', text: `✓ View created: resources/views/posts/index.blade.php`, delay: 1000 },
-                { type: 'success', text: `✓ View created: resources/views/posts/create.blade.php`, delay: 500 },
-                { type: 'success', text: `✓ View created: resources/views/posts/edit.blade.php`, delay: 500 },
-                { type: 'info', text: `[Forge AI] Setting up routes...`, delay: 1000 },
-                { type: 'success', text: `✓ Routes added to routes/web.php`, delay: 1000 },
-                { type: 'info', text: `[Forge AI] Running migrations...`, delay: 1000 },
-                { type: 'success', text: `✓ Migrations executed successfully`, delay: 1500 },
-                { type: 'success', text: `✓ Project generated successfully!`, delay: 500 },
-                { type: 'success', text: `📁 Project location: ~/projects/${projectName}`, delay: 500 },
-                { type: 'success', text: `🚀 To get started, run:`, delay: 500 },
-                { type: 'command', text: `<span class="text-green-400">$</span> <span>cd ~/projects/${projectName}</span>`, delay: 500 },
-                { type: 'command', text: `<span class="text-green-400">$</span> <span>php artisan serve</span>`, delay: 500 }
-            ];
-
-            let completedSteps = 0;
-            const totalSteps = steps.length;
-
-            steps.forEach((step, index) => {
-                setTimeout(() => {
-                    if (step.type === 'typing') {
-                        addTerminalLine(step.text, true);
-
-                        // Remove typing indicator after a delay
-                        setTimeout(() => {
-                            const typingLines = document.querySelectorAll('.typing-container');
-                            if (typingLines.length > 0) {
-                                const lastTypingLine = typingLines[typingLines.length - 1];
-                                lastTypingLine.classList.remove('typing-container');
-                                lastTypingLine.innerHTML = step.text;
-                            }
-                        }, 1000);
-                    } else {
-                        let lineHtml = '';
-
-                        if (step.type === 'info') {
-                            lineHtml = `<span class="text-blue-400">[Forge AI]</span> <span>${step.text}</span>`;
-                        } else if (step.type === 'success') {
-                            lineHtml = `<span class="text-green-400">✓</span> <span>${step.text}</span>`;
-                        } else if (step.type === 'command') {
-                            lineHtml = step.text;
-                        }
-
-                        addTerminalLine(lineHtml);
-                    }
-
-                    completedSteps++;
-                    updateProgress(completedSteps, totalSteps);
-
-                    if (completedSteps === totalSteps) {
-                        completeGeneration();
-                    }
-                }, step.delay + (index * 200));
-            });
-        }
-
-        function updateProgress(current, total) {
-            const progressBar = document.querySelector('.bg-primary-500');
-            const percentage = (current / total) * 100;
-            progressBar.style.width = `${percentage}%`;
-
-            const progressText = document.querySelector('[data-progress-text]');
-            if (progressText) {
-                progressText.textContent = `Generating... (${current}/${total} steps)`;
-            }
-        }
-
-        function completeGeneration() {
-            const generateBtn = document.getElementById('generate-btn');
-            generateBtn.disabled = false;
-            generateBtn.classList.remove('bg-purple-400', 'cursor-not-allowed');
-            generateBtn.classList.add('bg-green-600', 'hover:bg-green-700');
-            document.getElementById('generate-btn-icon').className = 'mdi mdi-check';
-
-            // Show success toast
-            document.getElementById('success-toast').classList.remove('hidden');
-            setTimeout(closeToast, 5000);
-        }
-
-        function closeToast() {
-            document.getElementById('success-toast').classList.add('hidden');
-        }
-
-        // Initialize with some terminal content
-        document.addEventListener('DOMContentLoaded', function() {
-            // Simulate loading agents
-            setTimeout(() => {
-                document.getElementById('agent-skeletons').classList.add('hidden');
-                document.getElementById('agent-list').classList.remove('hidden');
-            }, 1000);
-        });
-    </script>
-</body>
-</html>
+    </section>
+    
+    <!-- Experience Timeline -->
+    <section id="experience" class="py-20 px-6 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto max-w-4xl">
+            <div class="fade-in">
+                <h2 class="text-4xl font-bold font-display text-center mb-4">Pengalaman</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 mx-auto mb-12"></div>
+                
+                <div class="relative">
+                    <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full timeline-line"></div>
+                    
+                    <div class="space-y-12">
+                        <div class="flex items-center justify-between">
+                            <div class="w-5/12 text-right slide-left">
+                                <div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg">
+                                    <h3 class="text-xl font-bold mb-2">Senior Full Stack Developer</h3>
+                                    <div class="text-purple-600 dark:text-purple-400 mb-2">TechCorp Indonesia</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-3">2021 - Sekarang</div>
+                                    <p class="text-gray-600 dark:text-gray-300">Memimpin tim pengembangan untuk produk SaaS B2B dengan fokus pada skalabilitas dan performa.</p>
+                                </div>
+                            </div>
+                            <div class="w-2/12 flex justify-center">
+                                <div class="w-6 h-6 bg-purple-600 rounded-full border-4 border-white dark:border-gray-900"></div>
+                            </div>
+                            <div class="w-5/12"></div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="w-5/12"></div>
+                            <div class="w-2/12 flex justify-center">
+                                <div class="w-6 h-6 bg-purple-600 rounded-full border-4 border-white dark:border-gray-900"></div>
+                            </div>
+                            <div class="w-5/12 slide-right">
+                                <div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg">
+                                    <h3 class="text-xl font-bold mb-2">Full Stack Developer</h3>
+                                    <div class="text-purple-600 dark:text-purple-400 mb-2">Digital Agency Pro</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-3">2019 - 2021</div>
+                                    <p class="text-gray-600 dark:text-gray-300">Mengembangkan berbagai website dan aplikasi klien dengan teknologi modern.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="w-5/12 text-right slide-left">
+                                <div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg">
+                                    <h3 class="text-xl font-bold mb-2">Frontend Developer</h3>
+                                    <div class="text-purple-600 dark:text-purple-400 mb-2">StartupHub</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-3">2018 - 2019</div>
+                                    <p class="text-gray-600 dark:text-gray-300">Fokus pada pengembangan UI/UX untuk aplikasi web dan mobile startup.</p>
+                                </div>
+                            </div>
+                            <div class="w-2/12 flex justify-center">
+                                <div class="w-6 h-6 bg-purple-600 rounded-full border-4 border-white dark:border-gray-900"></div>
+                            </div>
+                            <div class="w-5/12"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-6">
+        <div class="container mx-auto max-w-4xl">
+            <div class="fade-in">
+                <h2 class="text-4xl font-bold font-display text-center mb-4">Mari Berkolaborasi</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 mx-auto mb-12"></div>
+                
+                <p class="text-center text-lg text-gray-600 dark:text-gray-300 mb-12">
+                    Ada proyek menarik yang ingin kita kerjakan bersama? Saya siap membantu mewujudkan ide Anda menjadi kenyataan.
+                </p>
+                
+                <div class="flex justify-center space-x-6 mb-12">
+                    <a href="https://linkedin.com" target="_blank" class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all duration-300 transform hover:scale-110">
+                        <i class="fab fa-linkedin-in text-2xl"></i>
+                    </a>
+                    <a href="https://github.com" target="_blank" class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all duration-300 transform hover:scale-110">
+                        <i class="fab fa-github text-2xl"></i>
+                    </a>
+                    <a href="https://dribbble.com" target="_blank" class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all duration-300 transform hover:scale-110">
+                        <i class="fab fa-dribbble text-2xl"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all duration-300 transform hover:scale-110">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </a>
+                    <a href="mailto:ahmad.riz
