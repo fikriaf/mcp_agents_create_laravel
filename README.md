@@ -1,7 +1,7 @@
 # MCP Agents Laravel UI Generator
 
-![Python](https://img.shields.io/badge/python-v3.7+-blue.svg)
-![Laravel](https://img.shields.io/badge/laravel-v8+-red.svg)
+![Python](https://img.shields.io/badge/python-v3.10+-blue.svg)
+![Laravel](https://img.shields.io/badge/laravel-v8.2-red.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![Code Style](https://img.shields.io/badge/code%20style-black-black.svg)
