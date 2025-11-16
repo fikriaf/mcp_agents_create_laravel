@@ -1,579 +1,104 @@
-```html
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmad Rizki - Full Stack Developer</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Tailwind CSS -->
+    <title>GenLaravel - Multi-Page Draft Preview</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'sans': ['Inter', 'sans-serif'],
-                        'display': ['Poppins', 'sans-serif'],
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
     <style>
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .gradient-border {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 2px;
-            border-radius: 1rem;
-        }
-        
-        .blob-shape {
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            animation: blob 8s ease-in-out infinite;
-        }
-        
-        @keyframes blob {
-            0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
-            50% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; }
-        }
-        
-        .masonry-grid {
-            column-count: 3;
-            column-gap: 1.5rem;
-        }
-        
-        @media (max-width: 1024px) {
-            .masonry-grid { column-count: 2; }
-        }
-        
-        @media (max-width: 640px) {
-            .masonry-grid { column-count: 1; }
-        }
-        
-        .masonry-item {
-            break-inside: avoid;
-            margin-bottom: 1.5rem;
-        }
-        
-        .timeline-line {
-            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-        
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .slide-left {
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: all 0.8s ease-out;
-        }
-        
-        .slide-left.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .slide-right {
-            opacity: 0;
-            transform: translateX(50px);
-            transition: all 0.8s ease-out;
-        }
-        
-        .slide-right.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .skill-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .skill-card:hover {
-            transform: translateY(-8px) scale(1.05);
-        }
-        
-        .project-overlay {
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
-        }
-        
-        .nav-blur {
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-        
-        .scroll-indicator {
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-        
-        .text-shadow {
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .dark .text-shadow {
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        .preview-container {
+            flex: 1;
+            overflow: hidden;
         }
     </style>
 </head>
-<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-    
-    <!-- Navigation -->
-    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        <nav class="container mx-auto px-6 py-4">
+<body class="bg-gray-100">
+    <div class="bg-gradient-to-r from-slate-700 to-slate-800 text-white p-4 shadow-lg">
+        <div class="container mx-auto">
             <div class="flex items-center justify-between">
-                <div class="text-2xl font-bold font-display">
-                    <span class="gradient-text">AR.</span>
-                </div>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Beranda</a>
-                    <a href="#about" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Tentang</a>
-                    <a href="#skills" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Keahlian</a>
-                    <a href="#portfolio" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Portfolio</a>
-                    <a href="#experience" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Pengalaman</a>
-                    <a href="#contact" class="nav-link hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Kontak</a>
-                </div>
-                
-                <div class="flex items-center space-x-4">
-                    <button id="darkModeToggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                        <i class="fas fa-moon dark:hidden text-xl"></i>
-                        <i class="fas fa-sun hidden dark:block text-xl"></i>
-                    </button>
-                    
-                    <button id="mobileMenuToggle" class="md:hidden p-2">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
-                <a href="#home" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Beranda</a>
-                <a href="#about" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Tentang</a>
-                <a href="#skills" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Keahlian</a>
-                <a href="#portfolio" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Portfolio</a>
-                <a href="#experience" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Pengalaman</a>
-                <a href="#contact" class="block py-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Kontak</a>
-            </div>
-        </nav>
-    </header>
-    
-    <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center px-6 pt-20">
-        <div class="container mx-auto max-w-7xl">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="fade-in">
-                    <h1 class="text-5xl lg:text-7xl font-bold font-display mb-6 text-shadow">
-                        Halo, Saya <span class="gradient-text">Ahmad Rizki</span>
-                    </h1>
-                    <h2 class="text-2xl lg:text-3xl font-medium mb-8 text-gray-600 dark:text-gray-300">
-                        Seorang Full Stack Developer yang menciptakan pengalaman digital yang intuitif dan berkesan.
-                    </h2>
-                    <p class="text-lg mb-8 text-gray-600 dark:text-gray-400 leading-relaxed">
-                        Berpengalaman lebih dari 5 tahun dalam mengembangkan aplikasi web modern dengan fokus pada performa, 
-                        user experience, dan kode yang bersih. Passion saya adalah mengubah ide kompleks menjadi solusi digital yang elegan.
-                    </p>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="#portfolio" class="px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-full font-medium hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
-                            Lihat Portfolio
-                        </a>
-                        <a href="#contact" class="px-8 py-3 border-2 border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400 rounded-full font-medium hover:bg-purple-600 hover:text-white transition-all duration-300">
-                            Hubungi Saya
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="flex justify-center lg:justify-end">
-                    <div class="relative">
-                        <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full blur-3xl opacity-30 animate-pulse-slow"></div>
-                        <div class="gradient-border">
-                            <img src="https://picsum.photos/seed/profile123/400/400" alt="Ahmad Rizki" class="blob-shape w-80 h-80 object-cover bg-white dark:bg-gray-800">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 scroll-indicator">
-                <i class="fas fa-chevron-down text-2xl text-gray-400"></i>
-            </div>
-        </div>
-    </section>
-    
-    <!-- About Section -->
-    <section id="about" class="py-20 px-6">
-        <div class="container mx-auto max-w-6xl">
-            <div class="fade-in">
-                <h2 class="text-4xl font-bold font-display text-center mb-4">Tentang Saya</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 mx-auto mb-12"></div>
-                
-                <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div class="order-2 lg:order-1">
-                        <p class="text-lg leading-relaxed mb-6 text-gray-600 dark:text-gray-300">
-                            Saya adalah seorang developer yang passionate tentang teknologi dan desain. Perjalanan saya dimulai 
-                            dari ketertarikan pada bagaimana hal-hal bekerja di dunia digital, yang kemudian berkembang menjadi 
-                            karir profesional dalam pengembangan web.
-                        </p>
-                        <p class="text-lg leading-relaxed mb-8 text-gray-600 dark:text-gray-300">
-                            Filosofi saya sederhana: kode harus bersih, desain harus intuitif, dan pengalaman pengguna harus 
-                            selalu menjadi prioritas. Saya percaya bahwa teknologi seharusnya mempermudah hidup, bukan mempersulitnya.
-                        </p>
-                        
-                        <div class="grid grid-cols-3 gap-6">
-                            <div class="text-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-lg transition-shadow">
-                                <div class="text-3xl font-bold gradient-text">5+</div>
-                                <div class="text-sm text-gray-600 dark:text-gray-400 mt-2">Tahun Pengalaman</div>
-                            </div>
-                            <div class="text-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-lg transition-shadow">
-                                <div class="text-3xl font-bold gradient-text">30+</div>
-                                <div class="text-sm text-gray-600 dark:text-gray-400 mt-2">Proyek Selesai</div>
-                            </div>
-                            <div class="text-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-lg transition-shadow">
-                                <div class="text-3xl font-bold gradient-text">10+</div>
-                                <div class="text-sm text-gray-600 dark:text-gray-400 mt-2">Klien Puas</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="order-1 lg:order-2">
-                        <img src="https://picsum.photos/seed/about456/500/600" alt="About Me" class="rounded-2xl shadow-2xl">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 px-6 bg-gray-50 dark:bg-gray-800">
-        <div class="container mx-auto max-w-6xl">
-            <div class="fade-in">
-                <h2 class="text-4xl font-bold font-display text-center mb-4">Keahlian</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 mx-auto mb-12"></div>
-                
-                <div class="mb-12">
-                    <h3 class="text-2xl font-semibold mb-6 text-center">Frontend Development</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fab fa-react text-4xl mb-3 text-blue-500"></i>
-                            <div class="font-medium">React</div>
-                        </div>
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fab fa-vuejs text-4xl mb-3 text-green-500"></i>
-                            <div class="font-medium">Vue.js</div>
-                        </div>
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fab fa-js text-4xl mb-3 text-yellow-500"></i>
-                            <div class="font-medium">JavaScript</div>
-                        </div>
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fab fa-html5 text-4xl mb-3 text-orange-500"></i>
-                            <div class="font-medium">HTML5</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mb-12">
-                    <h3 class="text-2xl font-semibold mb-6 text-center">Backend Development</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fab fa-node text-4xl mb-3 text-green-600"></i>
-                            <div class="font-medium">Node.js</div>
-                        </div>
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fab fa-python text-4xl mb-3 text-blue-600"></i>
-                            <div class="font-medium">Python</div>
-                        </div>
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fas fa-database text-4xl mb-3 text-purple-500"></i>
-                            <div class="font-medium">MongoDB</div>
-                        </div>
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fas fa-database text-4xl mb-3 text-blue-700"></i>
-                            <div class="font-medium">PostgreSQL</div>
-                        </div>
-                    </div>
-                </div>
-                
                 <div>
-                    <h3 class="text-2xl font-semibold mb-6 text-center">Tools & Design</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fab fa-figma text-4xl mb-3 text-purple-600"></i>
-                            <div class="font-medium">Figma</div>
-                        </div>
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fab fa-git-alt text-4xl mb-3 text-red-500"></i>
-                            <div class="font-medium">Git</div>
-                        </div>
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fab fa-docker text-4xl mb-3 text-blue-500"></i>
-                            <div class="font-medium">Docker</div>
-                        </div>
-                        <div class="skill-card bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg text-center cursor-pointer">
-                            <i class="fab fa-aws text-4xl mb-3 text-orange-600"></i>
-                            <div class="font-medium">AWS</div>
-                        </div>
-                    </div>
+                    <h1 class="text-2xl font-bold">GenLaravel Draft Preview</h1>
+                    <p class="text-sm text-gray-300">Multi-Page Application - 3 Pages</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="showPage('home')" id="tab-home" class="px-6 py-3 font-semibold rounded-lg transition  bg-blue-600 text-white">Home</button>
+<button onclick="showPage('features')" id="tab-features" class="px-6 py-3 font-semibold rounded-lg transition bg-gray-200 text-gray-700 hover:bg-gray-300">Features</button>
+<button onclick="showPage('contact')" id="tab-contact" class="px-6 py-3 font-semibold rounded-lg transition bg-gray-200 text-gray-700 hover:bg-gray-300">Contact</button>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
     
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="py-20 px-6">
-        <div class="container mx-auto max-w-6xl">
-            <div class="fade-in">
-                <h2 class="text-4xl font-bold font-display text-center mb-4">Portfolio</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 mx-auto mb-12"></div>
-                
-                <div class="flex justify-center mb-8 flex-wrap gap-4">
-                    <button class="filter-btn px-6 py-2 rounded-full bg-purple-600 text-white" data-filter="all">Semua</button>
-                    <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-purple-600 hover:text-white transition-all" data-filter="web">Web App</button>
-                    <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-purple-600 hover:text-white transition-all" data-filter="mobile">Mobile</button>
-                    <button class="filter-btn px-6 py-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-purple-600 hover:text-white transition-all" data-filter="design">UI/UX</button>
+    <div class="preview-container bg-gray-100">
+        
+        <div id="page-home" class=" h-full overflow-auto">
+            <div class="bg-white rounded-lg shadow-lg p-6 m-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Preview: Home</h2>
+                    <a href="drafts/home.html" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        <i class="fas fa-external-link-alt mr-2"></i>Open in New Tab
+                    </a>
                 </div>
-                
-                <div class="masonry-grid">
-                    <div class="masonry-item project-item" data-category="web">
-                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
-                            <img src="https://picsum.photos/seed/project1/400/500" alt="E-Commerce Platform" class="w-full">
-                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <h3 class="text-white text-xl font-bold mb-2">E-Commerce Platform</h3>
-                                <p class="text-gray-200 text-sm mb-3">Platform e-commerce modern dengan fitur payment gateway dan inventory management</p>
-                                <div class="flex flex-wrap gap-2 mb-3">
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">React</span>
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Node.js</span>
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">MongoDB</span>
-                                </div>
-                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
-                                    Lihat Detail <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="masonry-item project-item" data-category="mobile">
-                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
-                            <img src="https://picsum.photos/seed/project2/400/300" alt="Fitness Tracker App" class="w-full">
-                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <h3 class="text-white text-xl font-bold mb-2">Fitness Tracker App</h3>
-                                <p class="text-gray-200 text-sm mb-3">Aplikasi mobile untuk tracking aktivitas fitness dan nutrisi harian</p>
-                                <div class="flex flex-wrap gap-2 mb-3">
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">React Native</span>
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Firebase</span>
-                                </div>
-                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
-                                    Lihat Detail <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="masonry-item project-item" data-category="design">
-                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
-                            <img src="https://picsum.photos/seed/project3/400/400" alt="Banking Dashboard" class="w-full">
-                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <h3 class="text-white text-xl font-bold mb-2">Banking Dashboard</h3>
-                                <p class="text-gray-200 text-sm mb-3">Desain dashboard perbankan dengan visualisasi data yang interaktif</p>
-                                <div class="flex flex-wrap gap-2 mb-3">
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Figma</span>
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Prototyping</span>
-                                </div>
-                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
-                                    Lihat Detail <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="masonry-item project-item" data-category="web">
-                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
-                            <img src="https://picsum.photos/seed/project4/400/350" alt="SaaS Management Tool" class="w-full">
-                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <h3 class="text-white text-xl font-bold mb-2">SaaS Management Tool</h3>
-                                <p class="text-gray-200 text-sm mb-3">Tool manajemen proyek dan tim untuk startup teknologi</p>
-                                <div class="flex flex-wrap gap-2 mb-3">
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Vue.js</span>
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Laravel</span>
-                                </div>
-                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
-                                    Lihat Detail <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="masonry-item project-item" data-category="mobile">
-                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
-                            <img src="https://picsum.photos/seed/project5/400/450" alt="Food Delivery App" class="w-full">
-                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <h3 class="text-white text-xl font-bold mb-2">Food Delivery App</h3>
-                                <p class="text-gray-200 text-sm mb-3">Aplikasi pesan antar makanan dengan real-time tracking</p>
-                                <div class="flex flex-wrap gap-2 mb-3">
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Flutter</span>
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">Google Maps API</span>
-                                </div>
-                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
-                                    Lihat Detail <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="masonry-item project-item" data-category="design">
-                        <div class="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer">
-                            <img src="https://picsum.photos/seed/project6/400/320" alt="Social Media Redesign" class="w-full">
-                            <div class="project-overlay absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                                <h3 class="text-white text-xl font-bold mb-2">Social Media Redesign</h3>
-                                <p class="text-gray-200 text-sm mb-3">Redesign lengkap UI/UX untuk platform media sosial</p>
-                                <div class="flex flex-wrap gap-2 mb-3">
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">UI Design</span>
-                                    <span class="px-3 py-1 bg-white/20 backdrop-blur text-white text-xs rounded-full">User Research</span>
-                                </div>
-                                <a href="#" class="text-white flex items-center gap-2 hover:gap-3 transition-all">
-                                    Lihat Detail <i class="fas fa-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <iframe class="w-full border border-gray-300 rounded-lg" style="height: calc(100vh - 250px);" src="drafts/home.html"></iframe>
             </div>
         </div>
-    </section>
-    
-    <!-- Experience Timeline -->
-    <section id="experience" class="py-20 px-6 bg-gray-50 dark:bg-gray-800">
-        <div class="container mx-auto max-w-4xl">
-            <div class="fade-in">
-                <h2 class="text-4xl font-bold font-display text-center mb-4">Pengalaman</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 mx-auto mb-12"></div>
-                
-                <div class="relative">
-                    <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full timeline-line"></div>
-                    
-                    <div class="space-y-12">
-                        <div class="flex items-center justify-between">
-                            <div class="w-5/12 text-right slide-left">
-                                <div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg">
-                                    <h3 class="text-xl font-bold mb-2">Senior Full Stack Developer</h3>
-                                    <div class="text-purple-600 dark:text-purple-400 mb-2">TechCorp Indonesia</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-3">2021 - Sekarang</div>
-                                    <p class="text-gray-600 dark:text-gray-300">Memimpin tim pengembangan untuk produk SaaS B2B dengan fokus pada skalabilitas dan performa.</p>
-                                </div>
-                            </div>
-                            <div class="w-2/12 flex justify-center">
-                                <div class="w-6 h-6 bg-purple-600 rounded-full border-4 border-white dark:border-gray-900"></div>
-                            </div>
-                            <div class="w-5/12"></div>
-                        </div>
-                        
-                        <div class="flex items-center justify-between">
-                            <div class="w-5/12"></div>
-                            <div class="w-2/12 flex justify-center">
-                                <div class="w-6 h-6 bg-purple-600 rounded-full border-4 border-white dark:border-gray-900"></div>
-                            </div>
-                            <div class="w-5/12 slide-right">
-                                <div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg">
-                                    <h3 class="text-xl font-bold mb-2">Full Stack Developer</h3>
-                                    <div class="text-purple-600 dark:text-purple-400 mb-2">Digital Agency Pro</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-3">2019 - 2021</div>
-                                    <p class="text-gray-600 dark:text-gray-300">Mengembangkan berbagai website dan aplikasi klien dengan teknologi modern.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center justify-between">
-                            <div class="w-5/12 text-right slide-left">
-                                <div class="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg">
-                                    <h3 class="text-xl font-bold mb-2">Frontend Developer</h3>
-                                    <div class="text-purple-600 dark:text-purple-400 mb-2">StartupHub</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-3">2018 - 2019</div>
-                                    <p class="text-gray-600 dark:text-gray-300">Fokus pada pengembangan UI/UX untuk aplikasi web dan mobile startup.</p>
-                                </div>
-                            </div>
-                            <div class="w-2/12 flex justify-center">
-                                <div class="w-6 h-6 bg-purple-600 rounded-full border-4 border-white dark:border-gray-900"></div>
-                            </div>
-                            <div class="w-5/12"></div>
-                        </div>
-                    </div>
+        
+
+        <div id="page-features" class="hidden h-full overflow-auto">
+            <div class="bg-white rounded-lg shadow-lg p-6 m-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Preview: Features</h2>
+                    <a href="drafts/features.html" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        <i class="fas fa-external-link-alt mr-2"></i>Open in New Tab
+                    </a>
                 </div>
+                <iframe class="w-full border border-gray-300 rounded-lg" style="height: calc(100vh - 250px);" src="drafts/features.html"></iframe>
             </div>
         </div>
-    </section>
+        
+
+        <div id="page-contact" class="hidden h-full overflow-auto">
+            <div class="bg-white rounded-lg shadow-lg p-6 m-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Preview: Contact</h2>
+                    <a href="drafts/contact.html" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        <i class="fas fa-external-link-alt mr-2"></i>Open in New Tab
+                    </a>
+                </div>
+                <iframe class="w-full border border-gray-300 rounded-lg" style="height: calc(100vh - 250px);" src="drafts/contact.html"></iframe>
+            </div>
+        </div>
+        
+    </div>
     
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 px-6">
-        <div class="container mx-auto max-w-4xl">
-            <div class="fade-in">
-                <h2 class="text-4xl font-bold font-display text-center mb-4">Mari Berkolaborasi</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 mx-auto mb-12"></div>
-                
-                <p class="text-center text-lg text-gray-600 dark:text-gray-300 mb-12">
-                    Ada proyek menarik yang ingin kita kerjakan bersama? Saya siap membantu mewujudkan ide Anda menjadi kenyataan.
-                </p>
-                
-                <div class="flex justify-center space-x-6 mb-12">
-                    <a href="https://linkedin.com" target="_blank" class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all duration-300 transform hover:scale-110">
-                        <i class="fab fa-linkedin-in text-2xl"></i>
-                    </a>
-                    <a href="https://github.com" target="_blank" class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all duration-300 transform hover:scale-110">
-                        <i class="fab fa-github text-2xl"></i>
-                    </a>
-                    <a href="https://dribbble.com" target="_blank" class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all duration-300 transform hover:scale-110">
-                        <i class="fab fa-dribbble text-2xl"></i>
-                    </a>
-                    <a href="https://instagram.com" target="_blank" class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-all duration-300 transform hover:scale-110">
-                        <i class="fab fa-instagram text-2xl"></i>
-                    </a>
-                    <a href="mailto:ahmad.riz
+    <script>
+        function showPage(pageName) {
+            // Hide all page containers
+            document.querySelectorAll('div[id^="page-"]').forEach(div => {
+                div.classList.add('hidden');
+            });
+            
+            // Remove active state from all tabs
+            document.querySelectorAll('button[id^="tab-"]').forEach(tab => {
+                tab.classList.remove('bg-blue-600', 'text-white');
+                tab.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            
+            // Show selected page
+            document.getElementById('page-' + pageName).classList.remove('hidden');
+            
+            // Activate selected tab
+            const activeTab = document.getElementById('tab-' + pageName);
+            activeTab.classList.remove('bg-gray-200', 'text-gray-700');
+            activeTab.classList.add('bg-blue-600', 'text-white');
+        }
+    </script>
+</body>
+</html>

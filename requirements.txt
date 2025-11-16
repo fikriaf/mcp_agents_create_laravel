@@ -1,20 +1,22 @@
-# MCP Agents Laravel UI Generator - Dependencies
+# GenLaravel - AI Laravel Generator
+# All dependencies for agents and backend
 
-# Core AI/LLM clients
+# ===== Core AI/LLM Clients =====
 cerebras-cloud-sdk>=1.0.0
 mistralai>=0.4.0
+anthropic>=0.18.0  # Optional: Claude support
 
-# Environment and configuration
+# ===== Backend (FastAPI) =====
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+websockets==12.0
+python-multipart==0.0.6
+aiofiles==23.2.1
+
+# ===== Environment & Configuration =====
 python-dotenv>=1.0.0
 
-# Standard libraries (usually included with Python)
-# json - built-in
-# os - built-in
-# re - built-in
-# datetime - built-in
-# shutil - built-in
-# webbrowser - built-in
-
-# Development and optional packages
-# black  # Code formatting (optional)
-# flake8  # Linting (optional)
+# ===== Optional: Development Tools =====
+# black>=23.0.0  # Code formatting
+# flake8>=6.0.0  # Linting
+# pytest>=7.0.0  # Testing

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+
+    :root {
+      --primary: #00F3FF;
+      --secondary: #12263F;
+      --accent: #7CFC00;
+      --text-primary: #FFFFFF;
+      --text-secondary: #B0BEC5;
+    }
+
+    .neon-btn {
+      background-color: var(--primary);
+      color: #000000;
+      border: 2px solid var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .neon-btn:hover {
+      box-shadow: 0 0 20px var(--primary);
+      transform: scale(1.05);
+    }
+
+    .feature-card {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .testimonial-card {
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.02);
+      transition: transform 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.3);
+      transition: background-color 0.3s ease;
+    }
+
+    .dot.active {
+      background-color: var(--primary);
+      width: 16px;
+      border-radius: 8px;
+    }
+
+    @keyframes slideIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: slideIn 0.6s ease-out forwards;
+    }
+  
+    </style>
+</head>
+<body>
+<header class="fixed w-full bg-[var(--secondary)] z-50 shadow-lg">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="text-2xl font-bold text-[var(--primary)]">AI Agent Pro</div>
+      <nav class="hidden md:flex space-x-8">
+        <a href="#features" class="text-[var(--text-secondary)] hover:text-[var(--primary)] transition bg-blue-600 text-white">Features</a>
+        <a href="#testimonials" class="text-[var(--text-secondary)] hover:text-[var(--primary)] transition">Testimonials</a>
+        <a href="features.html" class="text-[var(--text-secondary)] hover:text-[var(--primary)] transition">Use Cases</a>
+        <a href="contact.html" class="text-[var(--text-secondary)] hover:text-[var(--primary)] transition">Contact</a>
+      </nav>
+
+<main class="bg-[#0A1F3C] text-white py-12 px-6 md:px-12">
+  <section class="max-w-7xl mx-auto">
+    <!-- Hero Section -->
+    <div class="flex flex-col md:flex-row items-center gap-12 mb-16">
+      <div class="md:w-1/2">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">Advanced AI Features for Modern Businesses</h1>
+        <p class="text-lg text-[#B0BEC5] max-w-lg">
+          AI Agent Pro combines cutting-edge machine learning with enterprise-grade security to deliver unparalleled automation and insights.
+        </p>
+        <a href="#" class="mt-8 inline-block bg-[#00F3FF] hover:bg-blue-400 text-black font-medium py-3 px-6 rounded-lg transition-transform hover:scale-105">
+          Explore Features
+        </a>
+      </div>
+      <div class="md:w-1/2">
+        <img src="https://picsum.photos/600/400" alt="AI Agent 3D Visualization" class="rounded-lg shadow-2xl">
+      </div>
+    </div>
+
+    <!-- Core Features Grid -->
+    <div class="mb-20">
+      <h2 class="text-3xl font-bold mb-12">Core Capabilities</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Feature Card 1 -->
+        <div class="bg-[#12263F] p-6 rounded-xl border border-[#00F3FF]/30 hover:bg-[#0A1F3C]/80 transition-colors">
+          <div class="w-12 h-12 bg-[#00F3FF]/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-[#00F3FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Natural Language Processing</h3>
+          <p class="text-[#B0BEC5]">
+            Understands 100+ languages with 99.8% accuracy using transformer-based models.
+          </p>
+        </div>
+
+        <!-- Feature Card 2 -->
+        <div class="bg-[#12263F] p-6 rounded-xl border border-[#7CFC00]/30 hover:bg-[#0A1F3C]/80 transition-colors">
+          <div class="w-12 h-12 bg-[#7CFC00]/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-[#7CFC00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Computer Vision</h3>
+          <p class="text-[#B0BEC5]">
+            Real-time object detection and image analysis with 99.2% precision.
+          </p>
+        </div>
+
+        <!-- Feature Card 3 -->
+        <div class="bg-[#12263F] p-6 rounded-xl border border-[#D800FF]/30 hover:bg-[#0A1F3C]/80 transition-colors">
+          <div class="w-12 h-12 bg-[#D800FF]/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-[#D800FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Predictive Modeling</h3>
+          <p class="text-[#B0BEC5]">
+            Leverages LSTM and Transformer architectures for accurate forecasting.
+          </p>
+        </div>
+
+        <!-- Feature Card 4 -->
+        <div class="bg-[#12263F] p-6 rounded-xl border border-[#00F3FF]/30 hover:bg-[#0A1F3C]/80 transition-colors">
+          <div class="w-12 h-12 bg-[#00F3FF]/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-[#00F3FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">API Integration</h3>
+          <p class="text-[#B0BEC5]">
+            RESTful API with 50+ pre-built connectors for enterprise systems.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technical Specs Table -->
+    <div class="mb-20">
+      <h2 class="text-3xl font-bold mb-8">Performance Metrics</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-[#12263F] rounded-lg border border-[#00F3FF]/20">
+          <thead>
+            <tr class="text-left text-[#B0BEC5]">
+              <th class="py-4 px-6 font-medium">Metric</th>
+              <th class="py-4 px-6 font-medium">AI Agent Pro</th>
+              <th class="py-4 px-6 font-medium">Competitor A</th>
+              <th class="py-4 px-6 font-medium">Competitor B</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-[#00F3FF]/10">
+              <td class="py-4 px-6 font-medium">Response Time</td>
+              <td class="py-4 px-6 text-[#00F3FF]">0.3s</td>
+              <td class="py-4 px-6 text-[#B0BEC5]">1.2s</td>
+              <td class="py-4 px-6 text-[#B0BEC5]">2.5s</td>
+            </tr>
+            <tr class="border-b border-[#00F3FF]/10">
+              <td class="py-4 px-6 font-medium">Accuracy Rate</td>
+              <td class="py-4 px-6 text-[#00F3FF]">99.8%</td>
+              <td class="py-4 px-6 text-[#B0BEC5]">95.5%</td>
+              <td class="py-4 px-6 text-[#B0BEC5]">93.2%</td>
+            </tr>
+            <tr class="border-b border-[#00F3FF]/10">
+              <td class="py-4 px-6 font-medium">Scalability</td>
+              <td class="py-4 px-6 text-[#00F3FF]">10M+ requests/day</td>
+              <td class="py-4 px-6 text-[#B0BEC5]">1M</td>
+              <td class="py-4 px-6 text-[#B0BEC5]">500k</td>
+            </tr>
+            <tr class="border-b border-[#00F3FF]/10">
+              <td class="py-4 px-6 font-medium">Customization</td>
+              <td class="py-4 px-6 text-[#00F3FF]">100%</td>
+              <td class="py-4 px-6 text-[#B0BEC5]">70%</td>
+              <td class="py-4 px-6 text-[#B0BEC5]">40%</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="mt-6 text-center">
+          <a href="#" class="inline-block bg-[#7CFC00] hover:bg-green-400 text-black font-medium py-2 px-6 rounded-lg transition-transform hover:scale-105">
+            Compare with Other Tools
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="mb-20">
+      <h2 class="text-3xl font-bold mb-8">Real-World Applications</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Use Case 1 -->
+        <div class="bg-[#12263F] p-6 rounded-xl border border-[#00F3FF]/20 hover:shadow-lg transition-shadow">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-[#00F3FF]/20 rounded-lg flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-[#00F3FF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold">Healthcare</h3>
+          </div>
+          <p class="text-[#B0BEC5] mb-4">
+            Reduced diagnosis time by 60% in 6 months through medical imaging analysis and patient data processing.
+          </p>
+          <ul class="text-[#B0BEC5] text-sm space-y-2">
+            <li>• AI-powered X-ray analysis with 99.5% accuracy</li>
+            <li>• Automated patient risk scoring</li>
+            <li>• HIPAA-compliant data handling</li>
+          </ul>
+        </div>
+
+        <!-- Use Case 2 -->
+        <div class="bg-[#12263F] p-6 rounded-xl border border-[#7CFC00]/20 hover:shadow-lg transition-shadow">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-[#7CFC00]/20 rounded-lg flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-[#7CFC00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold">Finance</h3>
+          </div>
+          <p class="text-[#B0BEC5] mb-4">
+            Detected $12M in fraudulent transactions in Q1 2024 using behavioral pattern analysis.
+          </p>
+          <ul class="text-[#B0BEC5] text-sm space-y-2">
+            <li>• Real-time transaction monitoring</li>
+            <li>• Anomaly detection using neural networks</li>
+            <li>• Integration with SWIFT and ACH systems</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="text-center py-12 bg-[#00F3FF]/5 rounded-xl">
+      <h2 class="text-3xl font-bold mb-4">Ready to Transform Your Business?</h2>
+      <p class="text-[#B0BEC5] mb-8 max-w-2xl mx-auto">
+        Join 500+ companies leveraging AI Agent Pro for smarter automation and data-driven decisions.
+      </p>
+      <a href="#" class="inline-block bg-[#00F3FF] hover:bg-blue-400 text-black font-medium py-3 px-8 rounded-lg transition-transform hover:scale-105">
+        Schedule a Demo
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="bg-[var(--secondary)] text-[var(--text-secondary)] py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="md:col-span-1">
+          <h3 class="text-xl font-bold text-[var(--primary)] mb-4">AI Agent Pro</h3>
+          <p class="text-sm">
+            Empowering businesses with intelligent automation and data-driven insights since 2024.
+          </p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4 text-[var(--primary)]">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-[var(--primary)]">Home</a></li>
+            <li><a href="features.html" class="hover:text-[var(--primary)]">Features</a></li>
+            <li><a href="contact.html" class="hover:text-[var(--primary)]">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4 text-[var(--primary)]">Contact Us</h4>
+          <ul class="space-y-2">
+            <li>Email: support@aiagentpro.com</li>
+            <li>Phone: +1 (555) 123-4567</li>
+            <li>Address: 123 Innovation Drive, Tech City</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4 text-[var(--primary)]">Newsletter</h4>
+          <p class="mb-4">Subscribe for the latest updates and AI insights</p>
+          <form class="flex flex-col sm:flex-row gap-2">
+            <input type="email" placeholder="Your email" class="px-4 py-2 rounded-lg text-black" required />
+            <button type="submit" class="py-2 px-4 rounded-lg neon-btn text-black">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div class="border-t border-[var(--text-secondary)] mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-sm mb-4 md:mb-0">© 2024 AI Agent Pro. All rights reserved.</p>
+        <div class="flex space-x-4">
+          <a href="#" class="text-[var(--text-secondary)] hover:text-[var(--primary)]">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+            </svg>
+          </a>
+          <a href="#" class="text-[var(--text-secondary)] hover:text-[var(--primary)]">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
+            </svg>
+          </a>
+          <a href="#" class="text-[var(--text-secondary)] hover:text-[var(--primary)]">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+
+</script>
+</body>
+</html>

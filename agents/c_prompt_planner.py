@@ -22,8 +22,10 @@ Guidelines:
 - Avoid listing generic HTML tags (like "Input", "Button") — use descriptive and reusable names like "SearchForm" or "AuthCard".
 - Group related elements under a higher-level component when possible, e.g., use "LoginForm" instead of listing "EmailInput", "PasswordInput", and "SubmitButton" separately.
 - Do NOT duplicate similar components.
+- Do NOT create separate components for sub-sections that are part of a larger component (e.g., if you have "ChatArea", do NOT also create "ChatSidebar" or "ChatInput" separately).
 - Do NOT include raw HTML, CSS classes, or descriptions — only semantic component names used in Laravel Blade.
 - Prefer abstract or high-level components that represent purpose or function (e.g., "Navbar", "TaskCard", "UserProfileSection").
+- Each component should be a complete, standalone section of the page.
 
 Respond ONLY with valid JSON, without explanations or formatting. No markdown. No comments.
 """
@@ -33,7 +35,7 @@ Respond ONLY with valid JSON, without explanations or formatting. No markdown. N
         full_response = get_llm_response(
             system_prompt=sys_prompt,
             user_prompt=user_prompt,
-            max_tokens=8000,
+            max_tokens=32000,
             temperature=0.3,  # Lower temperature for more consistent JSON
         )
         print("\n✅ Plan created successfully")

@@ -1,0 +1,152 @@
+@startuml GenLaravel_Multi_Page_Architecture
+!theme aws-orange
+
+title GenLaravel Multi-Page Architecture (V2)
+
+skinparam backgroundColor #F8F9FA
+skinparam class {
+    BackgroundColor<<Agent>> #2E86AB
+    BackgroundColor<<Enhanced>> #10b981
+    BackgroundColor<<Process>> #A23B72
+    BackgroundColor<<Output>> #F18F01
+    FontColor white
+    BorderColor #2C3E50
+    ArrowColor #34495E
+}
+
+package "Phase 1: Draft Generation (Unchanged)" {
+    class PromptExpander <<Agent>> {
+        + prompt_expander()
+    }
+    
+    class DraftAgent <<Agent>> {
+        + draft_agent()
+        - Generates 1 HTML
+        - Represents ALL pages
+    }
+}
+
+package "Phase 2: Multi-Page Planning (NEW)" {
+    class MultiPagePlanner <<Enhanced>> {
+        + plan_prompt_multi()
+        - Detects N pages
+        - Returns pages[]
+    }
+    
+    note right of MultiPagePlanner
+        NEW: Returns array of pages
+        {
+          "pages": [
+            {"page": "login", "route": "/login"},
+            {"page": "dashboard", "route": "/dashboard"}
+          ]
+        }
+    end note
+}
+
+package "Phase 3: Page Generation Loop (Enhanced)" {
+    class PageLoop <<Process>> {
+        + for each page in pages[]
+    }
+    
+    class PageArchitect <<Agent>> {
+        + design_layout()
+        - Called per page
+    }
+    
+    class ComponentAgent <<Agent>> {
+        + list_components()
+        - Called per page
+    }
+    
+    class UIGenerator <<Agent>> {
+        + generate_blade()
+        - Called per page
+    }
+}
+
+package "Phase 4: Shared Resources (Enhanced)" {
+    class LayoutGenerator <<Agent>> {
+        + generate_layout_app()
+        - Generated once
+        - Shared by all pages
+    }
+    
+    class MultiRouteAgent <<Enhanced>> {
+        + generate_routes_multi()
+        - Generates all routes
+        - Single web.php
+    }
+    
+    note right of MultiRouteAgent
+        NEW: Generates multiple routes
+        Route::get('/login', ...);
+        Route::get('/dashboard', ...);
+        Route::get('/profile', ...);
+    end note
+}
+
+package "Phase 5: Validation & Integration" {
+    class ValidatorAgent <<Agent>> {
+        + validate()
+        - Validates all components
+    }
+    
+    class ProjectMover <<Agent>> {
+        + move_to_laravel_project()
+        - Moves all pages
+    }
+}
+
+package "Output Structure" {
+    class LaravelProject <<Output>> {
+        - views/login.blade.php
+        - views/dashboard.blade.php
+        - views/profile.blade.php
+        - layouts/app.blade.php
+        - components/*.blade.php
+        - routes/web.php
+    }
+}
+
+' Main Flow
+PromptExpander --> DraftAgent
+DraftAgent --> MultiPagePlanner : draft HTML
+
+MultiPagePlanner --> PageLoop : pages[]
+
+PageLoop --> PageArchitect : page 1
+PageLoop --> PageArchitect : page 2
+PageLoop --> PageArchitect : page N
+
+PageArchitect --> ComponentAgent
+ComponentAgent --> UIGenerator
+
+UIGenerator --> LayoutGenerator : after all pages
+UIGenerator --> MultiRouteAgent : after all pages
+
+MultiRouteAgent --> ValidatorAgent
+ValidatorAgent --> ProjectMover
+
+ProjectMover --> LaravelProject
+
+' Annotations
+note bottom of PageLoop
+    LOOP: For each page
+    - Design layout
+    - Extract components
+    - Generate blade view
+    
+    Components are merged
+    to avoid duplicates
+end note
+
+note bottom of LaravelProject
+    RESULT: Complete Laravel App
+    - Multiple pages
+    - Multiple routes
+    - Shared layout
+    - Reusable components
+end note
+
+@enduml

@@ -31,7 +31,7 @@ def prompt_expander(user_prompt: str):
         full_response = get_llm_response(
             system_prompt=sys_prompt,
             user_prompt=current_prompt,
-            max_tokens=8000,
+            max_tokens=32000,
             temperature=0.7,
         )
 

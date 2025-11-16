@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenLaravel - AI Laravel Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .agent-card {
+            transition: all 0.3s ease;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-pending {
+            color: #94a3b8;
+        }
+
+        .status-running {
+            color: #ff6b6b;
+            animation: pulse 2s infinite;
+        }
+
+        .status-success {
+            color: #10b981;
+        }
+
+        .status-error {
+            color: #ff4757;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .terminal-output {
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+
+        .code-block {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        .typing-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff6b6b;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* Modal Animation */
+        #draft-modal {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        #draft-modal .bg-white {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Toast Notifications */
+        .toast {
+            animation: slideInRight 0.3s ease-out;
+            min-width: 300px;
+            max-width: 400px;
+        }
+
+        .toast.removing {
+            animation: slideOutRight 0.3s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="p-1">
+                        <img src="/frontend/single/GenLaravel.png" alt="GenLaravel Logo"
+                            class="h-12 w-12 object-contain">
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">GenLaravel</h1>
+                        <p class="text-sm text-white text-opacity-80">AI-Powered Laravel Generator</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="glass-effect px-4 py-2 rounded-lg">
+                        <i class="fas fa-clock mr-2"></i>
+                        <span id="current-time">--:--:--</span>
+                    </div>
+                    <button onclick="window.location.href='/frontend/multi/'"
+                        class="glass-effect px-4 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition">
+                        <i class="fas fa-layer-group mr-2"></i>Multi-Page Mode
+                    </button>
+                    <button class="glass-effect px-4 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition">
+                        <i class="fas fa-cog mr-2"></i>Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-6 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Left Panel - Input & Control -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Prompt Input Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-edit text-red-500 mr-2"></i>
+                        Input Prompt
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Describe Your Laravel Application
+                            </label>
+                            <textarea id="user-prompt" rows="6"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-transparent resize-none"
+                                placeholder="Example: Create a blog application with posts, comments, and user authentication..."></textarea>
+                        </div>
+
+                        <button id="generate-btn"
+                            class="w-full bg-gradient-to-r from-slate-700 to-slate-800 text-white py-3 rounded-lg font-semibold hover:from-slate-800 hover:to-slate-900 transition shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="fas fa-magic mr-2"></i>
+                            Generate Laravel App
+                        </button>
+
+                        <button id="stop-btn"
+                            class="w-full bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition shadow-lg hidden">
+                            <i class="fas fa-stop mr-2"></i>
+                            Stop Generation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Statistics Card -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Statistics</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Total Agents</span>
+                            <span class="font-bold text-slate-700">10</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Completed</span>
+                            <span id="stat-completed" class="font-bold text-green-600">0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Failed</span>
+                            <span id="stat-failed" class="font-bold text-red-500">0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Duration</span>
+                            <span id="stat-duration" class="font-bold text-slate-600">0s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Quick Actions</h3>
+                    <div class="space-y-2">
+                        <button id="action-open-output"
+                            class="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 transition flex items-center">
+                            <i class="fas fa-folder-open text-slate-600 mr-3"></i>
+                            <span>Open Output Folder</span>
+                        </button>
+                        <button id="action-preview-draft"
+                            class="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 transition flex items-center">
+                            <i class="fas fa-eye text-green-600 mr-3"></i>
+                            <span>Preview Draft</span>
+                        </button>
+                        <button id="action-download-laravel"
+                            class="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 transition flex items-center">
+                            <i class="fas fa-download text-purple-600 mr-3"></i>
+                            <span>Download Laravel Project</span>
+                        </button>
+
+                        <button id="action-view-history"
+                            class="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 transition flex items-center">
+                            <i class="fas fa-history text-slate-600 mr-3"></i>
+                            <span>View History</span>
+                        </button>
+                        <button id="action-clear-output"
+                            class="w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 transition flex items-center">
+                            <i class="fas fa-trash text-red-500 mr-3"></i>
+                            <span>Clear Output</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Agent Pipeline & Output -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Progress Overview -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-tasks text-red-500 mr-2"></i>
+                            Generation Progress
+                        </h2>
+                        <span id="progress-percentage" class="text-2xl font-bold text-red-500">0%</span>
+                    </div>
+
+                    <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+                        <div id="progress-bar"
+                            class="progress-bar bg-gradient-to-r from-slate-700 to-red-500 h-4 rounded-full"
+                            style="width: 0%"></div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-sm text-gray-600">
+                        <span id="current-agent-text">Waiting to start...</span>
+                        <span id="agent-counter">0/10</span>
+                    </div>
+                </div>
+
+                <!-- Agent Pipeline with Toggle View -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <!-- Header with Toggle -->
+                    <div class="p-6 pb-4 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                                <i class="fas fa-robot text-red-500 mr-2"></i>
+                                Agent Pipeline
+                            </h2>
+                            <div class="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+                                <button id="view-pipeline-btn"
+                                    class="px-4 py-2 rounded-md bg-white shadow-sm text-gray-700 font-medium transition">
+                                    <i class="fas fa-list mr-2"></i>Pipeline
+                                </button>
+                                <button id="view-terminal-btn"
+                                    class="px-4 py-2 rounded-md text-gray-600 font-medium transition hover:bg-gray-50">
+                                    <i class="fas fa-terminal mr-2"></i>Terminal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pipeline View -->
+                    <div id="pipeline-view" class="p-6">
+                        <div id="agent-pipeline" class="space-y-3">
+                            <!-- Agent cards will be dynamically inserted here -->
+                        </div>
+                    </div>
+
+                    <!-- Terminal View (Hidden by default) -->
+                    <div id="terminal-view" class="hidden">
+                        <div class="bg-gray-800 px-6 py-3 flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                <span class="ml-4 text-gray-300 font-semibold">Output Terminal</span>
+                            </div>
+                            <button id="clear-terminal" class="text-gray-400 hover:text-white transition">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+
+                        <div id="terminal-output"
+                            class="terminal-output text-green-400 p-6 h-96 overflow-y-auto scroll-smooth bg-gray-900">
+                            <div class="text-gray-500">
+                                <i class="fas fa-terminal mr-2"></i>
+                                Ready to generate Laravel application...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Draft Preview Modal -->
+    <div id="draft-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full h-full max-w-[95vw] max-h-[95vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-file-code text-red-500 text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">Draft Preview</h2>
+                        <p class="text-sm text-gray-500">Review the generated HTML draft</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 bg-gray-100 rounded-lg p-1">
+                        <button id="zoom-out" class="px-3 py-1 rounded hover:bg-white transition text-sm">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <span id="zoom-level" class="text-sm font-semibold text-gray-600 px-2">75%</span>
+                        <button id="zoom-in" class="px-3 py-1 rounded hover:bg-white transition text-sm">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button id="zoom-reset" class="px-3 py-1 rounded hover:bg-white transition text-sm">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                    <button id="close-modal" class="text-gray-400 hover:text-gray-600 transition">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="flex-1 overflow-hidden bg-gray-100 p-4">
+                <div id="iframe-container" style="transform-origin: top left;">
+                    <iframe id="draft-iframe" class="w-full bg-white shadow-lg"
+                        style="height: 100vh; border: none;"></iframe>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex items-center justify-between p-4 border-t border-gray-200 bg-gray-50 flex-shrink-0">
+                <div class="text-sm text-gray-600">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Please review the draft and choose to approve or request revisions
+                </div>
+                <div class="flex space-x-3">
+                    <button id="revise-draft"
+                        class="px-6 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition shadow-lg hover:shadow-xl">
+                        <i class="fas fa-edit mr-2"></i>Request Revision
+                    </button>
+                    <button id="approve-draft"
+                        class="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition shadow-lg hover:shadow-xl">
+                        <i class="fas fa-check mr-2"></i>Approve & Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revision Modal -->
+    <div id="revision-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-edit text-yellow-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Revise Your Prompt</h2>
+                        <p class="text-sm text-gray-500">Edit your prompt to regenerate the draft</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    <i class="fas fa-pencil-alt mr-2"></i>Updated Prompt
+                </label>
+                <textarea id="revision-prompt" rows="8"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent resize-none"
+                    placeholder="Enter your revised prompt here..."></textarea>
+                <p class="text-xs text-gray-500 mt-2">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Describe what changes you want to see in the regenerated draft
+                </p>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 bg-gray-50">
+                <button id="cancel-revision"
+                    class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition">
+                    <i class="fas fa-times mr-2"></i>Cancel
+                </button>
+                <button id="submit-revision"
+                    class="px-6 py-3 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition shadow-lg hover:shadow-xl">
+                    <i class="fas fa-paper-plane mr-2"></i>Submit Revision
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Info Modal -->
+    <div id="info-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div id="info-modal-icon" class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-info-circle text-blue-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 id="info-modal-title" class="text-xl font-bold text-gray-800">Information</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6">
+                <div id="info-modal-content" class="text-gray-600"></div>
+            </div>
+            <div class="p-6 border-t border-gray-200 bg-gray-50 flex justify-end space-x-3">
+                <button id="info-modal-close"
+                    class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition">
+                    Close
+                </button>
+                <button id="info-modal-action"
+                    class="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition hidden">
+                    Action
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completion Detail Modal -->
+    <div id="completion-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-5xl h-[85vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-green-50 to-emerald-50 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Generation Complete</h2>
+                        <p class="text-xs text-gray-600">Laravel application generated successfully</p>
+                    </div>
+                </div>
+                <button id="completion-modal-close" class="text-gray-400 hover:text-gray-600 transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body - Split Layout -->
+            <div class="flex-1 flex overflow-hidden">
+                <!-- Left: Preview -->
+                <div class="w-1/2 bg-gray-100 p-4 overflow-hidden flex flex-col">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-gray-800 text-sm flex items-center">
+                            <i class="fas fa-eye text-green-600 mr-2"></i>
+                            Page Preview
+                        </h3>
+                        <div class="flex items-center space-x-1 bg-white rounded px-2 py-1">
+                            <button id="preview-zoom-out" class="text-gray-600 hover:text-gray-800 px-1">
+                                <i class="fas fa-search-minus text-xs"></i>
+                            </button>
+                            <span id="preview-zoom-level" class="text-xs font-semibold text-gray-600 px-1">50%</span>
+                            <button id="preview-zoom-in" class="text-gray-600 hover:text-gray-800 px-1">
+                                <i class="fas fa-search-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex-1 bg-white rounded-lg shadow-inner overflow-auto">
+                        <div id="preview-container" style="transform-origin: top left;">
+                            <iframe id="completion-preview-iframe" class="w-full bg-white" style="height: 200vh; border: none;"></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Details -->
+                <div class="w-1/2 p-6 overflow-y-auto">
+                    <!-- Summary Stats -->
+                    <div class="grid grid-cols-3 gap-3 mb-4">
+                        <div class="bg-blue-50 rounded-lg p-3 text-center">
+                            <i class="fas fa-clock text-blue-600 text-lg mb-1"></i>
+                            <div class="text-xl font-bold text-blue-700" id="completion-duration">0s</div>
+                            <div class="text-xs text-gray-600">Duration</div>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-3 text-center">
+                            <i class="fas fa-robot text-green-600 text-lg mb-1"></i>
+                            <div class="text-xl font-bold text-green-700" id="completion-agents">0</div>
+                            <div class="text-xs text-gray-600">Agents</div>
+                        </div>
+                        <div class="bg-purple-50 rounded-lg p-3 text-center">
+                            <i class="fas fa-file-code text-purple-600 text-lg mb-1"></i>
+                            <div class="text-xl font-bold text-purple-700" id="completion-files">0</div>
+                            <div class="text-xs text-gray-600">Files</div>
+                        </div>
+                    </div>
+
+                    <!-- Project Info -->
+                    <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                        <h3 class="font-semibold text-gray-800 text-sm mb-3 flex items-center">
+                            <i class="fas fa-info-circle text-slate-600 mr-2"></i>
+                            Project Information
+                        </h3>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Project Path:</span>
+                                <span class="font-mono text-slate-700">my-laravel/</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Framework:</span>
+                                <span class="font-semibold text-red-600">Laravel 10.x</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Template Engine:</span>
+                                <span class="font-semibold text-orange-600">Blade</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">CSS Framework:</span>
+                                <span class="font-semibold text-cyan-600">Tailwind CSS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generated Files -->
+                    <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                        <h3 class="font-semibold text-gray-800 text-sm mb-3 flex items-center">
+                            <i class="fas fa-folder-tree text-slate-600 mr-2"></i>
+                            Generated Files
+                        </h3>
+                        <div class="space-y-1 text-xs max-h-40 overflow-y-auto" id="completion-file-list">
+                            <!-- Will be populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="bg-gradient-to-r from-slate-50 to-gray-50 rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-800 text-sm mb-3 flex items-center">
+                            <i class="fas fa-bolt text-yellow-600 mr-2"></i>
+                            Quick Actions
+                        </h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="openOutputFolder()" class="flex items-center justify-center space-x-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 transition text-xs">
+                                <i class="fas fa-folder-open text-slate-600"></i>
+                                <span class="font-medium">Open Folder</span>
+                            </button>
+                            <button onclick="previewLaravel()" class="flex items-center justify-center space-x-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 transition text-xs">
+                                <i class="fas fa-external-link-alt text-green-600"></i>
+                                <span class="font-medium">Open in Browser</span>
+                            </button>
+                            <button onclick="downloadProject()" class="flex items-center justify-center space-x-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 transition text-xs">
+                                <i class="fas fa-download text-purple-600"></i>
+                                <span class="font-medium">Download ZIP</span>
+                            </button>
+                            <button onclick="viewCode()" class="flex items-center justify-center space-x-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 transition text-xs">
+                                <i class="fas fa-code text-blue-600"></i>
+                                <span class="font-medium">View Code</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-12 py-6">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-400">
+                <i class="fas fa-code mr-2"></i>
+                GenLaravel - Powered by AI Agents | Built with ❤️
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Agent Configuration
+        const agents = [
+            { id: 'prompt-expander', name: 'Prompt Expander', icon: 'fa-expand-arrows-alt', description: 'Expanding user prompt...' },
+            { id: 'draft-agent', name: 'Draft Agent', icon: 'fa-file-code', description: 'Generating HTML draft...' },
+            { id: 'prompt-planner', name: 'Prompt Planner', icon: 'fa-project-diagram', description: 'Planning components...' },
+            { id: 'page-architect', name: 'Page Architect', icon: 'fa-drafting-compass', description: 'Designing layout...' },
+            { id: 'component-agent', name: 'Component Agent', icon: 'fa-puzzle-piece', description: 'Listing components...' },
+            { id: 'ui-generator', name: 'UI Generator', icon: 'fa-paint-brush', description: 'Generating Blade views...' },
+            { id: 'layout-generator', name: 'Layout Generator', icon: 'fa-layer-group', description: 'Creating app layout...' },
+            { id: 'route-agent', name: 'Route Agent', icon: 'fa-route', description: 'Generating routes...' },
+            { id: 'validator-agent', name: 'Validator Agent', icon: 'fa-check-circle', description: 'Validating components...' },
+            { id: 'project-mover', name: 'Project Mover', icon: 'fa-folder-open', description: 'Moving to Laravel project...' }
+        ];
+
+        // State Management
+        let currentAgentIndex = -1;
+        let startTime = null;
+        let timerInterval = null;
+        let completedCount = 0;
+        let failedCount = 0;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeAgentPipeline();
+            updateClock();
+            setInterval(updateClock, 1000);
+            initializeToggleButtons();
+            initializeModalHandlers();
+        });
+
+        // Initialize Toggle Buttons
+        function initializeToggleButtons() {
+            const pipelineBtn = document.getElementById('view-pipeline-btn');
+            const terminalBtn = document.getElementById('view-terminal-btn');
+            const pipelineView = document.getElementById('pipeline-view');
+            const terminalView = document.getElementById('terminal-view');
+
+            pipelineBtn.addEventListener('click', () => {
+                pipelineView.classList.remove('hidden');
+                terminalView.classList.add('hidden');
+                pipelineBtn.classList.add('bg-white', 'shadow-sm', 'text-gray-700');
+                pipelineBtn.classList.remove('text-gray-600');
+                terminalBtn.classList.remove('bg-white', 'shadow-sm', 'text-gray-700');
+                terminalBtn.classList.add('text-gray-600');
+            });
+
+            terminalBtn.addEventListener('click', () => {
+                terminalView.classList.remove('hidden');
+                pipelineView.classList.add('hidden');
+                terminalBtn.classList.add('bg-white', 'shadow-sm', 'text-gray-700');
+                terminalBtn.classList.remove('text-gray-600');
+                pipelineBtn.classList.remove('bg-white', 'shadow-sm', 'text-gray-700');
+                pipelineBtn.classList.add('text-gray-600');
+            });
+        }
+
+        // Initialize Modal Handlers
+        let currentZoom = 0.75; // Start at 75%
+
+        function initializeModalHandlers() {
+            const modal = document.getElementById('draft-modal');
+            const closeBtn = document.getElementById('close-modal');
+            const iframeContainer = document.getElementById('iframe-container');
+            const zoomLevelSpan = document.getElementById('zoom-level');
+
+            closeBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+
+            // Prevent closing when clicking inside modal content
+            modal.querySelector('.bg-white').addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
+            // Zoom controls
+            document.getElementById('zoom-in').addEventListener('click', () => {
+                currentZoom = Math.min(currentZoom + 0.1, 1.5);
+                updateZoom();
+            });
+
+            document.getElementById('zoom-out').addEventListener('click', () => {
+                currentZoom = Math.max(currentZoom - 0.1, 0.25);
+                updateZoom();
+            });
+
+            document.getElementById('zoom-reset').addEventListener('click', () => {
+                currentZoom = 0.75;
+                updateZoom();
+            });
+
+            function updateZoom() {
+                iframeContainer.style.transform = `scale(${currentZoom})`;
+                iframeContainer.style.width = `${100 / currentZoom}%`;
+                iframeContainer.style.height = `${100 / currentZoom}%`;
+                zoomLevelSpan.textContent = `${Math.round(currentZoom * 100)}%`;
+            }
+
+            // Set initial zoom
+            updateZoom();
+
+            // Revision Modal Handlers
+            const revisionModal = document.getElementById('revision-modal');
+            const cancelRevisionBtn = document.getElementById('cancel-revision');
+            const submitRevisionBtn = document.getElementById('submit-revision');
+            const revisionPromptTextarea = document.getElementById('revision-prompt');
+
+            cancelRevisionBtn.addEventListener('click', () => {
+                revisionModal.classList.add('hidden');
+                addTerminalOutput(`<span class="text-gray-400">[REVISION]</span> Revision cancelled.`);
+            });
+
+            submitRevisionBtn.addEventListener('click', () => {
+                const revisedPrompt = revisionPromptTextarea.value.trim();
+
+                if (!revisedPrompt) {
+                    showToast('Please enter a revised prompt', 'error');
+                    return;
+                }
+
+                revisionModal.classList.add('hidden');
+                addTerminalOutput(`<span class="text-yellow-400">[CONFIRMATION]</span> Revision requested with new prompt.`);
+
+                // Reset agent pipeline
+                currentAgentIndex = -1;
+                completedCount = 0;
+                agents.forEach(agent => {
+                    updateAgentStatus(agent.id, 'pending');
+                });
+                updateStatistics();
+
+                // Send revision request with revised prompt to backend
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({
+                        action: 'revise',
+                        revised_prompt: revisedPrompt
+                    }));
+                    addTerminalOutput(`<span class="text-blue-400">[WEBSOCKET]</span> Sent revision request to backend`);
+                }
+            });
+
+            // Close revision modal on background click
+            revisionModal.addEventListener('click', (e) => {
+                if (e.target === revisionModal) {
+                    revisionModal.classList.add('hidden');
+                }
+            });
+
+            revisionModal.querySelector('.bg-white').addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
+
+        // Initialize Agent Pipeline UI
+        function initializeAgentPipeline() {
+            const pipeline = document.getElementById('agent-pipeline');
+            pipeline.innerHTML = agents.map((agent, index) => `
+                <div id="agent-${agent.id}" class="agent-card bg-gray-50 rounded-lg p-4 border-l-4 border-gray-300">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                <i class="fas ${agent.icon} text-gray-500"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">${index + 1}. ${agent.name}</h3>
+                                <p class="text-sm text-gray-500">${agent.description}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i id="status-${agent.id}" class="fas fa-circle status-pending"></i>
+                            <span id="time-${agent.id}" class="text-xs text-gray-400">--</span>
+                        </div>
+                    </div>
+                    <div id="output-${agent.id}" class="mt-3 text-sm text-gray-600 hidden"></div>
+                </div>
+            `).join('');
+        }
+
+        // Update Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('current-time').textContent = now.toLocaleTimeString();
+        }
+
+        // WebSocket connection
+        let ws = null;
+        let isGenerating = false;
+        let laravelUrl = 'http://localhost:8000'; // Default, will be updated from backend response
+
+        // Generate Button Handler
+        document.getElementById('generate-btn').addEventListener('click', async () => {
+            const prompt = document.getElementById('user-prompt').value.trim();
+
+            if (!prompt) {
+                showToast('Please enter a prompt!', 'warning');
+                return;
+            }
+
+            // Check if backend is available
+            try {
+                const healthCheck = await fetch('http://localhost:8080/health');
+                if (!healthCheck.ok) throw new Error('Backend not available');
+
+                startGenerationWithWebSocket(prompt);
+            } catch (error) {
+                showInfoModal(
+                    'Backend Not Running',
+                    `
+                    <div class="space-y-4">
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
+                            <p class="text-yellow-700 font-semibold mb-2">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                FastAPI Backend Required
+                            </p>
+                            <p class="text-sm text-yellow-600">The backend server is not running. Real-time generation requires the backend.</p>
+                        </div>
+                        
+                        <div class="bg-blue-50 rounded-lg p-4">
+                            <p class="text-sm font-semibold mb-2">
+                                <i class="fas fa-terminal mr-2"></i>
+                                Start the backend:
+                            </p>
+                            <code class="block bg-gray-800 text-green-400 px-4 py-2 rounded text-sm mb-2">
+                                python run_server.py
+                            </code>
+                            <p class="text-xs text-gray-600">Server will run at http://localhost:8080</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="text-sm font-semibold mb-2 text-red-600">
+                                <i class="fas fa-exclamation-circle mr-1"></i>
+                                Backend is required for generation
+                            </p>
+                            <p class="text-xs text-gray-600">No demo mode available. Please start the backend server.</p>
+                        </div>
+                    </div>
+                    `,
+                    'fa-server',
+                    'red'
+                );
+            }
+        });
+
+        // Start Generation with WebSocket
+        function startGenerationWithWebSocket(prompt) {
+            if (isGenerating) {
+                showToast('Generation already in progress', 'warning');
+                return;
+            }
+
+            // Reset state
+            currentAgentIndex = -1;
+            completedCount = 0;
+            failedCount = 0;
+            startTime = Date.now();
+            isGenerating = true;
+
+            // UI Updates
+            document.getElementById('generate-btn').classList.add('hidden');
+            document.getElementById('stop-btn').classList.remove('hidden');
+            document.getElementById('terminal-output').innerHTML = '';
+
+            addTerminalOutput(`<span class="text-blue-400">[SYSTEM]</span> Connecting to backend...`);
+
+            // Connect to WebSocket - SINGLE PAGE endpoint
+            ws = new WebSocket('ws://localhost:8080/ws/generate/single');
+
+            ws.onopen = () => {
+                addTerminalOutput(`<span class="text-green-400">[CONNECTED]</span> WebSocket connected`);
+                addTerminalOutput(`<span class="text-gray-400">[PROMPT]</span> ${prompt}`);
+                addTerminalOutput('');
+
+                // Send generation request
+                ws.send(JSON.stringify({
+                    prompt: prompt,
+                    mode: 'single'
+                }));
+
+                // Start timer
+                timerInterval = setInterval(updateDuration, 100);
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleWebSocketMessage(data);
+            };
+
+            ws.onerror = (error) => {
+                addTerminalOutput(`<span class="text-red-400">[ERROR]</span> WebSocket error`);
+                console.error('WebSocket error:', error);
+                stopGeneration();
+                showToast('Connection error. Please check backend.', 'error');
+            };
+
+            ws.onclose = () => {
+                addTerminalOutput(`<span class="text-gray-400">[DISCONNECTED]</span> WebSocket closed`);
+                if (isGenerating) {
+                    stopGeneration();
+                }
+            };
+        }
+
+        // Handle WebSocket Messages
+        function handleWebSocketMessage(data) {
+            switch (data.type) {
+                case 'start':
+                    addTerminalOutput(`<span class="text-blue-400">[START]</span> ${data.message}`);
+                    break;
+
+                case 'output':
+                    addTerminalOutput(`<span class="text-gray-400">[INFO]</span> ${data.message}`);
+                    break;
+
+                case 'agent_start':
+                    currentAgentIndex = agents.findIndex(a => a.id === data.agent_id);
+                    if (currentAgentIndex !== -1) {
+                        updateAgentStatus(data.agent_id, 'running');
+                        updateProgress();
+                        addTerminalOutput(`<span class="text-red-400">[${data.agent_name.toUpperCase()}]</span> ${data.description}`);
+                    }
+                    break;
+
+                case 'agent_complete':
+                    if (currentAgentIndex !== -1) {
+                        updateAgentStatus(data.agent_id, 'success', data.duration);
+                        completedCount++;
+                        updateStatistics();
+                        addTerminalOutput(`<span class="text-green-400">[${data.agent_name.toUpperCase()}]</span> ✓ Completed in ${data.duration}s`);
+                        addTerminalOutput('');
+                    }
+                    break;
+
+                case 'draft_ready':
+                    console.log('📨 Received draft_ready:', data);
+                    addTerminalOutput(`<span class="text-yellow-400">[DRAFT]</span> ${data.message}`);
+                    addTerminalOutput(`<span class="text-blue-400">[INFO]</span> Please review draft and click Approve or Revise`);
+
+                    // Show modal for user confirmation
+                    showDraftConfirmationWebSocket(data.draft_path);
+                    break;
+
+                case 'complete':
+                    addTerminalOutput('');
+                    addTerminalOutput(`<span class="text-green-400 font-bold">[SUCCESS]</span> ✓ ${data.message}`);
+                    addTerminalOutput(`<span class="text-blue-400">[INFO]</span> Output: ${data.output_path}`);
+
+                    // Save Laravel URL from backend response
+                    if (data.laravel_url) {
+                        laravelUrl = data.laravel_url;
+                        addTerminalOutput(`<span class="text-blue-400">[INFO]</span> Laravel URL: ${laravelUrl}`);
+                    }
+
+                    // Save generation info to localStorage
+                    if (data.generation_info) {
+                        localStorage.setItem('lastGeneration', JSON.stringify(data.generation_info));
+                        addTerminalOutput(`<span class="text-blue-400">[INFO]</span> Generation info saved`);
+                    }
+
+                    addTerminalOutput('');
+                    completeGeneration();
+                    break;
+
+                case 'error':
+                    addTerminalOutput(`<span class="text-red-400">[ERROR]</span> ${data.message}`);
+                    showToast(data.message, 'error');
+                    stopGeneration();
+                    break;
+
+                case 'cancelled':
+                    addTerminalOutput(`<span class="text-yellow-400">[CANCELLED]</span> ${data.message}`);
+                    stopGeneration();
+                    break;
+            }
+        }
+
+        // Show Draft Confirmation for WebSocket
+        function showDraftConfirmationWebSocket(draftPath) {
+            const modal = document.getElementById('draft-modal');
+            const iframe = document.getElementById('draft-iframe');
+
+            // Load draft with cache busting
+            iframe.src = 'http://localhost:8080' + draftPath + '?t=' + Date.now();
+            modal.classList.remove('hidden');
+
+            console.log('📋 Showing draft modal:', draftPath);
+
+            // Remove old listeners if any
+            const approveBtn = document.getElementById('approve-draft');
+            const reviseBtn = document.getElementById('revise-draft');
+            const closeBtn = document.getElementById('close-modal');
+
+            // Clone buttons to remove old listeners
+            const newApproveBtn = approveBtn.cloneNode(true);
+            const newReviseBtn = reviseBtn.cloneNode(true);
+            const newCloseBtn = closeBtn.cloneNode(true);
+
+            approveBtn.parentNode.replaceChild(newApproveBtn, approveBtn);
+            reviseBtn.parentNode.replaceChild(newReviseBtn, reviseBtn);
+            closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+
+            // Add new listeners
+            newApproveBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                addTerminalOutput(`<span class="text-green-400">[CONFIRMATION]</span> Draft approved. Continuing...`);
+
+                // Send approval to backend
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({ action: 'approve' }));
+                    addTerminalOutput(`<span class="text-blue-400">[WEBSOCKET]</span> Sent approval to backend`);
+                }
+            });
+
+            newReviseBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+
+                // Show revision modal
+                const revisionModal = document.getElementById('revision-modal');
+                const revisionPromptTextarea = document.getElementById('revision-prompt');
+                const promptInput = document.getElementById('user-prompt');
+
+                // Pre-fill with current prompt
+                if (promptInput) {
+                    revisionPromptTextarea.value = promptInput.value;
+                }
+
+                revisionModal.classList.remove('hidden');
+                revisionPromptTextarea.focus();
+            });
+
+            newCloseBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                addTerminalOutput(`<span class="text-red-400">[CONFIRMATION]</span> Draft review cancelled.`);
+
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({ action: 'revise' }));
+                }
+            });
+        }
+
+        // NO DEMO MODE - Only real WebSocket generation
+
+        // Update Agent Status
+        function updateAgentStatus(agentId, status, time = null) {
+            const card = document.getElementById(`agent-${agentId}`);
+            const statusIcon = document.getElementById(`status-${agentId}`);
+            const timeSpan = document.getElementById(`time-${agentId}`);
+
+            // Remove all status classes
+            statusIcon.classList.remove('status-pending', 'status-running', 'status-success', 'status-error');
+            card.classList.remove('border-gray-300', 'border-blue-500', 'border-green-500', 'border-red-500');
+
+            // Add new status
+            if (status === 'running') {
+                statusIcon.classList.add('status-running');
+                card.classList.add('border-red-400', 'bg-red-50');
+            } else if (status === 'success') {
+                statusIcon.classList.add('status-success');
+                card.classList.add('border-green-500', 'bg-green-50');
+                if (time) timeSpan.textContent = `${time}s`;
+            } else if (status === 'error') {
+                statusIcon.classList.add('status-error');
+                card.classList.add('border-red-500', 'bg-red-50');
+            }
+        }
+
+        // Update Progress Bar
+        function updateProgress() {
+            const progress = ((currentAgentIndex + 1) / agents.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+            document.getElementById('progress-percentage').textContent = `${Math.round(progress)}%`;
+            document.getElementById('current-agent-text').textContent = agents[currentAgentIndex].description;
+            document.getElementById('agent-counter').textContent = `${currentAgentIndex + 1}/${agents.length}`;
+        }
+
+        // Update Statistics
+        function updateStatistics() {
+            document.getElementById('stat-completed').textContent = completedCount;
+            document.getElementById('stat-failed').textContent = failedCount;
+        }
+
+        // Update Duration
+        function updateDuration() {
+            if (startTime) {
+                const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+                document.getElementById('stat-duration').textContent = `${duration}s`;
+            }
+        }
+
+        // Add Terminal Output
+        function addTerminalOutput(text) {
+            const terminal = document.getElementById('terminal-output');
+            const line = document.createElement('div');
+            line.innerHTML = text;
+            line.classList.add('slide-in');
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Show Draft Confirmation
+        async function showDraftConfirmation() {
+            addTerminalOutput(`<span class="text-yellow-400">[CONFIRMATION]</span> Draft generated. Please review and confirm.`);
+
+            // Show draft modal
+            const modal = document.getElementById('draft-modal');
+            modal.classList.remove('hidden');
+
+            return new Promise((resolve) => {
+                const approveBtn = document.getElementById('approve-draft');
+                const reviseBtn = document.getElementById('revise-draft');
+                const closeBtn = document.getElementById('close-modal');
+
+                const handleApprove = () => {
+                    modal.classList.add('hidden');
+                    addTerminalOutput(`<span class="text-green-400">[CONFIRMATION]</span> Draft approved. Continuing...`);
+                    cleanup();
+                    resolve(true);
+                };
+
+                const handleRevise = () => {
+                    modal.classList.add('hidden');
+                    addTerminalOutput(`<span class="text-yellow-400">[CONFIRMATION]</span> Revision requested.`);
+                    cleanup();
+                    resolve(false);
+                };
+
+                const handleClose = () => {
+                    modal.classList.add('hidden');
+                    addTerminalOutput(`<span class="text-red-400">[CONFIRMATION]</span> Draft review cancelled.`);
+                    cleanup();
+                    resolve(false);
+                };
+
+                const cleanup = () => {
+                    approveBtn.removeEventListener('click', handleApprove);
+                    reviseBtn.removeEventListener('click', handleRevise);
+                    closeBtn.removeEventListener('click', handleClose);
+                };
+
+                approveBtn.addEventListener('click', handleApprove);
+                reviseBtn.addEventListener('click', handleRevise);
+                closeBtn.addEventListener('click', handleClose);
+            });
+        }
+
+        // Complete Generation
+        function completeGeneration() {
+            clearInterval(timerInterval);
+            isGenerating = false;
+
+            if (!document.getElementById('terminal-output').innerHTML.includes('[SUCCESS]')) {
+                addTerminalOutput('');
+                addTerminalOutput(`<span class="text-green-400 font-bold">[SUCCESS]</span> ✓ All agents completed successfully!`);
+                addTerminalOutput(`<span class="text-blue-400">[INFO]</span> Total duration: ${document.getElementById('stat-duration').textContent}`);
+                addTerminalOutput(`<span class="text-blue-400">[INFO]</span> Laravel project ready at: my-laravel/`);
+                addTerminalOutput('');
+            }
+
+            document.getElementById('stop-btn').classList.add('hidden');
+            document.getElementById('generate-btn').classList.remove('hidden');
+
+            updateProgress();
+
+            // Close WebSocket if open
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.close();
+            }
+
+            showToast('Generation completed!', 'success');
+            
+            // Show completion modal with details
+            showCompletionModal();
+        }
+
+        // Show Completion Modal
+        function showCompletionModal() {
+            const modal = document.getElementById('completion-modal');
+            const duration = document.getElementById('stat-duration').textContent;
+            const agentsCompleted = completedCount;
+            
+            // Update modal content
+            document.getElementById('completion-duration').textContent = duration;
+            document.getElementById('completion-agents').textContent = agentsCompleted;
+            document.getElementById('completion-files').textContent = '15+';
+            
+            // Load preview iframe - use same method as draft modal
+            const previewIframe = document.getElementById('completion-preview-iframe');
+            const draftUrl = 'http://localhost:8080/output/draft.html?t=' + Date.now();
+            
+            console.log('Loading preview:', draftUrl);
+            previewIframe.src = draftUrl;
+            
+            // Add error handler
+            previewIframe.onerror = () => {
+                console.error('Failed to load preview');
+                previewIframe.srcdoc = '<div style="padding: 20px; text-align: center; color: #666;">Preview not available. Please check if draft file exists.</div>';
+            };
+            
+            // Setup preview zoom controls
+            let previewZoom = 0.5;
+            const previewContainer = document.getElementById('preview-container');
+            const previewZoomLevel = document.getElementById('preview-zoom-level');
+            
+            function updatePreviewZoom() {
+                previewContainer.style.transform = `scale(${previewZoom})`;
+                previewContainer.style.width = `${100 / previewZoom}%`;
+                previewContainer.style.height = `${100 / previewZoom}%`;
+                previewZoomLevel.textContent = `${Math.round(previewZoom * 100)}%`;
+            }
+            
+            document.getElementById('preview-zoom-in').onclick = () => {
+                previewZoom = Math.min(previewZoom + 0.1, 1);
+                updatePreviewZoom();
+            };
+            
+            document.getElementById('preview-zoom-out').onclick = () => {
+                previewZoom = Math.max(previewZoom - 0.1, 0.25);
+                updatePreviewZoom();
+            };
+            
+            updatePreviewZoom();
+            
+            // Generate detailed file list
+            const fileList = document.getElementById('completion-file-list');
+            const files = [
+                { icon: 'fa-route', name: 'routes/web.php', color: 'text-blue-600', size: '2 KB' },
+                { icon: 'fa-file-code', name: 'resources/views/home.blade.php', color: 'text-green-600', size: '8 KB' },
+                { icon: 'fa-layer-group', name: 'resources/views/layouts/app.blade.php', color: 'text-orange-600', size: '5 KB' },
+                { icon: 'fa-puzzle-piece', name: 'resources/views/components/navbar.blade.php', color: 'text-purple-600', size: '3 KB' },
+                { icon: 'fa-puzzle-piece', name: 'resources/views/components/footer.blade.php', color: 'text-purple-600', size: '2 KB' },
+                { icon: 'fa-puzzle-piece', name: 'resources/views/components/hero.blade.php', color: 'text-purple-600', size: '4 KB' },
+                { icon: 'fa-cog', name: 'config/app.php', color: 'text-gray-600', size: '1 KB' },
+                { icon: 'fa-file', name: '.env', color: 'text-yellow-600', size: '1 KB' }
+            ];
+            
+            fileList.innerHTML = files.map(file => `
+                <div class="flex items-center justify-between text-gray-700 hover:bg-white px-2 py-1 rounded transition">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas ${file.icon} ${file.color}"></i>
+                        <span class="font-mono">${file.name}</span>
+                    </div>
+                    <span class="text-gray-400">${file.size}</span>
+                </div>
+            `).join('');
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            
+            // Close button handler
+            document.getElementById('completion-modal-close').onclick = () => {
+                modal.classList.add('hidden');
+            };
+            
+            // Close on outside click
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            };
+        }
+
+        // Helper functions for quick actions
+        function openOutputFolder() {
+            fetch('http://localhost:8080/api/open-folder', { method: 'POST' })
+                .then(() => showToast('Opening output folder...', 'info'))
+                .catch(() => showToast('Could not open folder', 'error'));
+        }
+
+        function previewLaravel() {
+            if (laravelUrl) {
+                window.open(laravelUrl, '_blank');
+            } else {
+                showToast('Laravel URL not available', 'warning');
+            }
+        }
+
+        function downloadProject() {
+            showToast('Download feature coming soon', 'info');
+        }
+
+        function viewCode() {
+            document.getElementById('completion-modal').classList.add('hidden');
+            document.getElementById('action-open-output').click();
+        }
+
+        // Stop Generation
+        function stopGeneration() {
+            clearInterval(timerInterval);
+            isGenerating = false;
+            document.getElementById('stop-btn').classList.add('hidden');
+            document.getElementById('generate-btn').classList.remove('hidden');
+
+            // Close WebSocket if open
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.close();
+            }
+        }
+
+        // Clear Terminal
+        document.getElementById('clear-terminal').addEventListener('click', () => {
+            document.getElementById('terminal-output').innerHTML = '';
+        });
+
+        // Stop Button Handler
+        document.getElementById('stop-btn').addEventListener('click', () => {
+            addTerminalOutput(`<span class="text-red-400">[SYSTEM]</span> Generation stopped by user.`);
+            stopGeneration();
+        });
+
+        // Utility Functions
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Toast Notification System
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                warning: 'bg-yellow-500',
+                info: 'bg-blue-500'
+            };
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+
+            toast.className = `toast ${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg flex items-center space-x-3`;
+            toast.innerHTML = `
+                <i class="fas ${icons[type]} text-xl"></i>
+                <span class="flex-1">${message}</span>
+                <button onclick="this.parentElement.remove()" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            container.appendChild(toast);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                toast.classList.add('removing');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // Info Modal System
+        function showInfoModal(title, content, iconClass = 'fa-info-circle', iconColor = 'blue') {
+            const modal = document.getElementById('info-modal');
+            const titleEl = document.getElementById('info-modal-title');
+            const contentEl = document.getElementById('info-modal-content');
+            const iconEl = document.getElementById('info-modal-icon');
+
+            titleEl.textContent = title;
+            contentEl.innerHTML = content;
+            iconEl.className = `w-12 h-12 bg-${iconColor}-100 rounded-lg flex items-center justify-center`;
+            iconEl.innerHTML = `<i class="fas ${iconClass} text-${iconColor}-500 text-xl"></i>`;
+
+            modal.classList.remove('hidden');
+        }
+
+        // Info Modal Close Handler
+        document.getElementById('info-modal-close').addEventListener('click', () => {
+            document.getElementById('info-modal').classList.add('hidden');
+        });
+
+        document.getElementById('info-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'info-modal') {
+                document.getElementById('info-modal').classList.add('hidden');
+            }
+        });
+
+        // Quick Actions Handlers
+        document.getElementById('action-open-output').addEventListener('click', () => {
+            addTerminalOutput(`<span class="text-blue-400">[ACTION]</span> Opening output folder...`);
+
+            // Get generation info from localStorage
+            const lastGen = localStorage.getItem('lastGeneration');
+            let genInfo = null;
+            try {
+                genInfo = lastGen ? JSON.parse(lastGen) : null;
+            } catch (e) {
+                console.error('Failed to parse generation info:', e);
+            }
+
+            let contentHtml = '';
+            if (genInfo) {
+                const timestamp = new Date(genInfo.timestamp).toLocaleString();
+                const componentsCount = genInfo.components_count || genInfo.components?.length || 0;
+
+                contentHtml = `
+                <div class="space-y-3">
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-3 rounded">
+                        <p class="text-sm font-semibold text-blue-800">Last Generation</p>
+                        <p class="text-xs text-blue-600">${timestamp}</p>
+                    </div>
+                    
+                    <p class="font-semibold">Location: <code class="bg-gray-100 px-2 py-1 rounded">./output/</code></p>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <p class="text-sm font-semibold mb-2">Generated Files:</p>
+                        <ul class="text-sm space-y-1">
+                            <!-- Folders first (alphabetically) -->
+                            <li>
+                                <details class="cursor-pointer">
+                                    <summary class="hover:bg-gray-100 rounded px-2 py-1 -mx-2">
+                                        <i class="fas fa-folder text-yellow-500 mr-2"></i>components/ (${componentsCount} files)
+                                    </summary>
+                                    <ul class="ml-8 mt-1 space-y-1 text-xs text-gray-600">
+                                        ${genInfo.components?.sort().map(name =>
+                    `<li><i class="fas fa-file text-gray-400 mr-2"></i>${name}.blade.php</li>`
+                ).join('') || '<li class="text-gray-400">No components</li>'}
+                                    </ul>
+                                </details>
+                            </li>
+                            <li>
+                                <details class="cursor-pointer">
+                                    <summary class="hover:bg-gray-100 rounded px-2 py-1 -mx-2">
+                                        <i class="fas fa-folder text-purple-500 mr-2"></i>layouts/
+                                    </summary>
+                                    <ul class="ml-8 mt-1 space-y-1 text-xs text-gray-600">
+                                        <li><i class="fas fa-file text-gray-400 mr-2"></i>app.blade.php</li>
+                                    </ul>
+                                </details>
+                            </li>
+                            <!-- Files (alphabetically) -->
+                            <li><i class="fas fa-file-code text-blue-500 mr-2"></i>draft.html</li>
+                            <li><i class="fas fa-file-code text-green-500 mr-2"></i>${genInfo.page}.blade.php</li>
+                            <li><i class="fas fa-route text-red-500 mr-2"></i>web.php</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-green-50 rounded-lg p-3">
+                        <p class="text-sm font-semibold text-green-800 mb-1">
+                            <i class="fas fa-globe mr-2"></i>Laravel URL
+                        </p>
+                        <a href="${genInfo.laravel_url}" target="_blank" class="text-sm text-green-600 hover:underline">
+                            ${genInfo.laravel_url}
+                        </a>
+                    </div>
+                </div>
+                `;
+            } else {
+                contentHtml = `
+                <div class="space-y-3">
+                    <p class="font-semibold">Location: <code class="bg-gray-100 px-2 py-1 rounded">./output/</code></p>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <p class="text-sm font-semibold mb-2">Contains:</p>
+                        <ul class="text-sm space-y-1">
+                            <li><i class="fas fa-file-code text-blue-500 mr-2"></i>draft.html</li>
+                            <li><i class="fas fa-file-code text-green-500 mr-2"></i>*.blade.php files</li>
+                            <li><i class="fas fa-folder text-yellow-500 mr-2"></i>components/</li>
+                            <li><i class="fas fa-folder text-purple-500 mr-2"></i>layouts/</li>
+                        </ul>
+                    </div>
+                    <p class="text-sm text-gray-500">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Generate a Laravel app to see detailed info here.
+                    </p>
+                </div>
+                `;
+            }
+
+            showInfoModal('Output Folder', contentHtml, 'fa-folder-open', 'slate');
+        });
+
+        document.getElementById('action-preview-draft').addEventListener('click', () => {
+            addTerminalOutput(`<span class="text-blue-400">[ACTION]</span> Opening draft preview...`);
+
+            // Check if draft exists
+            const draftPath = 'file://' + window.location.pathname.replace('frontend/index.html', 'output/draft.html');
+
+            // Show in modal
+            const modal = document.getElementById('draft-modal');
+            const iframe = document.getElementById('draft-iframe');
+            iframe.src = draftPath;
+            modal.classList.remove('hidden');
+
+            showToast('Opening draft preview...', 'info');
+        });
+
+        document.getElementById('action-download-laravel').addEventListener('click', async () => {
+            addTerminalOutput(`<span class="text-purple-400">[ACTION]</span> Downloading Laravel project...`);
+
+            try {
+                // Check if backend is available
+                const response = await fetch('http://localhost:8080/api/download/laravel');
+
+                if (!response.ok) {
+                    throw new Error('Laravel project not found or backend not running');
+                }
+
+                // Get blob and create download
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+
+                // Get filename from Content-Disposition header
+                const contentDisposition = response.headers.get('Content-Disposition');
+                const filename = contentDisposition
+                    ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+                    : 'genlaravel-project.zip';
+
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                addTerminalOutput(`<span class="text-green-400">[SUCCESS]</span> Downloaded: ${filename}`);
+                showToast('Laravel project downloaded successfully!', 'success');
+            } catch (error) {
+                addTerminalOutput(`<span class="text-red-400">[ERROR]</span> ${error.message}`);
+
+                showInfoModal(
+                    'Download Laravel Project',
+                    `
+                    <div class="space-y-4">
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
+                            <p class="text-yellow-700 font-semibold mb-2">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                Backend Required
+                            </p>
+                            <p class="text-sm text-yellow-600">This feature requires the FastAPI backend to be running.</p>
+                        </div>
+                        
+                        <div class="bg-blue-50 rounded-lg p-4">
+                            <p class="text-sm font-semibold mb-2">
+                                <i class="fas fa-terminal mr-2"></i>
+                                To enable download:
+                            </p>
+                            <code class="block bg-gray-800 text-green-400 px-4 py-2 rounded text-sm mb-2">
+                                python run_server.py
+                            </code>
+                            <p class="text-xs text-gray-600">Then try downloading again</p>
+                        </div>
+                        
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="text-sm font-semibold mb-2">Alternative: Manual ZIP</p>
+                            <p class="text-xs text-gray-600">You can manually zip the <code class="bg-gray-200 px-1 rounded">my-laravel/</code> folder</p>
+                        </div>
+                    </div>
+                    `,
+                    'fa-download',
+                    'purple'
+                );
+            }
+        });
+
+
+
+        document.getElementById('action-view-history').addEventListener('click', () => {
+            addTerminalOutput(`<span class="text-blue-400">[ACTION]</span> Loading generation history...`);
+
+            showInfoModal(
+                'Generation History',
+                `
+                <div class="space-y-3">
+                    <p class="text-sm text-gray-600 mb-3">Recent generations from <code class="bg-gray-100 px-2 py-1 rounded">./history/</code></p>
+                    <div class="space-y-2">
+                        <div class="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-semibold text-sm">20240115-143022.json</p>
+                                    <p class="text-xs text-gray-500">Blog application with posts</p>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-semibold text-sm">20240115-120145.json</p>
+                                    <p class="text-xs text-gray-500">E-commerce dashboard</p>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-semibold text-sm">20240114-165530.json</p>
+                                    <p class="text-xs text-gray-500">User authentication system</p>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Full history viewer coming soon!
+                    </p>
+                </div>
+                `,
+                'fa-history',
+                'slate'
+            );
+        });
+
+        document.getElementById('action-clear-output').addEventListener('click', () => {
+            showInfoModal(
+                'Clear Output',
+                `
+                <div class="space-y-4">
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                        <p class="text-red-700 font-semibold mb-2">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            Warning: This action cannot be undone!
+                        </p>
+                        <p class="text-sm text-red-600">This will delete all generated files.</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <p class="text-sm font-semibold mb-2">Will be deleted:</p>
+                        <ul class="text-sm space-y-1 text-gray-600">
+                            <li><i class="fas fa-folder text-red-500 mr-2"></i>output/</li>
+                            <li><i class="fas fa-folder text-red-500 mr-2"></i>my-laravel/resources/views/ (generated files)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <p class="text-sm font-semibold mb-2">
+                            <i class="fas fa-terminal mr-2"></i>
+                            To clear output, run:
+                        </p>
+                        <code class="block bg-gray-800 text-green-400 px-4 py-2 rounded text-sm">
+                            python utils/clean_project.py
+                        </code>
+                        <p class="text-xs text-gray-600 mt-2">Then choose option 4 (Everything)</p>
+                    </div>
+                </div>
+                `,
+                'fa-trash',
+                'red'
+            );
+
+            addTerminalOutput(`<span class="text-yellow-400">[INFO]</span> To clear output, run: python utils/clean_project.py`);
+        });
+    </script>
+</body>
+
+</html>

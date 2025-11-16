@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenLaravel - Choose Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body class="gradient-bg min-h-screen flex items-center justify-center p-6">
+    <div class="max-w-4xl w-full">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="flex items-center justify-center mb-4">
+                <img src="/frontend/GenLaravel.png" alt="GenLaravel" class="h-20 w-20 object-contain">
+            </div>
+            <h1 class="text-5xl font-bold text-white mb-3">GenLaravel</h1>
+            <p class="text-xl text-gray-300">AI-Powered Laravel Generator</p>
+            <p class="text-sm text-gray-400 mt-2">Choose your generation mode</p>
+        </div>
+
+        <!-- Mode Selection Cards -->
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Single Page Mode -->
+            <a href="/frontend/single/" class="card-hover bg-white rounded-2xl p-8 shadow-2xl block">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-file text-slate-700 text-3xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-3">Single Page</h2>
+                    <p class="text-gray-600 mb-6">Generate a single Laravel page with components</p>
+                    <ul class="text-sm text-left space-y-2 mb-6">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Perfect for landing pages</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Quick prototyping</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Simple applications</span>
+                        </li>
+                    </ul>
+                    <div class="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg font-semibold">
+                        Start Single Mode →
+                    </div>
+                </div>
+            </a>
+
+            <!-- Multi Page Mode -->
+            <a href="/frontend/multi/" class="card-hover bg-white rounded-2xl p-8 shadow-2xl block">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-layer-group text-purple-700 text-3xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-3">Multi Page</h2>
+                    <p class="text-gray-600 mb-6">Generate complete multi-page Laravel application</p>
+                    <ul class="text-sm text-left space-y-2 mb-6">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Full web applications</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Multiple pages & routes</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mr-2 mt-1"></i>
+                            <span>Complex projects</span>
+                        </li>
+                    </ul>
+                    <div class="bg-purple-100 text-purple-700 px-4 py-2 rounded-lg font-semibold">
+                        Start Multi Mode →
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-12 text-gray-400 text-sm">
+            <p><i class="fas fa-code mr-2"></i>GenLaravel - Powered by AI Agents</p>
+        </div>
+    </div>
+</body>
+
+</html>

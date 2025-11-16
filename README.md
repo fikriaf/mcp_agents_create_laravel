@@ -1,5 +1,9 @@
 # MCP Agents Laravel UI Generator
 
+<div align="center">
+  <img src="demo/logo_GenLaravel.png" alt="GenLaravel Logo" width="200"/>
+</div>
+
 ![Python](https://img.shields.io/badge/python-v3.10+-blue.svg)
 ![Laravel](https://img.shields.io/badge/laravel-v8.2-red.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
@@ -11,6 +15,29 @@
 ![Platform](https://img.shields.io/badge/platform-windows%20%7C%20linux%20%7C%20macOS-lightgrey.svg)
 
 An intelligent multi-agent system that automatically generates Laravel UI components from natural language prompts using AI agents powered by Cerebras Qwen Code with Mistral as fallback.
+
+## 📸 Screenshots
+
+<table>
+  <tr>
+    <td width="50%">
+      <h3 align="center">Single Page Generation</h3>
+      <img src="demo/single.png" alt="Single Page Interface" width="100%"/>
+      <p align="center"><em>Interactive single-page generation interface</em></p>
+    </td>
+    <td width="50%">
+      <h3 align="center">Multi-Page Generation</h3>
+      <img src="demo/multi.png" alt="Multi-Page Interface" width="100%"/>
+      <p align="center"><em>Multi-page project generation with navigation</em></p>
+    </td>
+  </tr>
+</table>
+
+### Generated Result
+<div align="center">
+  <img src="demo/result_single.png" alt="Generated Laravel Page" width="800"/>
+  <p><em>Final Laravel page with modern UI components</em></p>
+</div>
 
 ## 🚀 Features
 
