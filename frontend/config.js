@@ -12,8 +12,7 @@ const CONFIG = {
     // ============================================
     
     // Railway backend URL (update after deployment)
-    // Example: 'https://genlaravel-backend-production.up.railway.app'
-    RAILWAY_BACKEND_URL: null,  // Set this after Railway deployment!
+    RAILWAY_BACKEND_URL: 'https://mcpagentscreatelaravel-production.up.railway.app',
     
     // ============================================
     
