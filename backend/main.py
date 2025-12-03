@@ -101,10 +101,52 @@ app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="front
 active_connections: List[WebSocket] = []
 
 
+class GenerationQueue:
+    """Unified queue for both single and multi-page generation"""
+    def __init__(self):
+        self.queue: asyncio.Queue = None  # Will be initialized in async context
+        self.current_task: dict = None
+        self.is_processing = False
+        self.active_websocket: WebSocket = None
+    
+    async def initialize(self):
+        """Initialize async queue"""
+        if self.queue is None:
+            self.queue = asyncio.Queue()
+    
+    async def add_to_queue(self, websocket: WebSocket, prompt: str, mode: str) -> int:
+        """Add generation request to queue, returns position"""
+        await self.initialize()
+        
+        task = {
+            "websocket": websocket,
+            "prompt": prompt,
+            "mode": mode,  # "single" or "multi"
+            "timestamp": datetime.datetime.now().isoformat()
+        }
+        
+        await self.queue.put(task)
+        position = self.queue.qsize()
+        
+        print(f"📥 Added to queue: {mode} mode, position {position}")
+        return position
+    
+    def get_queue_size(self) -> int:
+        """Get current queue size"""
+        if self.queue is None:
+            return 0
+        return self.queue.qsize()
+    
+    def is_busy(self) -> bool:
+        """Check if currently processing"""
+        return self.is_processing
+
+
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
         self.is_generating = False  # 🔒 Flag to prevent concurrent generations
+        self.generation_queue = GenerationQueue()  # 🆕 Unified queue
 
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
@@ -123,6 +165,29 @@ class ConnectionManager:
         self.is_generating = True  # 🔒 Lock generation
         print(f"✅ Connection accepted. Active: {len(self.active_connections)}")
         return True
+    
+    async def connect_queued(self, websocket: WebSocket, prompt: str, mode: str):
+        """Connect with queue support - accepts connection and adds to queue"""
+        await websocket.accept()
+        self.active_connections.append(websocket)
+        
+        # Add to queue
+        await self.generation_queue.initialize()
+        position = await self.generation_queue.add_to_queue(websocket, prompt, mode)
+        
+        # Notify client of queue position
+        if self.is_generating:
+            await websocket.send_json({
+                "type": "queued",
+                "position": position,
+                "message": f"⏳ Added to queue. Position: {position}. Please wait..."
+            })
+            print(f"📋 Queued: {mode} mode at position {position}")
+            return False, position
+        
+        self.is_generating = True
+        print(f"✅ Connection accepted (queue mode). Active: {len(self.active_connections)}")
+        return True, 0
 
     def disconnect(self, websocket: WebSocket):
         if websocket in self.active_connections:
@@ -136,6 +201,13 @@ class ConnectionManager:
     async def broadcast(self, message: dict):
         for connection in self.active_connections:
             await connection.send_json(message)
+    
+    async def get_queue_status(self) -> dict:
+        """Get current queue status"""
+        return {
+            "is_busy": self.is_generating,
+            "queue_size": self.generation_queue.get_queue_size()
+        }
 
 
 manager = ConnectionManager()
@@ -307,9 +379,95 @@ async def download_output():
     )
 
 
+# ============================================
+# 🆕 UNIFIED QUEUE SYSTEM
+# ============================================
+
+@app.get("/api/queue/status")
+async def get_queue_status():
+    """Get current queue status - used by frontend to check before connecting"""
+    status = await manager.get_queue_status()
+    return {
+        "is_busy": status["is_busy"],
+        "queue_size": status["queue_size"],
+        "message": "Generation in progress" if status["is_busy"] else "Ready"
+    }
+
+
+@app.websocket("/ws/generate")
+async def websocket_generate_unified(websocket: WebSocket):
+    """
+    🆕 UNIFIED WebSocket endpoint for BOTH single and multi-page generation
+    
+    Frontend sends: { "prompt": "...", "mode": "single" | "multi" }
+    
+    This allows backend to process ONE request at a time (queue system)
+    """
+    connected = await manager.connect(websocket)
+    
+    # 🚫 If rejected (already generating), stop here
+    if not connected:
+        return
+    
+    try:
+        # Receive initial data with prompt AND mode
+        data = await websocket.receive_json()
+        prompt = data.get("prompt", "")
+        mode = data.get("mode", "single")  # Default to single if not specified
+        
+        if not prompt:
+            await manager.send_message({
+                "type": "error",
+                "message": "Prompt is required"
+            }, websocket)
+            manager.disconnect(websocket)
+            return
+        
+        # Validate mode
+        if mode not in ["single", "multi"]:
+            await manager.send_message({
+                "type": "error",
+                "message": f"Invalid mode: {mode}. Use 'single' or 'multi'"
+            }, websocket)
+            manager.disconnect(websocket)
+            return
+        
+        print(f"🚀 Starting {mode}-page generation...")
+        
+        await manager.send_message({
+            "type": "start",
+            "message": f"Starting {mode}-page generation...",
+            "mode": mode
+        }, websocket)
+        
+        # Route to appropriate generator based on mode
+        if mode == "single":
+            await generate_single_page(websocket, prompt)
+        else:
+            await generate_multi_page(websocket, prompt)
+        
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+        print("Client disconnected")
+    except Exception as e:
+        print(f"Error in unified generation: {e}")
+        await manager.send_message({
+            "type": "error",
+            "message": str(e)
+        }, websocket)
+        manager.disconnect(websocket)
+
+
+# ============================================
+# LEGACY ENDPOINTS (kept for backward compatibility)
+# ============================================
+
 @app.websocket("/ws/generate/single")
 async def websocket_generate_single(websocket: WebSocket):
-    """WebSocket endpoint for SINGLE PAGE generation - follows main_single_page.py"""
+    """WebSocket endpoint for SINGLE PAGE generation - follows main_single_page.py
+    
+    ⚠️ LEGACY: Use /ws/generate with mode="single" instead
+    """
     connected = await manager.connect(websocket)
     
     # 🚫 If rejected, stop here
@@ -350,7 +508,10 @@ async def websocket_generate_single(websocket: WebSocket):
 
 @app.websocket("/ws/generate/multi")
 async def websocket_generate_multi(websocket: WebSocket):
-    """WebSocket endpoint for MULTI PAGE generation - follows main_multi_page.py"""
+    """WebSocket endpoint for MULTI PAGE generation - follows main_multi_page.py
+    
+    ⚠️ LEGACY: Use /ws/generate with mode="multi" instead
+    """
     connected = await manager.connect(websocket)
     
     # 🚫 If rejected, stop here

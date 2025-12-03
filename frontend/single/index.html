@@ -214,6 +214,8 @@
             }
         }
     </style>
+    <!-- 🆕 Load config for unified WebSocket endpoint -->
+    <script src="/frontend/config.js"></script>
 </head>
 
 <body class="bg-gray-50">
@@ -954,10 +956,23 @@
         });
 
         // Start Generation with WebSocket
-        function startGenerationWithWebSocket(prompt) {
+        async function startGenerationWithWebSocket(prompt) {
             if (isGenerating) {
                 showToast('Generation already in progress', 'warning');
                 return;
+            }
+
+            // 🆕 Check queue status first
+            if (typeof CONFIG !== 'undefined') {
+                try {
+                    const queueStatus = await CONFIG.checkQueueStatus();
+                    if (queueStatus.is_busy) {
+                        showToast(`⏳ Server busy. Queue: ${queueStatus.queue_size}. Please wait...`, 'warning');
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('Could not check queue status:', e);
+                }
             }
 
             // Reset state
@@ -974,18 +989,22 @@
 
             addTerminalOutput(`<span class="text-blue-400">[SYSTEM]</span> Connecting to backend...`);
 
-            // Connect to WebSocket - SINGLE PAGE endpoint
-            ws = new WebSocket('ws://localhost:8080/ws/generate/single');
+            // 🆕 Connect to UNIFIED WebSocket endpoint
+            const wsUrl = typeof CONFIG !== 'undefined' 
+                ? CONFIG.getUnifiedWebSocketUrl() 
+                : 'ws://localhost:8080/ws/generate';
+            
+            ws = new WebSocket(wsUrl);
 
             ws.onopen = () => {
-                addTerminalOutput(`<span class="text-green-400">[CONNECTED]</span> WebSocket connected`);
+                addTerminalOutput(`<span class="text-green-400">[CONNECTED]</span> WebSocket connected (unified endpoint)`);
                 addTerminalOutput(`<span class="text-gray-400">[PROMPT]</span> ${prompt}`);
                 addTerminalOutput('');
 
-                // Send generation request
+                // 🆕 Send generation request with mode
                 ws.send(JSON.stringify({
                     prompt: prompt,
-                    mode: 'single'
+                    mode: 'single'  // Specify single-page mode
                 }));
 
                 // Start timer

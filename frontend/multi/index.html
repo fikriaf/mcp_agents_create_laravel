@@ -145,6 +145,8 @@
             }
         }
     </style>
+    <!-- 🆕 Load config for unified WebSocket endpoint -->
+    <script src="/frontend/config.js"></script>
 </head>
 
 <body class="bg-gray-50">
@@ -1012,13 +1014,27 @@
             });
 
             // Start Generation with WebSocket
-            function startGenerationWithWebSocket(prompt) {
+            async function startGenerationWithWebSocket(prompt) {
                 console.log('🌐 startGenerationWithWebSocket called');
 
                 if (isGenerating) {
                     console.log('⚠️ Already generating');
                     showToast('Generation already in progress', 'warning');
                     return;
+                }
+
+                // 🆕 Check queue status first
+                if (typeof CONFIG !== 'undefined') {
+                    try {
+                        const queueStatus = await CONFIG.checkQueueStatus();
+                        console.log('📋 Queue status:', queueStatus);
+                        if (queueStatus.is_busy) {
+                            showToast(`⏳ Server busy. Queue: ${queueStatus.queue_size}. Please wait...`, 'warning');
+                            return;
+                        }
+                    } catch (e) {
+                        console.warn('Could not check queue status:', e);
+                    }
                 }
 
                 // Increment usage
@@ -1043,18 +1059,22 @@
 
                 addTerminalOutput(`<span class="text-purple-400">[SYSTEM]</span> Connecting to backend...`);
 
-                // Connect to WebSocket - MULTI PAGE endpoint
-                console.log('🔌 Creating WebSocket connection...');
-                ws = new WebSocket('ws://localhost:8080/ws/generate/multi');
+                // 🆕 Connect to UNIFIED WebSocket endpoint
+                console.log('🔌 Creating WebSocket connection (unified endpoint)...');
+                const wsUrl = typeof CONFIG !== 'undefined' 
+                    ? CONFIG.getUnifiedWebSocketUrl() 
+                    : 'ws://localhost:8080/ws/generate';
+                
+                ws = new WebSocket(wsUrl);
 
                 ws.onopen = () => {
                     console.log('✅ WebSocket OPENED!');
-                    addTerminalOutput(`<span class="text-green-400">[CONNECTED]</span> WebSocket connected`);
+                    addTerminalOutput(`<span class="text-green-400">[CONNECTED]</span> WebSocket connected (unified endpoint)`);
                     addTerminalOutput(`<span class="text-gray-400">[PROMPT]</span> ${prompt}`);
                     addTerminalOutput('');
 
-                    // Send generation request
-                    const payload = { prompt: prompt, mode: 'multi' };
+                    // 🆕 Send generation request with mode
+                    const payload = { prompt: prompt, mode: 'multi' };  // Specify multi-page mode
                     console.log('📤 Sending payload:', payload);
                     ws.send(JSON.stringify(payload));
 

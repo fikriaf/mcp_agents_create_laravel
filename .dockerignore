@@ -1,0 +1,50 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Output (will be created at runtime)
+output/
+history/
+
+# Frontend (deployed separately to Vercel)
+frontend/
+
+# Laravel vendor (not needed for generation)
+my-laravel/vendor/
+my-laravel/node_modules/
+my-laravel/storage/logs/
+my-laravel/.env
+
+# Documentation
+*.md
+!README.md
+docs/
+demo/
+
+# Tests
+tests/
+*.test.py
+
+# Misc
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
