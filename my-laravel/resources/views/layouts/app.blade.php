@@ -1,101 +1,116 @@
 <!-- layout content -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-gray-50">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'GenLaravel')</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@yield('title', 'Modern App')</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
-        <style>
-:root {
-      --primary: #00F3FF;
-      --secondary: #12263F;
-      --accent: #7CFC00;
-      --text-primary: #FFFFFF;
-      --text-secondary: #B0BEC5;
-    }
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #6366f1;
+            --error-color: #ef4444;
+        }
 
-    .neon-btn {
-      background-color: var(--primary);
-      color: #000000;
-      border: 2px solid var(--primary);
-      box-shadow: 0 0 10px var(--primary);
-      transition: all 0.3s ease;
-    }
+        .input:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
 
-    .neon-btn:hover {
-      box-shadow: 0 0 20px var(--primary);
-      transform: scale(1.05);
-    }
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
 
-    .feature-card {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: transform 0.3s ease;
-    }
+        .error-message {
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+        }
 
-    .feature-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
+        .error-message.show {
+            opacity: 1;
+            height: auto;
+        }
 
-    .testimonial-card {
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      background: rgba(255, 255, 255, 0.02);
-      transition: transform 0.3s ease;
-    }
+        .loading-spinner {
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+        }
 
-    .testimonial-card:hover {
-      transform: translateY(-3px);
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.3);
-      transition: background-color 0.3s ease;
-    }
-
-    .dot.active {
-      background-color: var(--primary);
-      width: 16px;
-      border-radius: 8px;
-    }
-
-    @keyframes slideIn {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in {
-      animation: slideIn 0.6s ease-out forwards;
-    }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="h-full font-inter">
     @yield('content')
     
     <script>
-        function showPage(pageName) {
-            // Hide all page containers
-            document.querySelectorAll('div[id^="page-"]').forEach(div => {
-                div.classList.add('hidden');
-            });
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const loginButton = document.getElementById('loginButton');
+        const loginButtonText = document.getElementById('loginButtonText');
+        const loginButtonSpinner = document.getElementById('loginButtonSpinner');
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.textContent = type === 'password' ? 'Show' : 'Hide';
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
             
-            // Remove active state from all tabs
-            document.querySelectorAll('button[id^="tab-"]').forEach(tab => {
-                tab.classList.remove('bg-blue-600', 'text-white');
-                tab.classList.add('bg-gray-200', 'text-gray-700');
-            });
+            let isValid = true;
             
-            // Show selected page
-            document.getElementById('page-' + pageName).classList.remove('hidden');
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                emailError.classList.add('show');
+                isValid = false;
+            } else {
+                emailError.classList.remove('show');
+            }
             
-            // Activate selected tab
-            const activeTab = document.getElementById('tab-' + pageName);
-            activeTab.classList.remove('bg-gray-200', 'text-gray-700');
-            activeTab.classList.add('bg-blue-600', 'text-white');
-        }
+            if (password.length < 8) {
+                passwordError.classList.add('show');
+                isValid = false;
+            } else {
+                passwordError.classList.remove('show');
+            }
+            
+            if (isValid) {
+                loginButton.disabled = true;
+                loginButtonText.textContent = 'Logging in...';
+                loginButtonSpinner.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    loginButton.disabled = false;
+                    loginButtonText.textContent = 'Login';
+                    loginButtonSpinner.classList.add('hidden');
+                    alert('Login successful!');
+                }, 2000);
+            }
+        });
     </script>
 </body>
 </html>

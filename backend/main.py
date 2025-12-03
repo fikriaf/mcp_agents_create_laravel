@@ -93,7 +93,10 @@ app.add_middleware(
 )
 
 # Mount static files with HTML support (auto-serve index.html)
-app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="frontend")
+# Only mount if frontend directory exists (not in Docker/Railway deployment)
+frontend_path = Path(__file__).parent.parent / "frontend"
+if frontend_path.exists():
+    app.mount("/frontend", StaticFiles(directory=str(frontend_path), html=True), name="frontend")
 
 # Note: Output directory mounted dynamically in endpoint to avoid startup errors
 
