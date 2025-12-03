@@ -92,6 +92,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+# 🆕 Middleware to disable proxy buffering (Railway/Nginx fix)
+@app.middleware("http")
+async def add_no_cache_headers(request, call_next):
+    response = await call_next(request)
+    # Disable proxy buffering for streaming
+    response.headers["X-Accel-Buffering"] = "no"
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    return response
+
 # Mount static files with HTML support (auto-serve index.html)
 # Only mount if frontend directory exists (not in Docker/Railway deployment)
 frontend_path = Path(__file__).parent.parent / "frontend"
@@ -150,6 +160,7 @@ class ConnectionManager:
         self.active_connections: List[WebSocket] = []
         self.is_generating = False  # 🔒 Flag to prevent concurrent generations
         self.generation_queue = GenerationQueue()  # 🆕 Unified queue
+        self.heartbeat_tasks: Dict[WebSocket, asyncio.Task] = {}  # 🆕 Heartbeat tasks
 
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
@@ -166,8 +177,24 @@ class ConnectionManager:
         
         self.active_connections.append(websocket)
         self.is_generating = True  # 🔒 Lock generation
+        
+        # 🆕 Start heartbeat to keep connection alive (Railway proxy fix)
+        self.heartbeat_tasks[websocket] = asyncio.create_task(self._heartbeat(websocket))
+        
         print(f"✅ Connection accepted. Active: {len(self.active_connections)}")
         return True
+    
+    async def _heartbeat(self, websocket: WebSocket):
+        """Send periodic heartbeat to prevent Railway proxy from closing connection"""
+        try:
+            while True:
+                await asyncio.sleep(15)  # Every 15 seconds
+                try:
+                    await websocket.send_json({"type": "heartbeat", "timestamp": datetime.datetime.now().isoformat()})
+                except:
+                    break
+        except asyncio.CancelledError:
+            pass
     
     async def connect_queued(self, websocket: WebSocket, prompt: str, mode: str):
         """Connect with queue support - accepts connection and adds to queue"""
@@ -195,11 +222,27 @@ class ConnectionManager:
     def disconnect(self, websocket: WebSocket):
         if websocket in self.active_connections:
             self.active_connections.remove(websocket)
+        
+        # 🆕 Cancel heartbeat task
+        if websocket in self.heartbeat_tasks:
+            self.heartbeat_tasks[websocket].cancel()
+            del self.heartbeat_tasks[websocket]
+        
         self.is_generating = False  # 🔓 Unlock generation
         print(f"🔓 Connection closed. Generation unlocked. Active: {len(self.active_connections)}")
 
     async def send_message(self, message: dict, websocket: WebSocket):
-        await websocket.send_json(message)
+        """Send message with immediate flush for Railway proxy compatibility"""
+        try:
+            await websocket.send_json(message)
+            # 🆕 Log message type for debugging
+            msg_type = message.get('type', 'unknown')
+            if msg_type != 'heartbeat':  # Don't log heartbeats
+                print(f"📤 Sent: {msg_type}")
+            # 🆕 Small delay to ensure message is flushed through proxy
+            await asyncio.sleep(0.01)
+        except Exception as e:
+            print(f"❌ Failed to send message: {e}")
 
     async def broadcast(self, message: dict):
         for connection in self.active_connections:

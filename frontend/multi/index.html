@@ -1110,6 +1110,11 @@
             // Handle WebSocket Messages
             function handleWebSocketMessage(data) {
                 switch (data.type) {
+                    case 'heartbeat':
+                        // 🆕 Heartbeat from server - connection is alive
+                        console.log('💓 Heartbeat received:', data.timestamp);
+                        break;
+
                     case 'start':
                         addTerminalOutput(`<span class="text-purple-400">[START]</span> ${data.message}`);
                         break;

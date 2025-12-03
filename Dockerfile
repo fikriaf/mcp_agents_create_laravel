@@ -42,4 +42,6 @@ EXPOSE 8080
 # No HEALTHCHECK - let Railway handle it via /health endpoint
 
 # Run the application with dynamic port from Railway
-CMD uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-8080}
+# --ws websockets enables proper WebSocket support
+# --timeout-keep-alive 120 keeps connections alive longer
+CMD uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-8080} --ws websockets --timeout-keep-alive 120
