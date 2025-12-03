@@ -968,7 +968,7 @@
                 // Check if backend is available
                 console.log('🔍 Checking backend health...');
                 try {
-                    const healthCheck = await fetch('http://localhost:8080/health');
+                    const healthCheck = await fetch(CONFIG.getApiUrl('/health'));
                     console.log('✅ Backend health check:', healthCheck.ok);
                     if (!healthCheck.ok) throw new Error('Backend not available');
 
@@ -1241,7 +1241,7 @@
                 const iframe = document.getElementById('draft-iframe');
 
                 // Load draft with cache busting
-                iframe.src = 'http://localhost:8080' + draftPath + '?t=' + Date.now();
+                iframe.src = CONFIG.BACKEND_URL + draftPath + '?t=' + Date.now();
                 modal.classList.remove('hidden');
 
                 console.log('📋 Showing draft modal:', draftPath);
@@ -1579,14 +1579,14 @@
                 const draftFile = pages[0].file || pages[0].name + '.html';
                 
                 // Try drafts folder first
-                let draftUrl = 'http://localhost:8080/output/drafts/' + draftFile + '?t=' + Date.now();
+                let draftUrl = CONFIG.BACKEND_URL + '/output/drafts/' + draftFile + '?t=' + Date.now();
                 console.log('Loading preview:', draftUrl);
                 
                 previewIframe.src = draftUrl;
                 
                 // Fallback to single draft.html on error
                 previewIframe.addEventListener('error', function fallbackHandler() {
-                    const fallbackUrl = 'http://localhost:8080/output/draft.html?t=' + Date.now();
+                    const fallbackUrl = CONFIG.BACKEND_URL + '/output/draft.html?t=' + Date.now();
                     console.log('Fallback to:', fallbackUrl);
                     previewIframe.src = fallbackUrl;
                     previewIframe.removeEventListener('error', fallbackHandler);
@@ -1647,7 +1647,7 @@
             // Switch preview page
             function switchPreviewPage(filename) {
                 const previewIframe = document.getElementById('completion-preview-iframe');
-                const draftUrl = 'http://localhost:8080/output/drafts/' + filename + '?t=' + Date.now();
+                const draftUrl = CONFIG.BACKEND_URL + '/output/drafts/' + filename + '?t=' + Date.now();
                 
                 console.log('Switching to:', draftUrl);
                 previewIframe.src = draftUrl;
@@ -1663,7 +1663,7 @@
 
             // Helper functions for quick actions
             function openOutputFolder() {
-                fetch('http://localhost:8080/api/open-folder', { method: 'POST' })
+                fetch(CONFIG.getApiUrl('/api/open-folder'), { method: 'POST' })
                     .then(() => showToast('Opening output folder...', 'info'))
                     .catch(() => showToast('Could not open folder', 'error'));
             }
@@ -1901,7 +1901,7 @@
                 addTerminalOutput(`<span class="text-purple-400">[ACTION]</span> Downloading Laravel project...`);
 
                 try {
-                    const response = await fetch('http://localhost:8080/api/download/laravel');
+                    const response = await fetch(CONFIG.getApiUrl('/api/download/laravel'));
 
                     if (!response.ok) {
                         throw new Error('Laravel project not found or backend not running');

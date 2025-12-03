@@ -913,7 +913,7 @@
 
             // Check if backend is available
             try {
-                const healthCheck = await fetch('http://localhost:8080/health');
+                const healthCheck = await fetch(CONFIG.getApiUrl('/health'));
                 if (!healthCheck.ok) throw new Error('Backend not available');
 
                 startGenerationWithWebSocket(prompt);
@@ -1111,7 +1111,7 @@
             const iframe = document.getElementById('draft-iframe');
 
             // Load draft with cache busting
-            iframe.src = 'http://localhost:8080' + draftPath + '?t=' + Date.now();
+            iframe.src = CONFIG.BACKEND_URL + draftPath + '?t=' + Date.now();
             modal.classList.remove('hidden');
 
             console.log('📋 Showing draft modal:', draftPath);
@@ -1316,7 +1316,7 @@
             
             // Load preview iframe - use same method as draft modal
             const previewIframe = document.getElementById('completion-preview-iframe');
-            const draftUrl = 'http://localhost:8080/output/draft.html?t=' + Date.now();
+            const draftUrl = CONFIG.BACKEND_URL + '/output/draft.html?t=' + Date.now();
             
             console.log('Loading preview:', draftUrl);
             previewIframe.src = draftUrl;
@@ -1392,7 +1392,7 @@
 
         // Helper functions for quick actions
         function openOutputFolder() {
-            fetch('http://localhost:8080/api/open-folder', { method: 'POST' })
+            fetch(CONFIG.getApiUrl('/api/open-folder'), { method: 'POST' })
                 .then(() => showToast('Opening output folder...', 'info'))
                 .catch(() => showToast('Could not open folder', 'error'));
         }
@@ -1620,7 +1620,7 @@
 
             try {
                 // Check if backend is available
-                const response = await fetch('http://localhost:8080/api/download/laravel');
+                const response = await fetch(CONFIG.getApiUrl('/api/download/laravel'));
 
                 if (!response.ok) {
                     throw new Error('Laravel project not found or backend not running');
