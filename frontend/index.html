@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,138 +7,412 @@
     <link rel="icon" type="image/png" href="./single/GenLaravel.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B35',
+                        secondary: '#F7931E', 
+                        accent: '#FFB347',
+                        dark: '#1a1a2e',
+                        darker: '#16213e'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .gradient-bg {
-            background: linear-gradient(135deg, #1e293b 0%, #7c3aed 50%, #a855f7 100%);
-        }
-
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+        .gradient-orange { background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); }
+        .card-hover:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(255, 107, 53, 0.3); }
+        .glow { box-shadow: 0 0 30px rgba(255, 107, 53, 0.3); }
+        html { scroll-behavior: smooth; }
     </style>
-    <script src="/config.js"></script>
+    <script src="./config.js"></script>
 </head>
-
-<body class="bg-gray-900 min-h-screen">
-    <!-- Hero Section -->
-    <div class="gradient-bg min-h-screen flex flex-col">
-        <!-- Header -->
-        <header class="container mx-auto px-6 py-6">
+<body class="bg-dark text-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-darker/90 backdrop-blur-lg border-b border-white/10">
+        <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <img src="./single/GenLaravel.png" alt="GenLaravel Logo" class="w-12 h-12 object-contain">
-                    <span class="text-2xl font-bold text-white">GenLaravel</span>
+                    <img src="./single/GenLaravel.png" alt="GenLaravel" class="w-10 h-10">
+                    <span class="text-xl font-bold">GenLaravel</span>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <span id="status-badge" class="px-4 py-2 bg-white bg-opacity-20 rounded-full text-white text-sm">
-                        <i class="fas fa-circle text-green-400 mr-2 text-xs"></i>
-                        Checking...
-                    </span>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="hover:text-primary transition">Features</a>
+                    <a href="#architecture" class="hover:text-primary transition">Architecture</a>
+                    <a href="#docs" class="hover:text-primary transition">Documentation</a>
+                    <a href="#generator" class="gradient-orange px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition">
+                        Try Generator
+                    </a>
                 </div>
             </div>
-        </header>
+        </div>
+    </nav>
 
-        <!-- Main Content -->
-        <main class="flex-1 container mx-auto px-6 flex flex-col items-center justify-center text-center">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">
-                AI-Powered<br>
-                <span class="text-purple-300">Laravel Generator</span>
-            </h1>
-            <p class="text-xl text-white text-opacity-80 mb-12 max-w-2xl">
-                Transform natural language into complete Laravel applications with our multi-agent AI system.
-                Generate single pages or entire multi-page apps in seconds.
-            </p>
-
-            <!-- Mode Selection Cards -->
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl w-full">
-                <!-- Single Page Mode -->
-                <a href="/single/"
-                    class="card-hover bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 border border-white border-opacity-20 transition-all duration-300 block">
-                    <div class="w-16 h-16 bg-slate-700 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-file-code text-white text-3xl"></i>
+    <!-- Hero Section -->
+    <section class="gradient-hero min-h-screen flex items-center pt-20">
+        <div class="container mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="inline-flex items-center px-4 py-2 bg-primary/20 rounded-full text-primary text-sm mb-6">
+                        <i class="fas fa-bolt mr-2"></i> Powered by AI Multi-Agent System
                     </div>
-                    <h2 class="text-2xl font-bold text-white mb-3">Single Page</h2>
-                    <p class="text-white text-opacity-70 mb-6">
-                        Generate a single Laravel page with components. Perfect for landing pages, forms, or dashboards.
+                    <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                        Generate <span class="text-primary">Laravel</span> Apps<br>
+                        with Natural Language
+                    </h1>
+                    <p class="text-xl text-gray-400 mb-8 leading-relaxed">
+                        Transform your ideas into complete Laravel applications using our 10-agent AI pipeline. 
+                        From prompt to production-ready Blade templates in seconds.
                     </p>
-                    <div class="flex items-center justify-center text-purple-300">
-                        <span class="font-semibold">Get Started</span>
-                        <i class="fas fa-arrow-right ml-2"></i>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#generator" class="gradient-orange px-8 py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition glow">
+                            <i class="fas fa-magic mr-2"></i> Start Generating
+                        </a>
+                        <a href="#architecture" class="px-8 py-4 rounded-xl font-semibold text-lg border border-white/20 hover:bg-white/10 transition">
+                            <i class="fas fa-diagram-project mr-2"></i> View Architecture
+                        </a>
+                    </div>
+                    <div class="flex items-center gap-8 mt-10 text-gray-400">
+                        <div class="flex items-center"><i class="fas fa-robot text-primary mr-2"></i> 10 AI Agents</div>
+                        <div class="flex items-center"><i class="fas fa-bolt text-secondary mr-2"></i> Real-time</div>
+                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Auto Validation</div>
+                    </div>
+                </div>
+                <div class="hidden lg:block">
+                    <img src="./single/GenLaravel.png" alt="GenLaravel" class="w-96 mx-auto drop-shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Generator Section -->
+    <section id="generator" class="py-20 bg-darker">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Choose Your <span class="text-primary">Generation Mode</span></h2>
+                <p class="text-gray-400 text-lg">Select single page for quick prototypes or multi-page for complete applications</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Single Page -->
+                <a href="./single/" class="card-hover bg-dark rounded-2xl p-8 border border-white/10 transition-all duration-300 block group">
+                    <div class="w-16 h-16 gradient-orange rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-file-code text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-center mb-3">Single Page</h3>
+                    <p class="text-gray-400 text-center mb-6">
+                        Generate one Laravel page with components. Perfect for landing pages, forms, or dashboards.
+                    </p>
+                    <div class="flex items-center justify-center text-primary font-semibold">
+                        Get Started <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition"></i>
                     </div>
                 </a>
-
-                <!-- Multi Page Mode -->
-                <a href="/multi/"
-                    class="card-hover bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 border border-white border-opacity-20 transition-all duration-300 block">
-                    <div class="w-16 h-16 bg-purple-600 rounded-xl flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-layer-group text-white text-3xl"></i>
+                <!-- Multi Page -->
+                <a href="./multi/" class="card-hover bg-dark rounded-2xl p-8 border border-white/10 transition-all duration-300 block group">
+                    <div class="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-layer-group text-white text-2xl"></i>
                     </div>
-                    <h2 class="text-2xl font-bold text-white mb-3">Multi Page</h2>
-                    <p class="text-white text-opacity-70 mb-6">
-                        Generate multiple pages at once. Build complete applications with shared layouts and components.
+                    <h3 class="text-2xl font-bold text-center mb-3">Multi Page</h3>
+                    <p class="text-gray-400 text-center mb-6">
+                        Generate multiple pages at once. Build complete applications with shared layouts.
                     </p>
-                    <div class="flex items-center justify-center text-purple-300">
-                        <span class="font-semibold">Get Started</span>
-                        <i class="fas fa-arrow-right ml-2"></i>
+                    <div class="flex items-center justify-center text-purple-400 font-semibold">
+                        Get Started <i class="fas fa-arrow-right ml-2 group-hover:translate-x-2 transition"></i>
                     </div>
                 </a>
             </div>
+        </div>
+    </section>
 
-            <!-- Features -->
-            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 text-white text-opacity-80">
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-robot text-purple-400"></i>
-                    <span>10 AI Agents</span>
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-dark">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Powerful <span class="text-primary">Features</span></h2>
+                <p class="text-gray-400 text-lg">Everything you need to generate Laravel applications</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-darker rounded-xl p-6 border border-white/10">
+                    <div class="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-brain text-primary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">AI-Powered</h3>
+                    <p class="text-gray-400">Cerebras Qwen Code with Mistral fallback for reliable generation</p>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-bolt text-yellow-400"></i>
-                    <span>Real-time Generation</span>
+                <div class="bg-darker rounded-xl p-6 border border-white/10">
+                    <div class="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-eye text-secondary text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Live Preview</h3>
+                    <p class="text-gray-400">Preview HTML drafts before generating Laravel components</p>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-code text-green-400"></i>
-                    <span>Blade Templates</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-check-circle text-blue-400"></i>
-                    <span>Auto Validation</span>
+                <div class="bg-darker rounded-xl p-6 border border-white/10">
+                    <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fas fa-check-double text-green-500 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Auto Validation</h3>
+                    <p class="text-gray-400">Built-in validator ensures code quality and syntax correctness</p>
                 </div>
             </div>
-        </main>
+        </div>
+    </section>
 
-        <!-- Footer -->
-        <footer class="container mx-auto px-6 py-6 text-center text-white text-opacity-60">
-            <p>Powered by Cerebras Qwen & Mistral AI</p>
-        </footer>
+    <!-- Architecture Section -->
+    <section id="architecture" class="py-20 bg-darker">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">System <span class="text-primary">Architecture</span></h2>
+                <p class="text-gray-400 text-lg">10-agent pipeline for intelligent Laravel generation</p>
+            </div>
+            <div class="bg-dark rounded-2xl p-8 border border-white/10">
+                <div class="flex justify-center mb-6">
+                    <a href="https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/YOUR_REPO/main/frontend/docs/architecture_flow_diagram.puml" 
+                       target="_blank" class="text-primary hover:underline">
+                        <i class="fas fa-external-link-alt mr-2"></i> View Full Diagram
+                    </a>
+                </div>
+                <!-- Agent Pipeline Visual -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-darker rounded-lg p-4 text-center border border-primary/30">
+                        <div class="text-2xl font-bold text-primary">1</div>
+                        <div class="text-sm mt-1">Prompt Expander</div>
+                    </div>
+                    <div class="bg-darker rounded-lg p-4 text-center border border-primary/30">
+                        <div class="text-2xl font-bold text-primary">2</div>
+                        <div class="text-sm mt-1">Draft Agent</div>
+                    </div>
+                    <div class="bg-darker rounded-lg p-4 text-center border border-primary/30">
+                        <div class="text-2xl font-bold text-primary">3</div>
+                        <div class="text-sm mt-1">Prompt Planner</div>
+                    </div>
+                    <div class="bg-darker rounded-lg p-4 text-center border border-primary/30">
+                        <div class="text-2xl font-bold text-primary">4</div>
+                        <div class="text-sm mt-1">Page Architect</div>
+                    </div>
+                    <div class="bg-darker rounded-lg p-4 text-center border border-primary/30">
+                        <div class="text-2xl font-bold text-primary">5</div>
+                        <div class="text-sm mt-1">Layout Generator</div>
+                    </div>
+                    <div class="bg-darker rounded-lg p-4 text-center border border-secondary/30">
+                        <div class="text-2xl font-bold text-secondary">6</div>
+                        <div class="text-sm mt-1">UI Generator</div>
+                    </div>
+                    <div class="bg-darker rounded-lg p-4 text-center border border-secondary/30">
+                        <div class="text-2xl font-bold text-secondary">7</div>
+                        <div class="text-sm mt-1">Route Agent</div>
+                    </div>
+                    <div class="bg-darker rounded-lg p-4 text-center border border-secondary/30">
+                        <div class="text-2xl font-bold text-secondary">8</div>
+                        <div class="text-sm mt-1">Component Agent</div>
+                    </div>
+                    <div class="bg-darker rounded-lg p-4 text-center border border-green-500/30">
+                        <div class="text-2xl font-bold text-green-500">9</div>
+                        <div class="text-sm mt-1">Validator</div>
+                    </div>
+                    <div class="bg-darker rounded-lg p-4 text-center border border-green-500/30">
+                        <div class="text-2xl font-bold text-green-500">10</div>
+                        <div class="text-sm mt-1">Project Mover</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation Section -->
+    <section id="docs" class="py-20 bg-dark">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold mb-4">Project <span class="text-primary">Documentation</span></h2>
+                <p class="text-gray-400 text-lg">Charts, diagrams, and project planning documents</p>
+            </div>
+            
+            <!-- Images Gallery -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-images text-primary mr-3"></i> Visual Charts
+                </h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-darker rounded-xl overflow-hidden border border-white/10 group">
+                        <img src="./docs/Gatt Chart Representation.png" alt="Gantt Chart" 
+                             class="w-full h-48 object-cover group-hover:scale-105 transition cursor-pointer"
+                             onclick="openImageModal(this.src, 'Gantt Chart Representation')">
+                        <div class="p-4">
+                            <h4 class="font-semibold">Gantt Chart</h4>
+                            <p class="text-gray-400 text-sm">Project timeline visualization</p>
+                        </div>
+                    </div>
+                    <div class="bg-darker rounded-xl overflow-hidden border border-white/10 group">
+                        <img src="./docs/Network Diagram.png" alt="Network Diagram" 
+                             class="w-full h-48 object-cover group-hover:scale-105 transition cursor-pointer"
+                             onclick="openImageModal(this.src, 'Network Diagram')">
+                        <div class="p-4">
+                            <h4 class="font-semibold">Network Diagram</h4>
+                            <p class="text-gray-400 text-sm">Task dependencies flow</p>
+                        </div>
+                    </div>
+                    <div class="bg-darker rounded-xl overflow-hidden border border-white/10 group">
+                        <img src="./docs/Resource Loading Chart.png" alt="Resource Loading" 
+                             class="w-full h-48 object-cover group-hover:scale-105 transition cursor-pointer"
+                             onclick="openImageModal(this.src, 'Resource Loading Chart')">
+                        <div class="p-4">
+                            <h4 class="font-semibold">Resource Loading</h4>
+                            <p class="text-gray-400 text-sm">Team allocation chart</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PDF Downloads -->
+            <div>
+                <h3 class="text-2xl font-semibold mb-6 flex items-center">
+                    <i class="fas fa-file-pdf text-red-500 mr-3"></i> PDF Documents
+                </h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="./docs/Project Planning_Agent Auto Generate Laravel Project.pdf" download
+                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold group-hover:text-primary transition">Project Planning</h4>
+                            <p class="text-gray-400 text-sm">Complete project plan</p>
+                        </div>
+                        <i class="fas fa-download text-gray-400 group-hover:text-primary transition"></i>
+                    </a>
+                    <a href="./docs/Kelompok 7_project_charter_scope.pdf" download
+                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold group-hover:text-primary transition">Project Charter & Scope</h4>
+                            <p class="text-gray-400 text-sm">Charter and scope definition</p>
+                        </div>
+                        <i class="fas fa-download text-gray-400 group-hover:text-primary transition"></i>
+                    </a>
+                    <a href="./docs/Kelompok 7_wbs.pdf" download
+                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold group-hover:text-primary transition">WBS Document</h4>
+                            <p class="text-gray-400 text-sm">Work Breakdown Structure</p>
+                        </div>
+                        <i class="fas fa-download text-gray-400 group-hover:text-primary transition"></i>
+                    </a>
+                    <a href="./docs/Kelompok 7_scrum_gantt_chart.pdf" download
+                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold group-hover:text-primary transition">SCRUM Gantt Chart</h4>
+                            <p class="text-gray-400 text-sm">Sprint timeline</p>
+                        </div>
+                        <i class="fas fa-download text-gray-400 group-hover:text-primary transition"></i>
+                    </a>
+                    <a href="./docs/Kelompok 7_network_diagram.pdf" download
+                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold group-hover:text-primary transition">Network Diagram</h4>
+                            <p class="text-gray-400 text-sm">Task network analysis</p>
+                        </div>
+                        <i class="fas fa-download text-gray-400 group-hover:text-primary transition"></i>
+                    </a>
+                    <a href="./docs/Kelompok 7_EVM_GenLaravel.pdf" download
+                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-file-pdf text-red-500 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold group-hover:text-primary transition">EVM Analysis</h4>
+                            <p class="text-gray-400 text-sm">Earned Value Management</p>
+                        </div>
+                        <i class="fas fa-download text-gray-400 group-hover:text-primary transition"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-darker border-t border-white/10">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                    <img src="./single/GenLaravel.png" alt="GenLaravel" class="w-8 h-8">
+                    <span class="font-bold">GenLaravel</span>
+                </div>
+                <div class="text-gray-400 text-sm text-center md:text-right">
+                    <p>Powered by Cerebras Qwen & Mistral AI</p>
+                    <p class="mt-1">© 2024 GenLaravel - AI Laravel Generator</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-4" onclick="closeImageModal()">
+        <div class="relative max-w-6xl w-full">
+            <button onclick="closeImageModal()" class="absolute -top-12 right-0 text-white text-2xl hover:text-primary">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 id="modalTitle" class="text-white text-xl font-semibold mb-4 text-center"></h3>
+            <img id="modalImage" src="" alt="" class="w-full rounded-lg shadow-2xl">
+        </div>
+    </div>
+
+    <!-- Status Badge (Fixed) -->
+    <div id="status-badge" class="fixed bottom-4 right-4 px-4 py-2 bg-darker rounded-full border border-white/20 text-sm z-40">
+        <i class="fas fa-circle text-yellow-400 mr-2 text-xs animate-pulse"></i>
+        <span>Checking backend...</span>
     </div>
 
     <script>
+        // Image Modal Functions
+        function openImageModal(src, title) {
+            document.getElementById('modalImage').src = src;
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('imageModal').classList.remove('hidden');
+            document.getElementById('imageModal').classList.add('flex');
+        }
+        
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+            document.getElementById('imageModal').classList.remove('flex');
+        }
+        
+        // ESC key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeImageModal();
+        });
+
         // Check backend status
         async function checkStatus() {
             const badge = document.getElementById('status-badge');
             try {
                 const response = await fetch(CONFIG.getApiUrl('/health'));
                 if (response.ok) {
-                    badge.innerHTML = '<i class="fas fa-circle text-green-400 mr-2 text-xs"></i>Backend Online';
+                    badge.innerHTML = '<i class="fas fa-circle text-green-400 mr-2 text-xs"></i><span>Backend Online</span>';
                 } else {
                     throw new Error('Not OK');
                 }
             } catch (e) {
-                badge.innerHTML = '<i class="fas fa-circle text-red-400 mr-2 text-xs"></i>Backend Offline';
+                badge.innerHTML = '<i class="fas fa-circle text-red-400 mr-2 text-xs"></i><span>Backend Offline</span>';
             }
         }
-
-        // Check on load
+        
         checkStatus();
-        // Check every 30 seconds
         setInterval(checkStatus, 30000);
     </script>
 </body>
-
 </html>
