@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +14,7 @@
                 extend: {
                     colors: {
                         primary: '#FF6B35',
-                        secondary: '#F7931E', 
+                        secondary: '#F7931E',
                         accent: '#FFB347',
                         dark: '#1a1a2e',
                         darker: '#16213e'
@@ -24,15 +25,219 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        * { font-family: 'Inter', sans-serif; }
-        .gradient-hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
-        .gradient-orange { background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); }
-        .card-hover:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(255, 107, 53, 0.3); }
-        .glow { box-shadow: 0 0 30px rgba(255, 107, 53, 0.3); }
-        html { scroll-behavior: smooth; }
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+
+        .gradient-orange {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(255, 107, 53, 0.3);
+        }
+
+        .glow {
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Sparkle Animation - Zoom In/Out */
+        .sparkle-container {
+            position: relative;
+            min-height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            font-size: 16px;
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700, 0 0 20px #FF6B35, 0 0 30px #FFD700;
+            animation: sparkle-zoom 1.5s ease-in-out infinite;
+        }
+
+        .sparkle::before {
+            content: '✦';
+        }
+
+        @keyframes sparkle-zoom {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .sparkle:nth-child(1) {
+            top: 5%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .sparkle:nth-child(2) {
+            top: 15%;
+            right: 10%;
+            animation-delay: 0.2s;
+        }
+
+        .sparkle:nth-child(3) {
+            top: 55%;
+            left: 0%;
+            animation-delay: 0.4s;
+        }
+
+        .sparkle:nth-child(4) {
+            top: 85%;
+            right: 15%;
+            animation-delay: 0.6s;
+        }
+
+        .sparkle:nth-child(5) {
+            top: 35%;
+            left: 15%;
+            animation-delay: 0.8s;
+        }
+
+        .sparkle:nth-child(6) {
+            top: 25%;
+            right: 5%;
+            animation-delay: 1s;
+        }
+
+        .sparkle:nth-child(7) {
+            bottom: 15%;
+            left: 5%;
+            animation-delay: 0.3s;
+        }
+
+        .sparkle:nth-child(8) {
+            bottom: 25%;
+            right: 0%;
+            animation-delay: 0.5s;
+        }
+
+        .sparkle:nth-child(9) {
+            top: 45%;
+            left: -5%;
+            animation-delay: 0.7s;
+        }
+
+        .sparkle:nth-child(10) {
+            top: 65%;
+            right: 20%;
+            animation-delay: 0.9s;
+        }
+
+        .sparkle:nth-child(11) {
+            top: 0%;
+            left: 25%;
+            animation-delay: 0.15s;
+        }
+
+        .sparkle:nth-child(12) {
+            bottom: 5%;
+            right: 25%;
+            animation-delay: 1.1s;
+        }
+
+        .logo-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Shooting Stars Animation - with head and tail */
+        .shooting-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.8), 0 0 12px 4px rgba(255, 215, 0, 0.6);
+            animation: shoot linear infinite;
+            opacity: 0;
+        }
+
+        /* Tail effect - tail trails behind (upper right), rotated 45deg */
+        .shooting-star::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%) rotate(-45deg);
+            transform-origin: left center;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to left, transparent, rgba(255, 215, 0, 0.4), rgba(255, 255, 255, 0.8));
+            border-radius: 50%;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            70% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(-300px, 300px);
+                opacity: 0;
+            }
+        }
+
+        /* Positions for shooting stars - animation controlled by JS */
+        .shooting-star { animation: none; opacity: 0; }
+        .shooting-star.active { animation: shoot 1.5s linear forwards; }
+        .shooting-star:nth-child(1) { top: -5%; right: 30%; }
+        .shooting-star:nth-child(2) { top: 0%; right: 50%; }
+        .shooting-star:nth-child(3) { top: -10%; right: 20%; }
+        .shooting-star:nth-child(4) { top: 5%; right: 60%; }
+        .shooting-star:nth-child(5) { top: -8%; right: 40%; }
+        .shooting-star:nth-child(6) { top: 2%; right: 15%; }
     </style>
     <script src="./config.js"></script>
 </head>
+
 <body class="bg-dark text-white">
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 bg-darker/90 backdrop-blur-lg border-b border-white/10">
@@ -46,7 +251,8 @@
                     <a href="#features" class="hover:text-primary transition">Features</a>
                     <a href="#architecture" class="hover:text-primary transition">Architecture</a>
                     <a href="#docs" class="hover:text-primary transition">Documentation</a>
-                    <a href="#generator" class="gradient-orange px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition">
+                    <a href="#generator"
+                        class="gradient-orange px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition">
                         Try Generator
                     </a>
                 </div>
@@ -55,11 +261,12 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="gradient-hero min-h-screen flex items-center pt-20">
-        <div class="container mx-auto px-6">
+    <section class="gradient-hero min-h-screen flex items-center pt-20 relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div>
-                    <div class="inline-flex items-center px-4 py-2 bg-primary/20 rounded-full text-primary text-sm mb-6">
+                    <div
+                        class="inline-flex items-center px-4 py-2 bg-primary/20 rounded-full text-primary text-sm mb-6">
                         <i class="fas fa-bolt mr-2"></i> Powered by AI Multi-Agent System
                     </div>
                     <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
@@ -67,25 +274,53 @@
                         with Natural Language
                     </h1>
                     <p class="text-xl text-gray-400 mb-8 leading-relaxed">
-                        Transform your ideas into complete Laravel applications using our 10-agent AI pipeline. 
+                        Transform your ideas into complete Laravel applications using our 10-agent AI pipeline.
                         From prompt to production-ready Blade templates in seconds.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <a href="#generator" class="gradient-orange px-8 py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition glow">
+                        <a href="#generator"
+                            class="gradient-orange px-8 py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition glow">
                             <i class="fas fa-magic mr-2"></i> Start Generating
                         </a>
-                        <a href="#architecture" class="px-8 py-4 rounded-xl font-semibold text-lg border border-white/20 hover:bg-white/10 transition">
+                        <a href="#architecture"
+                            class="px-8 py-4 rounded-xl font-semibold text-lg border border-white/20 hover:bg-white/10 transition">
                             <i class="fas fa-diagram-project mr-2"></i> View Architecture
                         </a>
                     </div>
                     <div class="flex items-center gap-8 mt-10 text-gray-400">
                         <div class="flex items-center"><i class="fas fa-robot text-primary mr-2"></i> 10 AI Agents</div>
                         <div class="flex items-center"><i class="fas fa-bolt text-secondary mr-2"></i> Real-time</div>
-                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Auto Validation</div>
+                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Auto
+                            Validation</div>
                     </div>
                 </div>
                 <div class="hidden lg:block">
-                    <img src="./single/GenLaravel.png" alt="GenLaravel" class="w-96 mx-auto drop-shadow-2xl">
+                    <div class="sparkle-container">
+                        <!-- Shooting Stars around logo - random 1-2 at a time -->
+                        <div class="shooting-stars" id="shooting-stars">
+                            <div class="shooting-star"></div>
+                            <div class="shooting-star"></div>
+                            <div class="shooting-star"></div>
+                            <div class="shooting-star"></div>
+                            <div class="shooting-star"></div>
+                            <div class="shooting-star"></div>
+                        </div>
+                        <!-- Sparkles -->
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <div class="sparkle"></div>
+                        <img src="./single/GenLaravel.png" alt="GenLaravel"
+                            class="w-96 mx-auto drop-shadow-2xl logo-float">
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,12 +331,15 @@
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
                 <h2 class="text-4xl font-bold mb-4">Choose Your <span class="text-primary">Generation Mode</span></h2>
-                <p class="text-gray-400 text-lg">Select single page for quick prototypes or multi-page for complete applications</p>
+                <p class="text-gray-400 text-lg">Select single page for quick prototypes or multi-page for complete
+                    applications</p>
             </div>
             <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 <!-- Single Page -->
-                <a href="./single/" class="card-hover bg-dark rounded-2xl p-8 border border-white/10 transition-all duration-300 block group">
-                    <div class="w-16 h-16 gradient-orange rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                <a href="./single/"
+                    class="card-hover bg-dark rounded-2xl p-8 border border-white/10 transition-all duration-300 block group">
+                    <div
+                        class="w-16 h-16 gradient-orange rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
                         <i class="fas fa-file-code text-white text-2xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-center mb-3">Single Page</h3>
@@ -113,8 +351,10 @@
                     </div>
                 </a>
                 <!-- Multi Page -->
-                <a href="./multi/" class="card-hover bg-dark rounded-2xl p-8 border border-white/10 transition-all duration-300 block group">
-                    <div class="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
+                <a href="./multi/"
+                    class="card-hover bg-dark rounded-2xl p-8 border border-white/10 transition-all duration-300 block group">
+                    <div
+                        class="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-500 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition">
                         <i class="fas fa-layer-group text-white text-2xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-center mb-3">Multi Page</h3>
@@ -171,8 +411,8 @@
             </div>
             <div class="bg-dark rounded-2xl p-8 border border-white/10">
                 <div class="flex justify-center mb-6">
-                    <a href="https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fikriaf/mcp_agents_create_laravel/main/frontend/docs/architecture_flow_diagram.puml" 
-                       target="_blank" class="text-primary hover:underline">
+                    <a href="https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/fikriaf/mcp_agents_create_laravel/main/frontend/docs/architecture_flow_diagram.puml"
+                        target="_blank" class="text-primary hover:underline">
                         <i class="fas fa-external-link-alt mr-2"></i> View Full Diagram
                     </a>
                 </div>
@@ -230,7 +470,7 @@
                 <h2 class="text-4xl font-bold mb-4">Project <span class="text-primary">Documentation</span></h2>
                 <p class="text-gray-400 text-lg">Charts, diagrams, and project planning documents</p>
             </div>
-            
+
             <!-- Images Gallery -->
             <div class="mb-12">
                 <h3 class="text-2xl font-semibold mb-6 flex items-center">
@@ -238,27 +478,27 @@
                 </h3>
                 <div class="grid md:grid-cols-3 gap-6">
                     <div class="bg-darker rounded-xl overflow-hidden border border-white/10 group">
-                        <img src="./docs/Gatt Chart Representation.png" alt="Gantt Chart" 
-                             class="w-full h-48 object-cover group-hover:scale-105 transition cursor-pointer"
-                             onclick="openImageModal(this.src, 'Gantt Chart Representation')">
+                        <img src="./docs/Gatt Chart Representation.png" alt="Gantt Chart"
+                            class="w-full h-48 object-cover group-hover:scale-105 transition cursor-pointer"
+                            onclick="openImageModal(this.src, 'Gantt Chart Representation')">
                         <div class="p-4">
                             <h4 class="font-semibold">Gantt Chart</h4>
                             <p class="text-gray-400 text-sm">Project timeline visualization</p>
                         </div>
                     </div>
                     <div class="bg-darker rounded-xl overflow-hidden border border-white/10 group">
-                        <img src="./docs/Network Diagram.png" alt="Network Diagram" 
-                             class="w-full h-48 object-cover group-hover:scale-105 transition cursor-pointer"
-                             onclick="openImageModal(this.src, 'Network Diagram')">
+                        <img src="./docs/Network Diagram.png" alt="Network Diagram"
+                            class="w-full h-48 object-cover group-hover:scale-105 transition cursor-pointer"
+                            onclick="openImageModal(this.src, 'Network Diagram')">
                         <div class="p-4">
                             <h4 class="font-semibold">Network Diagram</h4>
                             <p class="text-gray-400 text-sm">Task dependencies flow</p>
                         </div>
                     </div>
                     <div class="bg-darker rounded-xl overflow-hidden border border-white/10 group">
-                        <img src="./docs/Resource Loading Chart.png" alt="Resource Loading" 
-                             class="w-full h-48 object-cover group-hover:scale-105 transition cursor-pointer"
-                             onclick="openImageModal(this.src, 'Resource Loading Chart')">
+                        <img src="./docs/Resource Loading Chart.png" alt="Resource Loading"
+                            class="w-full h-48 object-cover group-hover:scale-105 transition cursor-pointer"
+                            onclick="openImageModal(this.src, 'Resource Loading Chart')">
                         <div class="p-4">
                             <h4 class="font-semibold">Resource Loading</h4>
                             <p class="text-gray-400 text-sm">Team allocation chart</p>
@@ -274,7 +514,7 @@
                 </h3>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <a href="./docs/Project Planning_Agent Auto Generate Laravel Project.pdf" download
-                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
                         <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
                             <i class="fas fa-file-pdf text-red-500 text-xl"></i>
                         </div>
@@ -285,7 +525,7 @@
                         <i class="fas fa-download text-gray-400 group-hover:text-primary transition"></i>
                     </a>
                     <a href="./docs/Kelompok 7_project_charter_scope.pdf" download
-                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
                         <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
                             <i class="fas fa-file-pdf text-red-500 text-xl"></i>
                         </div>
@@ -296,7 +536,7 @@
                         <i class="fas fa-download text-gray-400 group-hover:text-primary transition"></i>
                     </a>
                     <a href="./docs/Kelompok 7_wbs.pdf" download
-                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
                         <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
                             <i class="fas fa-file-pdf text-red-500 text-xl"></i>
                         </div>
@@ -307,7 +547,7 @@
                         <i class="fas fa-download text-gray-400 group-hover:text-primary transition"></i>
                     </a>
                     <a href="./docs/Kelompok 7_scrum_gantt_chart.pdf" download
-                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
                         <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
                             <i class="fas fa-file-pdf text-red-500 text-xl"></i>
                         </div>
@@ -318,7 +558,7 @@
                         <i class="fas fa-download text-gray-400 group-hover:text-primary transition"></i>
                     </a>
                     <a href="./docs/Kelompok 7_network_diagram.pdf" download
-                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
                         <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
                             <i class="fas fa-file-pdf text-red-500 text-xl"></i>
                         </div>
@@ -329,7 +569,7 @@
                         <i class="fas fa-download text-gray-400 group-hover:text-primary transition"></i>
                     </a>
                     <a href="./docs/Kelompok 7_EVM_GenLaravel.pdf" download
-                       class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
+                        class="flex items-center bg-darker rounded-lg p-4 border border-white/10 hover:border-primary/50 transition group">
                         <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mr-4">
                             <i class="fas fa-file-pdf text-red-500 text-xl"></i>
                         </div>
@@ -361,7 +601,8 @@
     </footer>
 
     <!-- Image Modal -->
-    <div id="imageModal" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-4" onclick="closeImageModal()">
+    <div id="imageModal" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-4"
+        onclick="closeImageModal()">
         <div class="relative max-w-6xl w-full">
             <button onclick="closeImageModal()" class="absolute -top-12 right-0 text-white text-2xl hover:text-primary">
                 <i class="fas fa-times"></i>
@@ -372,7 +613,8 @@
     </div>
 
     <!-- Status Badge (Fixed) -->
-    <div id="status-badge" class="fixed bottom-4 right-4 px-4 py-2 bg-darker rounded-full border border-white/20 text-sm z-40">
+    <div id="status-badge"
+        class="fixed bottom-4 right-4 px-4 py-2 bg-darker rounded-full border border-white/20 text-sm z-40">
         <i class="fas fa-circle text-yellow-400 mr-2 text-xs animate-pulse"></i>
         <span>Checking backend...</span>
     </div>
@@ -385,12 +627,12 @@
             document.getElementById('imageModal').classList.remove('hidden');
             document.getElementById('imageModal').classList.add('flex');
         }
-        
+
         function closeImageModal() {
             document.getElementById('imageModal').classList.add('hidden');
             document.getElementById('imageModal').classList.remove('flex');
         }
-        
+
         // ESC key to close modal
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeImageModal();
@@ -410,9 +652,51 @@
                 badge.innerHTML = '<i class="fas fa-circle text-red-400 mr-2 text-xs"></i><span>Backend Offline</span>';
             }
         }
-        
+
         checkStatus();
         setInterval(checkStatus, 30000);
+
+        // Random Shooting Stars - 1-2 at a time
+        function triggerShootingStar() {
+            const stars = document.querySelectorAll('.shooting-star');
+            if (!stars.length) return;
+            
+            // Pick 1-2 random stars
+            const count = Math.random() > 0.5 ? 2 : 1;
+            const indices = [];
+            
+            while (indices.length < count) {
+                const idx = Math.floor(Math.random() * stars.length);
+                if (!indices.includes(idx)) indices.push(idx);
+            }
+            
+            // Trigger selected stars
+            indices.forEach(idx => {
+                const star = stars[idx];
+                star.classList.remove('active');
+                void star.offsetWidth; // Force reflow
+                star.classList.add('active');
+                
+                // Remove active class after animation
+                setTimeout(() => star.classList.remove('active'), 1500);
+            });
+        }
+        
+        // Start shooting stars with random intervals (2-5 seconds)
+        function scheduleNextStar() {
+            const delay = 2000 + Math.random() * 3000; // 2-5 seconds
+            setTimeout(() => {
+                triggerShootingStar();
+                scheduleNextStar();
+            }, delay);
+        }
+        
+        // Initial trigger after 1 second
+        setTimeout(() => {
+            triggerShootingStar();
+            scheduleNextStar();
+        }, 1000);
     </script>
 </body>
+
 </html>
