@@ -1713,7 +1713,47 @@
 
             function previewAllPages() {
                 document.getElementById('completion-modal').classList.add('hidden');
-                document.getElementById('action-preview-draft').click();
+                // Open draft in new tab using blob URL
+                openDraftInNewTab();
+            }
+
+            // Open draft HTML in new tab without localhost link
+            function openDraftInNewTab() {
+                const iframe = document.getElementById('draft-iframe') || document.getElementById('completion-preview-iframe');
+                
+                if (iframe && iframe.contentDocument) {
+                    try {
+                        // Get HTML content from iframe
+                        const htmlContent = iframe.contentDocument.documentElement.outerHTML;
+                        const blob = new Blob([htmlContent], { type: 'text/html' });
+                        const blobUrl = URL.createObjectURL(blob);
+                        window.open(blobUrl, '_blank');
+                        showToast('Draft opened in new tab', 'success');
+                    } catch (e) {
+                        // If cross-origin, fetch from backend
+                        fetchAndOpenDraft();
+                    }
+                } else {
+                    fetchAndOpenDraft();
+                }
+            }
+
+            // Fetch draft from backend and open in new tab
+            async function fetchAndOpenDraft() {
+                try {
+                    const response = await fetch(CONFIG.BACKEND_URL + '/output/draft.html?t=' + Date.now());
+                    if (response.ok) {
+                        const htmlContent = await response.text();
+                        const blob = new Blob([htmlContent], { type: 'text/html' });
+                        const blobUrl = URL.createObjectURL(blob);
+                        window.open(blobUrl, '_blank');
+                        showToast('Draft opened in new tab', 'success');
+                    } else {
+                        showToast('Draft not found', 'error');
+                    }
+                } catch (e) {
+                    showToast('Could not open draft: ' + e.message, 'error');
+                }
             }
 
             function downloadProject() {
