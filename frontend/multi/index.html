@@ -170,6 +170,10 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
+                    <div id="queue-status" class="glass-effect px-4 py-2 rounded-lg cursor-pointer" title="Queue Status">
+                        <i class="fas fa-list-ol mr-2"></i>
+                        <span id="queue-count">Queue: -</span>
+                    </div>
                     <div class="glass-effect px-4 py-2 rounded-lg limit-badge">
                         <i class="fas fa-bolt mr-2"></i>
                         <span id="daily-limit">5/5</span>
@@ -725,7 +729,41 @@
                 setInterval(updateClock, 1000);
                 initializeToggleButtons();
                 initializeModalHandlers();
+                updateQueueStatus();
+                setInterval(updateQueueStatus, 5000);
             });
+
+            // Update Queue Status
+            async function updateQueueStatus() {
+                const queueCountEl = document.getElementById('queue-count');
+                const queueStatusEl = document.getElementById('queue-status');
+                try {
+                    const response = await fetch(CONFIG.getApiUrl('/api/queue/status'));
+                    if (response.ok) {
+                        const data = await response.json();
+                        const queueSize = data.queue_size || 0;
+                        const isBusy = data.is_busy;
+                        
+                        if (isBusy) {
+                            queueCountEl.textContent = `Queue: ${queueSize} (Processing)`;
+                            queueStatusEl.classList.add('bg-yellow-500', 'bg-opacity-30');
+                            queueStatusEl.classList.remove('bg-green-500', 'bg-opacity-30');
+                        } else if (queueSize > 0) {
+                            queueCountEl.textContent = `Queue: ${queueSize}`;
+                            queueStatusEl.classList.add('bg-yellow-500', 'bg-opacity-30');
+                            queueStatusEl.classList.remove('bg-green-500', 'bg-opacity-30');
+                        } else {
+                            queueCountEl.textContent = 'Queue: 0';
+                            queueStatusEl.classList.add('bg-green-500', 'bg-opacity-30');
+                            queueStatusEl.classList.remove('bg-yellow-500', 'bg-opacity-30');
+                        }
+                    } else {
+                        queueCountEl.textContent = 'Queue: -';
+                    }
+                } catch (e) {
+                    queueCountEl.textContent = 'Queue: -';
+                }
+            }
 
             // Initialize Agent Pipeline UI
             function initializeAgentPipeline() {
