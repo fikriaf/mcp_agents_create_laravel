@@ -1,0 +1,15 @@
+{
+  "issue_log": [],
+  "change_log": [],
+  "task_monitoring": [],
+  "vendor_monitoring": [],
+  "generation_stats": {
+    "total_generations": 0,
+    "successful": 0,
+    "failed": 0,
+    "single_page": 0,
+    "multi_page": 0,
+    "avg_duration_seconds": 0,
+    "last_generation": null
+  }
+}

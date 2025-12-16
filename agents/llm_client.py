@@ -17,8 +17,23 @@ See .env.example for full configuration options.
 """
 
 import os
+import time
 from typing import Dict, Any, Optional
 from dotenv import load_dotenv
+
+# Import monitoring functions
+try:
+    from backend.monitoring_data import log_vendor_call, log_issue
+except ImportError:
+    try:
+        import sys
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).parent.parent))
+        from backend.monitoring_data import log_vendor_call, log_issue
+    except ImportError:
+        # Fallback: no monitoring
+        def log_vendor_call(*args, **kwargs): pass
+        def log_issue(*args, **kwargs): pass
 
 # Load environment variables
 load_dotenv()
@@ -106,28 +121,50 @@ class LLMClient:
 
         # Try Cerebras first
         if self.cerebras_client:
+            start_time = time.time()
             try:
-                return self._generate_cerebras(system_prompt, user_prompt, **kwargs)
+                result = self._generate_cerebras(system_prompt, user_prompt, **kwargs)
+                duration_ms = (time.time() - start_time) * 1000
+                log_vendor_call("Cerebras", "LLM API", duration_ms, True)
+                return result
             except Exception as e:
+                duration_ms = (time.time() - start_time) * 1000
+                log_vendor_call("Cerebras", "LLM API", duration_ms, False, str(e))
+                log_issue(f"Cerebras API error: {str(e)[:100]}", "Medium", "LLM Client")
                 print(f"❌ Cerebras failed: {e}")
                 print("🔄 Falling back to OpenRouter...")
 
         # Fallback to OpenRouter
         if self.openrouter_api_key:
+            start_time = time.time()
             try:
-                return self._generate_openrouter(system_prompt, user_prompt, **kwargs)
+                result = self._generate_openrouter(system_prompt, user_prompt, **kwargs)
+                duration_ms = (time.time() - start_time) * 1000
+                log_vendor_call("OpenRouter", "LLM API", duration_ms, True)
+                return result
             except Exception as e:
+                duration_ms = (time.time() - start_time) * 1000
+                log_vendor_call("OpenRouter", "LLM API", duration_ms, False, str(e))
+                log_issue(f"OpenRouter API error: {str(e)[:100]}", "Medium", "LLM Client")
                 print(f"❌ OpenRouter failed: {e}")
                 print("🔄 Falling back to Mistral...")
 
         # Fallback to Mistral
         if self.mistral_client:
+            start_time = time.time()
             try:
-                return self._generate_mistral(system_prompt, user_prompt, **kwargs)
+                result = self._generate_mistral(system_prompt, user_prompt, **kwargs)
+                duration_ms = (time.time() - start_time) * 1000
+                log_vendor_call("Mistral", "LLM API", duration_ms, True)
+                return result
             except Exception as e:
+                duration_ms = (time.time() - start_time) * 1000
+                log_vendor_call("Mistral", "LLM API", duration_ms, False, str(e))
+                log_issue(f"All LLM providers failed. Last error: {str(e)[:100]}", "High", "LLM Client")
                 print(f"❌ Mistral failed: {e}")
                 raise Exception("All LLM providers (Cerebras, OpenRouter, Mistral) failed")
 
+        log_issue("No LLM clients available", "High", "LLM Client")
         raise Exception("No LLM clients available")
 
     def _generate_cerebras(self, system_prompt: str, user_prompt: str, **kwargs) -> str:

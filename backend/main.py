@@ -42,6 +42,18 @@ from agents.h_component_agent import list_components
 from agents.i_validator_agent import validate_with_reason, auto_fix
 from agents.j_move_to_project import move_to_laravel_project
 
+# Import monitoring functions
+try:
+    from backend.monitoring_data import (
+        log_issue, log_change, update_task_status, log_vendor_call,
+        record_generation, get_all_data, load_data, save_data, get_summary
+    )
+except ImportError:
+    from monitoring_data import (
+        log_issue, log_change, update_task_status, log_vendor_call,
+        record_generation, get_all_data, load_data, save_data, get_summary
+    )
+
 
 def clean_laravel_views():
     """Clean previous generated views from Laravel project"""
@@ -1464,8 +1476,12 @@ IMPORTANT:
 
 
 async def send_agent_start(websocket: WebSocket, agent_info: tuple):
-    """Send agent start message"""
+    """Send agent start message and auto-log to task monitoring"""
     agent_id, agent_name, description = agent_info
+    
+    # Auto-log task status
+    update_task_status(agent_name, "In Progress", 50, "Agent Pipeline")
+    
     await manager.send_message({
         "type": "agent_start",
         "agent_id": agent_id,
@@ -1475,8 +1491,12 @@ async def send_agent_start(websocket: WebSocket, agent_info: tuple):
 
 
 async def send_agent_complete(websocket: WebSocket, agent_info: tuple, duration: float = 0):
-    """Send agent complete message"""
+    """Send agent complete message and auto-log to task monitoring"""
     agent_id, agent_name, _ = agent_info
+    
+    # Auto-log task completion
+    update_task_status(agent_name, "Completed", 100, "Agent Pipeline")
+    
     await manager.send_message({
         "type": "agent_complete",
         "agent_id": agent_id,
@@ -1511,77 +1531,48 @@ async def send_phase_complete(websocket: WebSocket, phase_info: tuple, current: 
 
 
 # ============================================
-# 📊 MONITORING & ANALYTICS ENDPOINTS
+# 📊 MONITORING & ANALYTICS ENDPOINTS (AUTO-RECORDED)
 # ============================================
-
-try:
-    from backend.monitoring_data import (
-        get_all_data, add_issue, add_change, update_task, 
-        record_generation, load_data, save_data
-    )
-except ImportError:
-    from monitoring_data import (
-        get_all_data, add_issue, add_change, update_task, 
-        record_generation, load_data, save_data
-    )
 
 @app.get("/api/monitoring/all")
 async def get_monitoring_data():
-    """Get all monitoring data (Issue Log, Change Log, Tasks, Vendors)"""
+    """Get all monitoring data (auto-recorded from real activity)"""
     return get_all_data()
 
 @app.get("/api/monitoring/issues")
 async def get_issues():
-    """Get issue log"""
+    """Get issue log (auto-recorded from errors)"""
     data = load_data()
     return {"issues": data["issue_log"]}
 
-@app.post("/api/monitoring/issues")
-async def create_issue(issue: dict):
-    """Add new issue"""
-    return add_issue(issue)
-
 @app.get("/api/monitoring/changes")
 async def get_changes():
-    """Get change log"""
+    """Get change log (auto-recorded from system changes)"""
     data = load_data()
     return {"changes": data["change_log"]}
 
-@app.post("/api/monitoring/changes")
-async def create_change(change: dict):
-    """Add new change"""
-    return add_change(change)
-
 @app.get("/api/monitoring/tasks")
 async def get_tasks():
-    """Get task monitoring dashboard"""
+    """Get task monitoring (auto-updated from agent pipeline)"""
     data = load_data()
     return {"tasks": data["task_monitoring"]}
 
-@app.put("/api/monitoring/tasks/{task_id}")
-async def update_task_progress(task_id: int, updates: dict):
-    """Update task progress"""
-    return {"tasks": update_task(task_id, updates)}
-
 @app.get("/api/monitoring/vendors")
 async def get_vendors():
-    """Get vendor monitoring sheet"""
+    """Get vendor monitoring (auto-recorded from API calls)"""
     data = load_data()
     return {"vendors": data["vendor_monitoring"]}
 
 @app.get("/api/monitoring/stats")
 async def get_stats():
-    """Get generation statistics"""
+    """Get generation statistics (auto-recorded)"""
     data = load_data()
     return {"stats": data["generation_stats"]}
 
-@app.post("/api/monitoring/record-generation")
-async def api_record_generation(info: dict):
-    """Record a generation event"""
-    mode = info.get("mode", "single")
-    success = info.get("success", True)
-    duration = info.get("duration", 0)
-    return record_generation(mode, success, duration)
+@app.get("/api/monitoring/summary")
+async def get_monitoring_summary():
+    """Get summary of all monitoring data"""
+    return get_summary()
 
 @app.get("/api/monitoring/export")
 async def export_monitoring_data():
