@@ -114,6 +114,23 @@ async def add_no_cache_headers(request, call_next):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     return response
 
+
+# 🔇 Suppress noisy queue status logs
+import logging
+
+class QueueStatusFilter(logging.Filter):
+    """Filter out queue status polling logs to reduce noise"""
+    def filter(self, record):
+        # Suppress logs containing queue/status endpoint
+        if hasattr(record, 'getMessage'):
+            msg = record.getMessage()
+            if '/api/queue/status' in msg:
+                return False
+        return True
+
+# Apply filter to uvicorn access logger
+logging.getLogger("uvicorn.access").addFilter(QueueStatusFilter())
+
 # Mount static files with HTML support (auto-serve index.html)
 # Only mount if frontend directory exists (not in Docker/Railway deployment)
 frontend_path = Path(__file__).parent.parent / "frontend"

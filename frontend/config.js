@@ -12,8 +12,8 @@ const CONFIG = {
     // ============================================
     
     // Railway backend URL (update after deployment)
-    RAILWAY_BACKEND_URL: 'https://mcpagentscreatelaravel-production.up.railway.app',
-    
+    // RAILWAY_BACKEND_URL: 'https://mcpagentscreatelaravel-production.up.railway.app',
+    RAILWAY_BACKEND_URL: 'http://localhost:8080',
     // ============================================
     
     // Backend WebSocket/API URL (auto-detect)

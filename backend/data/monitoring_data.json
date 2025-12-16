@@ -1,8 +1,127 @@
 {
-  "issue_log": [],
+  "issue_log": [
+    {
+      "id": 1,
+      "date": "2025-12-16",
+      "time": "19:03:50",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 2,
+      "date": "2025-12-16",
+      "time": "19:06:05",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 3,
+      "date": "2025-12-16",
+      "time": "19:08:09",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 4,
+      "date": "2025-12-16",
+      "time": "19:10:12",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 5,
+      "date": "2025-12-16",
+      "time": "19:10:13",
+      "issue": "OpenRouter API error: OpenRouter error: HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"ra",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 6,
+      "date": "2025-12-16",
+      "time": "19:17:48",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 7,
+      "date": "2025-12-16",
+      "time": "19:17:49",
+      "issue": "OpenRouter API error: OpenRouter error: HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"ra",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    }
+  ],
   "change_log": [],
   "task_monitoring": [],
-  "vendor_monitoring": [],
+  "vendor_monitoring": [
+    {
+      "id": 1,
+      "vendor": "Cerebras",
+      "service": "LLM API",
+      "total_calls": 20,
+      "successful_calls": 15,
+      "failed_calls": 5,
+      "avg_response_ms": 37468.4712767601,
+      "last_call": "2025-12-16 19:17:48",
+      "last_response_ms": 121061.28787994385,
+      "last_success": false,
+      "sla_target_ms": 5000,
+      "sla_met": false,
+      "quality_score": 75,
+      "last_error": "Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type': 'too_many_tokens_error', 'param': 'quota', 'code': 'token_quota_exceeded'}"
+    },
+    {
+      "id": 2,
+      "vendor": "OpenRouter",
+      "service": "LLM API",
+      "total_calls": 5,
+      "successful_calls": 3,
+      "failed_calls": 2,
+      "avg_response_ms": 2014.2239570617676,
+      "last_call": "2025-12-16 19:17:49",
+      "last_response_ms": 781.9507122039795,
+      "last_success": false,
+      "sla_target_ms": 5000,
+      "sla_met": true,
+      "quality_score": 60,
+      "last_error": "OpenRouter error: HTTP 429: {\"error\":{\"message\":\"Provider returned error\",\"code\":429,\"metadata\":{\"raw\":\"{\\\"message\\\":\\\"Tokens per minute limit exceeded - too many tokens processed.\\\",\\\"type\\\":\\\"too_many_tokens_error\\\",\\\"param\\\":\\\"quota\\\",\\\"code\\\":\\\"token_quota_exceeded\\\"}\",\"provider_name\":\"Cerebras\"}},\"user_id\":\"user_33N5l1Ahb"
+    },
+    {
+      "id": 3,
+      "vendor": "Mistral",
+      "service": "LLM API",
+      "total_calls": 2,
+      "successful_calls": 2,
+      "failed_calls": 0,
+      "avg_response_ms": 28381.43527507782,
+      "last_call": "2025-12-16 19:18:20",
+      "last_response_ms": 31632.03001022339,
+      "last_success": true,
+      "sla_target_ms": 5000,
+      "sla_met": false,
+      "quality_score": 100
+    }
+  ],
   "generation_stats": {
     "total_generations": 0,
     "successful": 0,

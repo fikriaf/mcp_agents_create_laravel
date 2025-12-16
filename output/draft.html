@@ -1,177 +1,273 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-50">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - Modern App</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <title>Modern Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --primary-color: #4f46e5;
-      --secondary-color: #6366f1;
-      --error-color: #ef4444;
+      --primary-color: #FF6B6B;
+      --secondary-color: #333333;
     }
 
-    .input:focus {
-      outline: 2px solid var(--primary-color);
-      outline-offset: 2px;
+    body {
+      font-family: 'Open Sans', sans-serif;
     }
 
-    .password-toggle {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--primary-color);
-      font-size: 0.875rem;
-      cursor: pointer;
+    .hero-bg {
+      background-image: url('https://picsum.photos/1920/1080');
+      background-size: cover;
+      background-position: center;
     }
 
-    .error-message {
-      transition: opacity 0.3s ease;
-      opacity: 0;
-      height: 0;
-      overflow: hidden;
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
     }
 
-    .error-message.show {
-      opacity: 1;
-      height: auto;
+    .testimonial-carousel::-webkit-scrollbar {
+      height: 6px;
     }
 
-    .loading-spinner {
-      border: 2px solid #fff;
-      border-top: 2px solid transparent;
-      border-radius: 50%;
-      width: 16px;
-      height: 16px;
-      animation: spin 1s linear infinite;
+    .testimonial-carousel::-webkit-scrollbar-track {
+      background: #f1f1f1;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .testimonial-carousel::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 10px;
+    }
+
+    .back-to-top {
+      display: none;
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--primary-color);
+      color: white;
+      border-radius: 9999px;
+      padding: 1rem 1.5rem;
+      z-index: 999;
+      transition: all 0.3s ease;
+    }
+
+    .back-to-top:hover {
+      background: #e05555;
     }
   </style>
 </head>
-<body class="h-full font-inter">
-  <div class="min-h-full flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 space-y-6">
-      <div class="text-center">
-        <h2 class="text-2xl font-bold text-gray-900">Login to Your Account</h2>
-        <p class="mt-2 text-sm text-gray-600">Welcome back! Please enter your details.</p>
-      </div>
-      
-      <form class="space-y-6" id="loginForm">
-        <div class="space-y-1">
-          <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            required 
-            class="input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all duration-200"
-            placeholder="you@example.com"
-          />
-          <p id="emailError" class="error-message text-sm text-red-600">Please enter a valid email address</p>
-        </div>
-        
-        <div class="space-y-1 relative">
-          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-          <input 
-            type="password" 
-            id="password" 
-            name="password" 
-            required 
-            class="input w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all duration-200"
-            placeholder="••••••••"
-          />
-          <button type="button" id="togglePassword" class="password-toggle">Show</button>
-          <p id="passwordError" class="error-message text-sm text-red-600">Password must be at least 8 characters</p>
-        </div>
-        
-        <div class="flex items-center justify-between">
-          <div class="flex items-center">
-            <input id="rememberMe" name="rememberMe" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" />
-            <label for="rememberMe" class="ml-2 block text-sm text-gray-700">Remember me</label>
-          </div>
-          <a href="#" class="text-sm font-medium text-primary hover:underline">Forgot password?</a>
-        </div>
-        
-        <button 
-          type="submit" 
-          id="loginButton" 
-          class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200"
-        >
-          <span id="loginButtonText">Login</span>
-          <span id="loginButtonSpinner" class="loading-spinner ml-2 hidden"></span>
-        </button>
-      </form>
-      
-      <div class="text-center">
-        <p class="text-sm text-gray-600">
-          Don't have an account? 
-          <a href="#" class="font-medium text-primary hover:underline">Sign up</a>
-        </p>
+<body class="bg-white text-gray-800">
+
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center hero-bg relative">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="container mx-auto px-6 relative z-10 text-center">
+      <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">John Doe</h1>
+      <p class="text-xl md:text-2xl text-white mb-8">Creative UI/UX Designer & Web Developer</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="#projects" class="px-6 py-3 bg-white text-gray-800 font-semibold rounded-full hover:bg-gray-100 transition">View Projects</a>
+        <a href="#contact" class="px-6 py-3 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-gray-800 transition">Contact Me</a>
       </div>
     </div>
-  </div>
+  </section>
 
-  <script>
-    const togglePassword = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('password');
-    const loginButton = document.getElementById('loginButton');
-    const loginButtonText = document.getElementById('loginButtonText');
-    const loginButtonSpinner = document.getElementById('loginButtonSpinner');
-    const loginForm = document.getElementById('loginForm');
-    const emailInput = document.getElementById('email');
-    const emailError = document.getElementById('emailError');
-    const passwordError = document.getElementById('passwordError');
+  <!-- About Section -->
+  <section id="about" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="order-2 md:order-1">
+          <h2 class="text-3xl font-bold mb-6">About Me</h2>
+          <p class="text-gray-600 mb-4">I'm a passionate UI/UX designer and web developer with over 5 years of experience in creating digital products that solve real-world problems. My work focuses on simplicity, performance, and user-centered design.</p>
+          <p class="text-gray-600 mb-6">I specialize in Figma, React, and Adobe XD, with a strong focus on responsive design and accessibility.</p>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+              <h3 class="font-bold text-xl">50+</h3>
+              <p class="text-sm text-gray-500">Projects</p>
+            </div>
+            <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+              <h3 class="font-bold text-xl">8+</h3>
+              <p class="text-sm text-gray-500">Years</p>
+            </div>
+            <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+              <h3 class="font-bold text-xl">95%</h3>
+              <p class="text-sm text-gray-500">Client Satisfaction</p>
+            </div>
+          </div>
+        </div>
+        <div class="order-1 md:order-2">
+          <img src="https://picsum.photos/600/600" alt="Profile" class="rounded-full w-64 h-64 mx-auto border-4 border-white shadow-lg" />
+        </div>
+      </div>
+    </div>
+  </section>
 
-    togglePassword.addEventListener('click', () => {
-      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-      passwordInput.setAttribute('type', type);
-      togglePassword.textContent = type === 'password' ? 'Show' : 'Hide';
-    });
+  <!-- Projects Section -->
+  <section id="projects" class="py-20">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-12">My Work</h2>
+      <div class="flex justify-center mb-8">
+        <button class="px-4 py-2 mr-2 bg-gray-200 rounded-full font-medium active:bg-gray-300">All</button>
+        <button class="px-4 py-2 mr-2 bg-gray-200 rounded-full font-medium active:bg-gray-300">Web</button>
+        <button class="px-4 py-2 mr-2 bg-gray-200 rounded-full font-medium active:bg-gray-300">Mobile</button>
+        <button class="px-4 py-2 bg-gray-200 rounded-full font-medium active:bg-gray-300">Branding</button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="card-hover overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all">
+          <img src="https://picsum.photos/600/400" alt="Project 1" class="w-full h-48 object-cover" />
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">E-Commerce Platform</h3>
+            <p class="text-gray-600 mb-4">A modern e-commerce solution with React and Node.js</p>
+            <a href="#" class="text-blue-600 hover:underline">View Details →</a>
+          </div>
+        </div>
+        <div class="card-hover overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all">
+          <img src="https://picsum.photos/600/401" alt="Project 2" class="w-full h-48 object-cover" />
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">Mobile App UI Kit</h3>
+            <p class="text-gray-600 mb-4">Figma design system for mobile applications</p>
+            <a href="#" class="text-blue-600 hover:underline">View Details →</a>
+          </div>
+        </div>
+        <div class="card-hover overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all">
+          <img src="https://picsum.photos/600/402" alt="Project 3" class="w-full h-48 object-cover" />
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">Portfolio Website</h3>
+            <p class="text-gray-600 mb-4">Personal portfolio using Tailwind CSS and React</p>
+            <a href="#" class="text-blue-600 hover:underline">View Details →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
-      
-      // Simple validation
-      let isValid = true;
-      
-      if (!/\S+@\S+\.\S+/.test(email)) {
-        emailError.classList.add('show');
-        isValid = false;
-      } else {
-        emailError.classList.remove('show');
-      }
-      
-      if (password.length < 8) {
-        passwordError.classList.add('show');
-        isValid = false;
-      } else {
-        passwordError.classList.remove('show');
-      }
-      
-      if (isValid) {
-        loginButton.disabled = true;
-        loginButtonText.textContent = 'Logging in...';
-        loginButtonSpinner.classList.remove('hidden');
-        
-        // Simulate API call
-        setTimeout(() => {
-          loginButton.disabled = false;
-          loginButtonText.textContent = 'Login';
-          loginButtonSpinner.classList.add('hidden');
-          alert('Login successful!');
-        }, 2000);
-      }
-    });
-  </script>
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-12">Client Testimonials</h2>
+      <div class="testimonial-carousel overflow-x-scroll pb-4 hide-scrollbar">
+        <div class="flex gap-6">
+          <div class="min-w-full md:min-w-[300px] p-6 bg-white rounded-lg shadow-md">
+            <p class="text-gray-600 italic mb-4">"John transformed our digital presence with his creative solutions. The new website increased our conversions by 40%!"</p>
+            <div class="flex items-center">
+              <img src="https://picsum.photos/60/60" alt="Client 1" class="w-10 h-10 rounded-full mr-3" />
+              <div>
+                <h4 class="font-bold">Sarah Johnson</h4>
+                <p class="text-sm text-gray-500">CEO, TechCo</p>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-full md:min-w-[300px] p-6 bg-white rounded-lg shadow-md">
+            <p class="text-gray-600 italic mb-4">"Exceptional work on our mobile app redesign. The user experience is now seamless and delightful."</p>
+            <div class="flex items-center">
+              <img src="https://picsum.photos/61/60" alt="Client 2" class="w-10 h-10 rounded-full mr-3" />
+              <div>
+                <h4 class="font-bold">Michael Chen</h4>
+                <p class="text-sm text-gray-500">CTO, StartupX</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-12">Get In Touch</h2>
+      <div class="grid md:grid-cols-2 gap-12">
+        <form class="space-y-6">
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
+          </div>
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+            <textarea id="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required></textarea>
+          </div>
+          <div>
+            <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition">Send Message</button>
+          </div>
+        </form>
+        <div>
+          <iframe src="https://maps.google.com/maps?q=New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+            class="w-full h-64 md:h-96 rounded-lg shadow-md" style="border:0;" allowfullscreen=""></iframe>
+          <div class="mt-6">
+            <h3 class="text-xl font-bold mb-4">Connect With Me</h3>
+            <div class="flex space-x-4">
+              <a href="#" class="p-3 bg-gray-200 rounded-full hover:bg-gray-300 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-6h2v6zm-1-6.89l.66-.58.69.75-.04.82-.73-.64-.66.57.03-.83.7-.73zm4 0l.66-.58.69.75-.04.82-.73-.64-.66.57.03-.83.7-.73z"/>
+                </svg>
+              </a>
+              <a href="#" class="p-3 bg-gray-200 rounded-full hover:bg-gray-300 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                </svg>
+              </a>
+              <a href="#" class="p-3 bg-gray-200 rounded-full hover:bg-gray-300 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-12">
+    <div class="container mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">Portfolio</h3>
+          <p class="text-gray-400 mb-4">Creating digital solutions that inspire and impact.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="p-2 bg-gray-700 rounded-full hover:bg-gray-600 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-6h2v6zm-1-6.89l.66-.58.69.75-.04.82-.73-.64-.66.57.03-.83.7-.73z"/>
+              </svg>
+            </a>
+            <a href="#" class="p-2 bg-gray-700 rounded-full hover:bg-gray-600 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+              </svg>
+            </a>
+            <a href="#" class="p-2 bg-gray-700 rounded-full hover:bg-gray-600 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="#about" class="text-gray-400 hover:text-white transition">About</a></li>
+            <li><a href="#projects" class="text-gray-400 hover:text-white transition">Projects</a></li>
+            <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
+          </ul>
+        </div>
+        <
+div>
+  <h3 class="text-xl font-bold mb-4">Contact Info</h3>
+  <p class="text-gray-400">123 Tech Street, Innovation City</p>
+  <p class="text-gray-400">contact@example.com</p>
+  <p class="text-gray-400">+1 (555) 123-4567</p>
+</div>
+<div class="mt-8 pt-6 border-t border-gray-800">
+  <p class="text-gray-400 text-sm">© 2023 Company Name. All rights reserved.</p>
+</div>
+</div>
+</footer>
 </body>
 </html>

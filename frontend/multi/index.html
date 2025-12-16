@@ -730,11 +730,14 @@
                 initializeToggleButtons();
                 initializeModalHandlers();
                 updateQueueStatus();
-                setInterval(updateQueueStatus, 5000);
+                setInterval(updateQueueStatus, 30000); // Poll every 30 seconds to reduce server load
             });
 
-            // Update Queue Status
+            // Update Queue Status - only when page is visible and not generating
             async function updateQueueStatus() {
+                // Skip if page is hidden or generation is in progress
+                if (document.hidden || isGenerating) return;
+                
                 const queueCountEl = document.getElementById('queue-count');
                 const queueStatusEl = document.getElementById('queue-status');
                 try {
