@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GenLaravel - Project Monitoring Dashboard</title>
+    <link rel="icon" type="image/png" href="../single/GenLaravel.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B35',
+                        secondary: '#F7931E',
+                        dark: '#1a1a2e',
+                        darker: '#16213e'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        * { font-family: 'Inter', sans-serif; }
+        .gradient-header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+    </style>
+    <script src="../config.js"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-header text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="../single/GenLaravel.png" alt="GenLaravel" class="h-10 w-10">
+                    <div>
+                        <h1 class="text-2xl font-bold">Project Monitoring Dashboard</h1>
+                        <p class="text-sm text-white/70">Issue Log, Change Log, Tasks & Vendor Monitoring</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="refreshData()" class="px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition">
+                        <i class="fas fa-sync-alt mr-2"></i>Refresh
+                    </button>
+                    <button onclick="exportData()" class="px-4 py-2 bg-primary rounded-lg hover:bg-primary/80 transition">
+                        <i class="fas fa-download mr-2"></i>Export JSON
+                    </button>
+                    <a href="../" class="px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats Overview -->
+    <div class="container mx-auto px-6 py-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white rounded-xl p-4 shadow-sm border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Total Generations</p>
+                        <p id="stat-total" class="text-2xl font-bold text-gray-800">-</p>
+                    </div>
+                    <i class="fas fa-rocket text-blue-500 text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Successful</p>
+                        <p id="stat-success" class="text-2xl font-bold text-gray-800">-</p>
+                    </div>
+                    <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border-l-4 border-red-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Open Issues</p>
+                        <p id="stat-issues" class="text-2xl font-bold text-gray-800">-</p>
+                    </div>
+                    <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl p-4 shadow-sm border-l-4 border-purple-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-500 text-sm">Avg Duration</p>
+                        <p id="stat-duration" class="text-2xl font-bold text-gray-800">-</p>
+                    </div>
+                    <i class="fas fa-clock text-purple-500 text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex space-x-2 mb-6">
+            <button onclick="showTab('issues')" id="tab-issues" class="tab-btn px-4 py-2 rounded-lg bg-primary text-white font-medium">
+                <i class="fas fa-bug mr-2"></i>Issue Log
+            </button>
+            <button onclick="showTab('changes')" id="tab-changes" class="tab-btn px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">
+                <i class="fas fa-history mr-2"></i>Change Log
+            </button>
+            <button onclick="showTab('tasks')" id="tab-tasks" class="tab-btn px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">
+                <i class="fas fa-tasks mr-2"></i>Task Monitoring
+            </button>
+            <button onclick="showTab('vendors')" id="tab-vendors" class="tab-btn px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-medium hover:bg-gray-300">
+                <i class="fas fa-building mr-2"></i>Vendor Monitoring
+            </button>
+        </div>
+
+        <!-- Issue Log Tab -->
+        <div id="panel-issues" class="tab-panel">
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-4 border-b flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-800"><i class="fas fa-bug text-red-500 mr-2"></i>Issue Log</h2>
+                    <button onclick="showAddIssueModal()" class="px-3 py-1 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600">
+                        <i class="fas fa-plus mr-1"></i>Add Issue
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">ID</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Date</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Issue</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Severity</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Status</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Resolution</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">PIC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="issues-table" class="divide-y divide-gray-200">
+                            <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Log Tab -->
+        <div id="panel-changes" class="tab-panel hidden">
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-4 border-b flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-800"><i class="fas fa-history text-blue-500 mr-2"></i>Change Log</h2>
+                    <button onclick="showAddChangeModal()" class="px-3 py-1 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600">
+                        <i class="fas fa-plus mr-1"></i>Add Change
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">ID</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Date</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Type</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Description</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Reason</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Impact</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Approved By</th>
+                            </tr>
+                        </thead>
+                        <tbody id="changes-table" class="divide-y divide-gray-200">
+                            <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Monitoring Tab -->
+        <div id="panel-tasks" class="tab-panel hidden">
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-4 border-b">
+                    <h2 class="text-lg font-bold text-gray-800"><i class="fas fa-tasks text-green-500 mr-2"></i>Task Monitoring Dashboard</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">ID</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Task Name</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Status</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">PIC</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasks-table" class="divide-y divide-gray-200">
+                            <tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vendor Monitoring Tab -->
+        <div id="panel-vendors" class="tab-panel hidden">
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-4 border-b">
+                    <h2 class="text-lg font-bold text-gray-800"><i class="fas fa-building text-purple-500 mr-2"></i>Vendor Monitoring Sheet</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Vendor</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Service</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">SLA Response</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Actual Response</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">SLA Met</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Repair Time</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Quality Score</th>
+                                <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vendors-table" class="divide-y divide-gray-200">
+                            <tr><td colspan="8" class="px-4 py-8 text-center text-gray-500">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Issue Modal -->
+    <div id="add-issue-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-xl p-6 max-w-lg w-full mx-4">
+            <h3 class="text-xl font-bold mb-4"><i class="fas fa-bug text-red-500 mr-2"></i>Add New Issue</h3>
+            <form id="issue-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Issue Description</label>
+                    <textarea name="issue" rows="2" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-400"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Severity</label>
+                        <select name="severity" required class="w-full px-3 py-2 border rounded-lg">
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select name="status" required class="w-full px-3 py-2 border rounded-lg">
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Resolved">Resolved</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Resolution/Notes</label>
+                    <input type="text" name="resolution" class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">PIC (Person In Charge)</label>
+                    <input type="text" name="pic" required class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div class="flex justify-end space-x-2 pt-4">
+                    <button type="button" onclick="closeModal('add-issue-modal')" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Add Issue</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Change Modal -->
+    <div id="add-change-modal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-xl p-6 max-w-lg w-full mx-4">
+            <h3 class="text-xl font-bold mb-4"><i class="fas fa-history text-blue-500 mr-2"></i>Add New Change</h3>
+            <form id="change-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Change Type</label>
+                    <select name="change_type" required class="w-full px-3 py-2 border rounded-lg">
+                        <option value="Feature Addition">Feature Addition</option>
+                        <option value="Bug Fix">Bug Fix</option>
+                        <option value="Architecture Change">Architecture Change</option>
+                        <option value="Deployment Change">Deployment Change</option>
+                        <option value="Requirement Change">Requirement Change</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea name="description" rows="2" required class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Reason for Change</label>
+                    <input type="text" name="reason" required class="w-full px-3 py-2 border rounded-lg">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Impact Level</label>
+                        <select name="impact" required class="w-full px-3 py-2 border rounded-lg">
+                            <option value="Major">Major</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Minor">Minor</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Approved By</label>
+                        <input type="text" name="approved_by" required class="w-full px-3 py-2 border rounded-lg">
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-2 pt-4">
+                    <button type="button" onclick="closeModal('add-change-modal')" class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Add Change</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        let monitoringData = null;
+
+        // Tab switching
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-primary', 'text-white');
+                b.classList.add('bg-gray-200', 'text-gray-700');
+            });
+            document.getElementById('panel-' + tabName).classList.remove('hidden');
+            const btn = document.getElementById('tab-' + tabName);
+            btn.classList.add('bg-primary', 'text-white');
+            btn.classList.remove('bg-gray-200', 'text-gray-700');
+        }
+
+        // Load all data
+        async function loadData() {
+            try {
+                const response = await fetch(CONFIG.getApiUrl('/api/monitoring/all'));
+                if (response.ok) {
+                    monitoringData = await response.json();
+                    renderAll();
+                } else {
+                    console.error('Failed to load monitoring data');
+                }
+            } catch (e) {
+                console.error('Error loading data:', e);
+                // Use default data for demo
+                monitoringData = getDefaultData();
+                renderAll();
+            }
+        }
+
+        // Render all tables
+        function renderAll() {
+            renderStats();
+            renderIssues();
+            renderChanges();
+            renderTasks();
+            renderVendors();
+        }
+
+        // Render stats
+        function renderStats() {
+            const stats = monitoringData.generation_stats || {};
+            document.getElementById('stat-total').textContent = stats.total_generations || 0;
+            document.getElementById('stat-success').textContent = stats.successful || 0;
+            
+            const openIssues = (monitoringData.issue_log || []).filter(i => i.status === 'Open' || i.status === 'In Progress').length;
+            document.getElementById('stat-issues').textContent = openIssues;
+            
+            const avgDuration = stats.avg_duration_seconds || 0;
+            document.getElementById('stat-duration').textContent = avgDuration > 0 ? avgDuration.toFixed(1) + 's' : '-';
+        }
+
+        // Render issues table
+        function renderIssues() {
+            const tbody = document.getElementById('issues-table');
+            const issues = monitoringData.issue_log || [];
+            
+            if (issues.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No issues found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = issues.map(issue => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 text-sm">${issue.id}</td>
+                    <td class="px-4 py-3 text-sm">${issue.date}</td>
+                    <td class="px-4 py-3 text-sm max-w-xs">${issue.issue}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium ${getSeverityClass(issue.severity)}">${issue.severity}</span>
+                    </td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium ${getStatusClass(issue.status)}">${issue.status}</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm max-w-xs">${issue.resolution || '-'}</td>
+                    <td class="px-4 py-3 text-sm">${issue.pic}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Render changes table
+        function renderChanges() {
+            const tbody = document.getElementById('changes-table');
+            const changes = monitoringData.change_log || [];
+            
+            if (changes.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">No changes found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = changes.map(change => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 text-sm">${change.id}</td>
+                    <td class="px-4 py-3 text-sm">${change.date}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">${change.change_type}</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm max-w-xs">${change.description}</td>
+                    <td class="px-4 py-3 text-sm max-w-xs">${change.reason}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium ${getImpactClass(change.impact)}">${change.impact}</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm">${change.approved_by}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Render tasks table
+        function renderTasks() {
+            const tbody = document.getElementById('tasks-table');
+            const tasks = monitoringData.task_monitoring || [];
+            
+            if (tasks.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">No tasks found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = tasks.map(task => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 text-sm">${task.id}</td>
+                    <td class="px-4 py-3 text-sm font-medium">${task.task}</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium ${getTaskStatusClass(task.status)}">${task.status}</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm">${task.pic}</td>
+                    <td class="px-4 py-3">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                <div class="h-2 rounded-full ${task.progress === 100 ? 'bg-green-500' : 'bg-blue-500'}" style="width: ${task.progress}%"></div>
+                            </div>
+                            <span class="text-sm font-medium">${task.progress}%</span>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Render vendors table
+        function renderVendors() {
+            const tbody = document.getElementById('vendors-table');
+            const vendors = monitoringData.vendor_monitoring || [];
+            
+            if (vendors.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="px-4 py-8 text-center text-gray-500">No vendors found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = vendors.map(vendor => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-3 text-sm font-medium">${vendor.vendor}</td>
+                    <td class="px-4 py-3 text-sm">${vendor.service}</td>
+                    <td class="px-4 py-3 text-sm">${vendor.sla_response}</td>
+                    <td class="px-4 py-3 text-sm">${vendor.actual_response}</td>
+                    <td class="px-4 py-3">
+                        ${vendor.sla_met 
+                            ? '<span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium"><i class="fas fa-check mr-1"></i>Yes</span>'
+                            : '<span class="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium"><i class="fas fa-times mr-1"></i>No</span>'
+                        }
+                    </td>
+                    <td class="px-4 py-3 text-sm">${vendor.repair_time}</td>
+                    <td class="px-4 py-3">
+                        <div class="flex items-center space-x-2">
+                            <div class="flex-1 bg-gray-200 rounded-full h-2 w-16">
+                                <div class="h-2 rounded-full ${getQualityColor(vendor.quality_score)}" style="width: ${vendor.quality_score}%"></div>
+                            </div>
+                            <span class="text-sm font-medium">${vendor.quality_score}%</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-3 text-sm max-w-xs">${vendor.notes}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Helper functions for styling
+        function getSeverityClass(severity) {
+            switch(severity) {
+                case 'High': return 'bg-red-100 text-red-700';
+                case 'Medium': return 'bg-yellow-100 text-yellow-700';
+                case 'Low': return 'bg-green-100 text-green-700';
+                default: return 'bg-gray-100 text-gray-700';
+            }
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'Open': return 'bg-red-100 text-red-700';
+                case 'In Progress': return 'bg-yellow-100 text-yellow-700';
+                case 'Resolved': return 'bg-green-100 text-green-700';
+                default: return 'bg-gray-100 text-gray-700';
+            }
+        }
+
+        function getTaskStatusClass(status) {
+            switch(status) {
+                case 'Completed': return 'bg-green-100 text-green-700';
+                case 'In Progress': return 'bg-blue-100 text-blue-700';
+                case 'Pending': return 'bg-gray-100 text-gray-700';
+                default: return 'bg-gray-100 text-gray-700';
+            }
+        }
+
+        function getImpactClass(impact) {
+            switch(impact) {
+                case 'Major': return 'bg-red-100 text-red-700';
+                case 'Medium': return 'bg-yellow-100 text-yellow-700';
+                case 'Minor': return 'bg-green-100 text-green-700';
+                default: return 'bg-gray-100 text-gray-700';
+            }
+        }
+
+        function getQualityColor(score) {
+            if (score >= 90) return 'bg-green-500';
+            if (score >= 70) return 'bg-yellow-500';
+            return 'bg-red-500';
+        }
+
+        // Modal functions
+        function showAddIssueModal() {
+            document.getElementById('add-issue-modal').classList.remove('hidden');
+            document.getElementById('add-issue-modal').classList.add('flex');
+        }
+
+        function showAddChangeModal() {
+            document.getElementById('add-change-modal').classList.remove('hidden');
+            document.getElementById('add-change-modal').classList.add('flex');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
+        }
+
+        // Form handlers
+        document.getElementById('issue-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const issue = Object.fromEntries(formData);
+            
+            try {
+                await fetch(CONFIG.getApiUrl('/api/monitoring/issues'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(issue)
+                });
+                closeModal('add-issue-modal');
+                e.target.reset();
+                loadData();
+            } catch (err) {
+                // Add locally for demo
+                issue.id = (monitoringData.issue_log?.length || 0) + 1;
+                issue.date = new Date().toISOString().split('T')[0];
+                monitoringData.issue_log = monitoringData.issue_log || [];
+                monitoringData.issue_log.push(issue);
+                closeModal('add-issue-modal');
+                e.target.reset();
+                renderAll();
+            }
+        });
+
+        document.getElementById('change-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const change = Object.fromEntries(formData);
+            
+            try {
+                await fetch(CONFIG.getApiUrl('/api/monitoring/changes'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(change)
+                });
+                closeModal('add-change-modal');
+                e.target.reset();
+                loadData();
+            } catch (err) {
+                // Add locally for demo
+                change.id = (monitoringData.change_log?.length || 0) + 1;
+                change.date = new Date().toISOString().split('T')[0];
+                monitoringData.change_log = monitoringData.change_log || [];
+                monitoringData.change_log.push(change);
+                closeModal('add-change-modal');
+                e.target.reset();
+                renderAll();
+            }
+        });
+
+        // Refresh data
+        function refreshData() {
+            loadData();
+        }
+
+        // Export data
+        async function exportData() {
+            try {
+                const response = await fetch(CONFIG.getApiUrl('/api/monitoring/export'));
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `genlaravel_monitoring_${new Date().toISOString().slice(0,10)}.json`;
+                    a.click();
+                }
+            } catch (e) {
+                // Export local data
+                const blob = new Blob([JSON.stringify(monitoringData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `genlaravel_monitoring_${new Date().toISOString().slice(0,10)}.json`;
+                a.click();
+            }
+        }
+
+        // Default data for offline/demo mode
+        function getDefaultData() {
+            return {
+                issue_log: [
+                    { id: 1, date: "2024-12-10", issue: "Cerebras API rate limit exceeded", severity: "High", status: "Resolved", resolution: "Implemented Mistral fallback", pic: "Backend Team" },
+                    { id: 2, date: "2024-12-12", issue: "WebSocket drops on Railway", severity: "High", status: "In Progress", resolution: "Investigating proxy settings", pic: "DevOps Team" },
+                    { id: 3, date: "2024-12-13", issue: "Draft validation fails for complex layouts", severity: "Medium", status: "Resolved", resolution: "Enhanced validator agent", pic: "AI Team" },
+                    { id: 4, date: "2024-12-14", issue: "Hardcoded localhost URLs", severity: "High", status: "Resolved", resolution: "Dynamic CONFIG.getApiUrl()", pic: "Frontend Team" },
+                    { id: 5, date: "2024-12-15", issue: "Multi-page timeout for 5+ pages", severity: "Medium", status: "Open", resolution: "Pending optimization", pic: "AI Team" }
+                ],
+                change_log: [
+                    { id: 1, date: "2024-12-08", change_type: "Feature Addition", description: "Multi-page generation support", reason: "User requirement", impact: "Major", approved_by: "Project Manager" },
+                    { id: 2, date: "2024-12-11", change_type: "Architecture Change", description: "Unified WebSocket endpoint", reason: "Simplify backend", impact: "Medium", approved_by: "Tech Lead" },
+                    { id: 3, date: "2024-12-14", change_type: "Deployment Change", description: "Railway + Vercel migration", reason: "Public access", impact: "Major", approved_by: "Project Manager" }
+                ],
+                task_monitoring: [
+                    { id: 1, task: "Prompt Expander Agent", status: "Completed", pic: "Fikri", progress: 100 },
+                    { id: 2, task: "Draft Agent", status: "Completed", pic: "Fikri", progress: 100 },
+                    { id: 3, task: "UI Generator Agent", status: "Completed", pic: "Fikri", progress: 100 },
+                    { id: 4, task: "Validator Agent", status: "Completed", pic: "Fikri", progress: 100 },
+                    { id: 5, task: "Frontend UI", status: "Completed", pic: "Frontend Team", progress: 100 },
+                    { id: 6, task: "WebSocket Streaming", status: "In Progress", pic: "Backend Team", progress: 85 },
+                    { id: 7, task: "Production Deployment", status: "In Progress", pic: "DevOps Team", progress: 70 }
+                ],
+                vendor_monitoring: [
+                    { id: 1, vendor: "Cerebras AI", service: "LLM API", sla_response: "< 2s", actual_response: "1.5s avg", sla_met: true, repair_time: "N/A", quality_score: 95, notes: "Excellent speed" },
+                    { id: 2, vendor: "Mistral AI", service: "Fallback LLM", sla_response: "< 5s", actual_response: "3.2s avg", sla_met: true, repair_time: "N/A", quality_score: 88, notes: "Reliable fallback" },
+                    { id: 3, vendor: "Railway", service: "Backend Hosting", sla_response: "99.9% uptime", actual_response: "99.5%", sla_met: false, repair_time: "< 1 hour", quality_score: 85, notes: "WebSocket issues" },
+                    { id: 4, vendor: "Vercel", service: "Frontend Hosting", sla_response: "99.99% uptime", actual_response: "99.99%", sla_met: true, repair_time: "N/A", quality_score: 98, notes: "Excellent CDN" }
+                ],
+                generation_stats: { total_generations: 0, successful: 0, failed: 0, avg_duration_seconds: 0 }
+            };
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>

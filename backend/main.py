@@ -878,6 +878,13 @@ async def generate_single_page(websocket: WebSocket, prompt: str):
             }
         }, websocket)
         
+        # 📊 Record generation stats
+        try:
+            duration = (datetime.datetime.now() - start_time).total_seconds() if 'start_time' in dir() else 0
+            record_generation("single", True, duration)
+        except:
+            pass
+        
         # 🔒 CLOSE CONNECTION after completion
         print("✅ Single page generation completed. Closing connection.")
         manager.disconnect(websocket)
@@ -885,6 +892,11 @@ async def generate_single_page(websocket: WebSocket, prompt: str):
         
     except Exception as e:
         print(f"❌ Error in single page generation: {e}")
+        # 📊 Record failed generation
+        try:
+            record_generation("single", False, 0)
+        except:
+            pass
         await manager.send_message({
             "type": "error",
             "message": f"Generation failed: {str(e)}"
@@ -1424,6 +1436,13 @@ IMPORTANT:
             }
         }, websocket)
         
+        # 📊 Record generation stats
+        try:
+            duration = (datetime.datetime.now() - start_time).total_seconds() if 'start_time' in dir() else 0
+            record_generation("multi", True, duration)
+        except:
+            pass
+        
         # 🔒 CLOSE CONNECTION after completion
         print("✅ Multi-page generation completed. Closing connection.")
         manager.disconnect(websocket)
@@ -1431,6 +1450,11 @@ IMPORTANT:
         
     except Exception as e:
         print(f"❌ Error in multi-page generation: {e}")
+        # 📊 Record failed generation
+        try:
+            record_generation("multi", False, 0)
+        except:
+            pass
         await manager.send_message({
             "type": "error",
             "message": f"Generation failed: {str(e)}"
@@ -1484,6 +1508,92 @@ async def send_phase_complete(websocket: WebSocket, phase_info: tuple, current: 
         "current": current + 1,
         "total": total
     }, websocket)
+
+
+# ============================================
+# 📊 MONITORING & ANALYTICS ENDPOINTS
+# ============================================
+
+try:
+    from backend.monitoring_data import (
+        get_all_data, add_issue, add_change, update_task, 
+        record_generation, load_data, save_data
+    )
+except ImportError:
+    from monitoring_data import (
+        get_all_data, add_issue, add_change, update_task, 
+        record_generation, load_data, save_data
+    )
+
+@app.get("/api/monitoring/all")
+async def get_monitoring_data():
+    """Get all monitoring data (Issue Log, Change Log, Tasks, Vendors)"""
+    return get_all_data()
+
+@app.get("/api/monitoring/issues")
+async def get_issues():
+    """Get issue log"""
+    data = load_data()
+    return {"issues": data["issue_log"]}
+
+@app.post("/api/monitoring/issues")
+async def create_issue(issue: dict):
+    """Add new issue"""
+    return add_issue(issue)
+
+@app.get("/api/monitoring/changes")
+async def get_changes():
+    """Get change log"""
+    data = load_data()
+    return {"changes": data["change_log"]}
+
+@app.post("/api/monitoring/changes")
+async def create_change(change: dict):
+    """Add new change"""
+    return add_change(change)
+
+@app.get("/api/monitoring/tasks")
+async def get_tasks():
+    """Get task monitoring dashboard"""
+    data = load_data()
+    return {"tasks": data["task_monitoring"]}
+
+@app.put("/api/monitoring/tasks/{task_id}")
+async def update_task_progress(task_id: int, updates: dict):
+    """Update task progress"""
+    return {"tasks": update_task(task_id, updates)}
+
+@app.get("/api/monitoring/vendors")
+async def get_vendors():
+    """Get vendor monitoring sheet"""
+    data = load_data()
+    return {"vendors": data["vendor_monitoring"]}
+
+@app.get("/api/monitoring/stats")
+async def get_stats():
+    """Get generation statistics"""
+    data = load_data()
+    return {"stats": data["generation_stats"]}
+
+@app.post("/api/monitoring/record-generation")
+async def api_record_generation(info: dict):
+    """Record a generation event"""
+    mode = info.get("mode", "single")
+    success = info.get("success", True)
+    duration = info.get("duration", 0)
+    return record_generation(mode, success, duration)
+
+@app.get("/api/monitoring/export")
+async def export_monitoring_data():
+    """Export all monitoring data as JSON file"""
+    data = get_all_data()
+    return StreamingResponse(
+        io.BytesIO(json.dumps(data, indent=2, ensure_ascii=False).encode('utf-8')),
+        media_type="application/json",
+        headers={
+            "Content-Disposition": f"attachment; filename=genlaravel_monitoring_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        }
+    )
 
 
 if __name__ == "__main__":
