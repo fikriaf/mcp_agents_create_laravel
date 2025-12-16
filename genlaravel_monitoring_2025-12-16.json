@@ -1,0 +1,238 @@
+{
+  "issue_log": [
+    {
+      "id": 1,
+      "date": "2025-12-16",
+      "time": "11:26:38",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 2,
+      "date": "2025-12-16",
+      "time": "11:28:40",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 3,
+      "date": "2025-12-16",
+      "time": "11:31:01",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 4,
+      "date": "2025-12-16",
+      "time": "11:35:38",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 5,
+      "date": "2025-12-16",
+      "time": "11:38:48",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 6,
+      "date": "2025-12-16",
+      "time": "11:40:52",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 7,
+      "date": "2025-12-16",
+      "time": "11:43:11",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 8,
+      "date": "2025-12-16",
+      "time": "11:45:26",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 9,
+      "date": "2025-12-16",
+      "time": "11:53:47",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 10,
+      "date": "2025-12-16",
+      "time": "11:55:51",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 11,
+      "date": "2025-12-16",
+      "time": "11:57:58",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 12,
+      "date": "2025-12-16",
+      "time": "12:00:02",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 13,
+      "date": "2025-12-16",
+      "time": "12:02:09",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 14,
+      "date": "2025-12-16",
+      "time": "12:04:22",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 15,
+      "date": "2025-12-16",
+      "time": "12:06:03",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 16,
+      "date": "2025-12-16",
+      "time": "12:08:20",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 17,
+      "date": "2025-12-16",
+      "time": "12:10:25",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 18,
+      "date": "2025-12-16",
+      "time": "12:12:29",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 19,
+      "date": "2025-12-16",
+      "time": "12:14:38",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    }
+  ],
+  "change_log": [],
+  "task_monitoring": [],
+  "vendor_monitoring": [
+    {
+      "id": 1,
+      "vendor": "Cerebras",
+      "service": "LLM API",
+      "total_calls": 79,
+      "successful_calls": 60,
+      "failed_calls": 19,
+      "avg_response_ms": 29350.218733654747,
+      "last_call": "2025-12-16 12:14:42",
+      "last_response_ms": 734.6823215484619,
+      "last_success": true,
+      "sla_target_ms": 5000,
+      "sla_met": false,
+      "quality_score": 75,
+      "last_error": "Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type': 'too_many_tokens_error', 'param': 'quota', 'code': 'token_quota_exceeded'}"
+    },
+    {
+      "id": 2,
+      "vendor": "Mistral",
+      "service": "LLM API",
+      "total_calls": 19,
+      "successful_calls": 19,
+      "failed_calls": 0,
+      "avg_response_ms": 7189.8931076652125,
+      "last_call": "2025-12-16 12:14:40",
+      "last_response_ms": 2345.4926013946533,
+      "last_success": true,
+      "sla_target_ms": 5000,
+      "sla_met": false,
+      "quality_score": 100
+    }
+  ],
+  "generation_stats": {
+    "total_generations": 4,
+    "successful": 4,
+    "failed": 0,
+    "single_page": 2,
+    "multi_page": 2,
+    "avg_duration_seconds": 0.0,
+    "last_generation": "2025-12-16T12:14:42.315464"
+  }
+}

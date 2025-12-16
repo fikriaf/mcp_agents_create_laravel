@@ -1,273 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-gradient-to-br from-sky-50 to-indigo-100">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Modern Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modern Login Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      --primary-color: #FF6B6B;
-      --secondary-color: #333333;
+      --primary-color: #4F46E5;
+      --secondary-color: #6366F1;
+      --error-color: #EF4444;
     }
 
-    body {
-      font-family: 'Open Sans', sans-serif;
+    .input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
     }
 
-    .hero-bg {
-      background-image: url('https://picsum.photos/1920/1080');
-      background-size: cover;
-      background-position: center;
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.2);
     }
 
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
+    .btn:active {
+      transform: translateY(0);
     }
 
-    .testimonial-carousel::-webkit-scrollbar {
-      height: 6px;
+    .spinner {
+      border: 2px solid #fff;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
     }
 
-    .testimonial-carousel::-webkit-scrollbar-track {
-      background: #f1f1f1;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
-    .testimonial-carousel::-webkit-scrollbar-thumb {
-      background: var(--primary-color);
-      border-radius: 10px;
-    }
-
-    .back-to-top {
-      display: none;
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: var(--primary-color);
-      color: white;
-      border-radius: 9999px;
-      padding: 1rem 1.5rem;
-      z-index: 999;
-      transition: all 0.3s ease;
-    }
-
-    .back-to-top:hover {
-      background: #e05555;
+    @media (max-width: 640px) {
+      .form-card {
+        margin: 2rem;
+      }
     }
   </style>
 </head>
-<body class="bg-white text-gray-800">
-
-  <!-- Hero Section -->
-  <section class="min-h-screen flex items-center hero-bg relative">
-    <div class="absolute inset-0 bg-black opacity-50"></div>
-    <div class="container mx-auto px-6 relative z-10 text-center">
-      <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">John Doe</h1>
-      <p class="text-xl md:text-2xl text-white mb-8">Creative UI/UX Designer & Web Developer</p>
-      <div class="flex flex-col sm:flex-row justify-center gap-4">
-        <a href="#projects" class="px-6 py-3 bg-white text-gray-800 font-semibold rounded-full hover:bg-gray-100 transition">View Projects</a>
-        <a href="#contact" class="px-6 py-3 border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-gray-800 transition">Contact Me</a>
-      </div>
+<body class="h-full font-inter">
+  <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+      <img class="mx-auto h-12 w-auto" src="https://picsum.photos/200/100" alt="Company Logo">
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Or 
+        <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+          start your 14-day free trial
+        </a>
+      </p>
     </div>
-  </section>
 
-  <!-- About Section -->
-  <section id="about" class="py-20 bg-gray-50">
-    <div class="container mx-auto px-6">
-      <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div class="order-2 md:order-1">
-          <h2 class="text-3xl font-bold mb-6">About Me</h2>
-          <p class="text-gray-600 mb-4">I'm a passionate UI/UX designer and web developer with over 5 years of experience in creating digital products that solve real-world problems. My work focuses on simplicity, performance, and user-centered design.</p>
-          <p class="text-gray-600 mb-6">I specialize in Figma, React, and Adobe XD, with a strong focus on responsive design and accessibility.</p>
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-              <h3 class="font-bold text-xl">50+</h3>
-              <p class="text-sm text-gray-500">Projects</p>
-            </div>
-            <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-              <h3 class="font-bold text-xl">8+</h3>
-              <p class="text-sm text-gray-500">Years</p>
-            </div>
-            <div class="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-              <h3 class="font-bold text-xl">95%</h3>
-              <p class="text-sm text-gray-500">Client Satisfaction</p>
-            </div>
-          </div>
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 form-card">
+        <div id="error-message" class="mb-4 hidden rounded-md bg-red-50 p-4 text-sm text-red-700">
+          <p>Invalid email or password. Please try again.</p>
         </div>
-        <div class="order-1 md:order-2">
-          <img src="https://picsum.photos/600/600" alt="Profile" class="rounded-full w-64 h-64 mx-auto border-4 border-white shadow-lg" />
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Projects Section -->
-  <section id="projects" class="py-20">
-    <div class="container mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-12">My Work</h2>
-      <div class="flex justify-center mb-8">
-        <button class="px-4 py-2 mr-2 bg-gray-200 rounded-full font-medium active:bg-gray-300">All</button>
-        <button class="px-4 py-2 mr-2 bg-gray-200 rounded-full font-medium active:bg-gray-300">Web</button>
-        <button class="px-4 py-2 mr-2 bg-gray-200 rounded-full font-medium active:bg-gray-300">Mobile</button>
-        <button class="px-4 py-2 bg-gray-200 rounded-full font-medium active:bg-gray-300">Branding</button>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="card-hover overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all">
-          <img src="https://picsum.photos/600/400" alt="Project 1" class="w-full h-48 object-cover" />
-          <div class="p-6">
-            <h3 class="text-xl font-bold mb-2">E-Commerce Platform</h3>
-            <p class="text-gray-600 mb-4">A modern e-commerce solution with React and Node.js</p>
-            <a href="#" class="text-blue-600 hover:underline">View Details →</a>
+        <form class="space-y-6" action="#" method="POST">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+            <div class="mt-1">
+              <input id="email" name="email" type="email" required 
+                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            </div>
+            <p id="email-error" class="mt-1 text-sm text-red-600 hidden">Please enter a valid email address.</p>
           </div>
-        </div>
-        <div class="card-hover overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all">
-          <img src="https://picsum.photos/600/401" alt="Project 2" class="w-full h-48 object-cover" />
-          <div class="p-6">
-            <h3 class="text-xl font-bold mb-2">Mobile App UI Kit</h3>
-            <p class="text-gray-600 mb-4">Figma design system for mobile applications</p>
-            <a href="#" class="text-blue-600 hover:underline">View Details →</a>
-          </div>
-        </div>
-        <div class="card-hover overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all">
-          <img src="https://picsum.photos/600/402" alt="Project 3" class="w-full h-48 object-cover" />
-          <div class="p-6">
-            <h3 class="text-xl font-bold mb-2">Portfolio Website</h3>
-            <p class="text-gray-600 mb-4">Personal portfolio using Tailwind CSS and React</p>
-            <a href="#" class="text-blue-600 hover:underline">View Details →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Testimonials Section -->
-  <section id="testimonials" class="py-20 bg-gray-50">
-    <div class="container mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-12">Client Testimonials</h2>
-      <div class="testimonial-carousel overflow-x-scroll pb-4 hide-scrollbar">
-        <div class="flex gap-6">
-          <div class="min-w-full md:min-w-[300px] p-6 bg-white rounded-lg shadow-md">
-            <p class="text-gray-600 italic mb-4">"John transformed our digital presence with his creative solutions. The new website increased our conversions by 40%!"</p>
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <div class="mt-1 relative">
+              <input id="password" name="password" type="password" required 
+                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+              <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm text-gray-400" onclick="togglePassword()">
+                <svg id="eye-icon" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+            <p id="password-error" class="mt-1 text-sm text-red-600 hidden">Password must be at least 8 characters.</p>
+          </div>
+
+          <div class="flex items-center justify-between">
             <div class="flex items-center">
-              <img src="https://picsum.photos/60/60" alt="Client 1" class="w-10 h-10 rounded-full mr-3" />
-              <div>
-                <h4 class="font-bold">Sarah Johnson</h4>
-                <p class="text-sm text-gray-500">CEO, TechCo</p>
-              </div>
+              <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+              <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
+            </div>
+            
+            <div class="text-sm">
+              <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</a>
             </div>
           </div>
-          <div class="min-w-full md:min-w-[300px] p-6 bg-white rounded-lg shadow-md">
-            <p class="text-gray-600 italic mb-4">"Exceptional work on our mobile app redesign. The user experience is now seamless and delightful."</p>
-            <div class="flex items-center">
-              <img src="https://picsum.photos/61/60" alt="Client 2" class="w-10 h-10 rounded-full mr-3" />
-              <div>
-                <h4 class="font-bold">Michael Chen</h4>
-                <p class="text-sm text-gray-500">CTO, StartupX</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="py-20">
-    <div class="container mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-12">Get In Touch</h2>
-      <div class="grid md:grid-cols-2 gap-12">
-        <form class="space-y-6">
           <div>
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
-          </div>
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required />
-          </div>
-          <div>
-            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
-            <textarea id="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required></textarea>
-          </div>
-          <div>
-            <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition">Send Message</button>
+            <button type="submit" id="login-button" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 btn">
+              <span id="button-text">Sign in</span>
+              <span id="spinner" class="spinner ml-2 hidden"></span>
+            </button>
           </div>
         </form>
-        <div>
-          <iframe src="https://maps.google.com/maps?q=New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed" 
-            class="w-full h-64 md:h-96 rounded-lg shadow-md" style="border:0;" allowfullscreen=""></iframe>
-          <div class="mt-6">
-            <h3 class="text-xl font-bold mb-4">Connect With Me</h3>
-            <div class="flex space-x-4">
-              <a href="#" class="p-3 bg-gray-200 rounded-full hover:bg-gray-300 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-6h2v6zm-1-6.89l.66-.58.69.75-.04.82-.73-.64-.66.57.03-.83.7-.73zm4 0l.66-.58.69.75-.04.82-.73-.64-.66.57.03-.83.7-.73z"/>
+
+        <div class="mt-6">
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="px-2 bg-white text-gray-500">Or continue with</span>
+            </div>
+          </div>
+
+          <div class="mt-6 grid grid-cols-3 gap-3">
+            <div>
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd" />
                 </svg>
-              </a>
-              <a href="#" class="p-3 bg-gray-200 rounded-full hover:bg-gray-300 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+              </button>
+            </div>
+            <div>
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 0C4.48 0 0 4.48 0 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.95 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0110 4.84c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.36.31.698.92.698 1.856 0 1.338-.013 2.419-.013 2.747 0 .268.18.58.69.48A10.019 10.019 0 0020 10c0-5.52-4.48-10-10-10z" clip-rule="evenodd" />
                 </svg>
-              </a>
-              <a href="#" class="p-3 bg-gray-200 rounded-full hover:bg-gray-300 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </button>
+            </div>
+            <div>
+              <button type="button" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 0C4.48 0 0 4.48 0 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.95 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0110 4.84c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.36.31.698.92.698 1.856 0 1.338-.013 2.419-.013 2.747 0 .268.18.58.69.48A10.019 10.019 0 0020 10c0-5.52-4.48-10-10-10z" clip-rule="evenodd" />
                 </svg>
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-white py-12">
-    <div class="container mx-auto px-6">
-      <div class="grid md:grid-cols-4 gap-8">
-        <div>
-          <h3 class="text-xl font-bold mb-4">Portfolio</h3>
-          <p class="text-gray-400 mb-4">Creating digital solutions that inspire and impact.</p>
-          <div class="flex space-x-4">
-            <a href="#" class="p-2 bg-gray-700 rounded-full hover:bg-gray-600 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15h-2v-6h2v6zm-1-6.89l.66-.58.69.75-.04.82-.73-.64-.66.57.03-.83.7-.73z"/>
-              </svg>
-            </a>
-            <a href="#" class="p-2 bg-gray-700 rounded-full hover:bg-gray-600 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-              </svg>
-            </a>
-            <a href="#" class="p-2 bg-gray-700 rounded-full hover:bg-gray-600 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold mb-4">Quick Links</h3>
-          <ul class="space-y-2">
-            <li><a href="#about" class="text-gray-400 hover:text-white transition">About</a></li>
-            <li><a href="#projects" class="text-gray-400 hover:text-white transition">Projects</a></li>
-            <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
-          </ul>
-        </div>
-        <
-div>
-  <h3 class="text-xl font-bold mb-4">Contact Info</h3>
-  <p class="text-gray-400">123 Tech Street, Innovation City</p>
-  <p class="text-gray-400">contact@example.com</p>
-  <p class="text-gray-400">+1 (555) 123-4567</p>
-</div>
-<div class="mt-8 pt-6 border-t border-gray-800">
-  <p class="text-gray-400 text-sm">© 2023 Company Name. All rights reserved.</p>
-</div>
-</div>
-</footer>
+  <script>
+    const loginButton = document.getElementById('login-button');
+    const buttonText = document.getElementById('button-text');
+    const spinner = document.getElementById('spinner');
+    const errorMessage = document.getElementById('error-message');
+
+    loginButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Simulate API call
+      loginButton.disabled = true;
+      spinner.classList.remove('hidden');
+      buttonText.textContent = 'Signing in...';
+      
+      setTimeout(() => {
+        // Simulate successful login
+        // In real app, check credentials and show error if invalid
+        errorMessage.classList.remove('hidden');
+        loginButton.disabled = false;
+        spinner.classList.add('hidden');
+        buttonText.textContent = 'Sign in';
+      }, 2000);
+    });
+
+    function togglePassword() {
+      const passwordField = document.getElementById('password');
+      const eyeIcon = document.getElementById('eye-icon');
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        eyeIcon.innerHTML = `
+          <path d="M3.98 6.98L16.83 19.83A4 4 0 0018.83 18a4 4 0 00-3.44-6.56L10 12l-3.44-3.44A4 4 0 002 9.17a4 4 0 006.56 3.44z" />
+          <path d="M14 14a4 4 0 01-4 4 4 4 0 01-4-4 4 4 0 014-4 4 4 0 014 4z" />
+        `;
+      } else {
+        passwordField.type = 'password';
+        eyeIcon.innerHTML = `
+          <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+          <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+        `;
+      }
+    }
+  </script>
 </body>
 </html>
