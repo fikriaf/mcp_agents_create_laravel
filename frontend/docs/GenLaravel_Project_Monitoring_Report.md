@@ -3,7 +3,12 @@
 
 **Proyek:** GenLaravel - AI-Powered Laravel Generator  
 **Tanggal:** 16 Desember 2025  
-**Tim:** Kelompok 7
+**Tim:** Kelompok 7  
+**Anggota:**
+- Fikri Armia Fahmi (2023071018)
+- Nadia (2024071004)
+
+![Screenshot Web Monitoring](charts/ss_web_monitoring.png)
 
 ---
 
@@ -12,20 +17,28 @@
 | ID | Tanggal | Waktu | Issue | Severity | Status | Resolution | PIC |
 |----|---------|-------|-------|----------|--------|------------|-----|
 | 1 | 2025-12-16 | 11:26:38 | Cerebras API rate limit exceeded (429 - Tokens per minute limit) | High | Resolved | Implemented automatic fallback to Mistral AI | LLM Client |
-| 2 | 2025-12-16 | 11:28:40 | Cerebras API rate limit exceeded (429 - Token quota exceeded) | High | Resolved | Queue system implemented to manage request rate | Backend Team |
-| 3 | 2025-12-14 | - | WebSocket connection drops on Railway deployment | High | Resolved | Added X-Accel-Buffering header and proxy configuration | DevOps Team |
-| 4 | 2025-12-14 | - | Frontend hardcoded localhost URLs breaking production | High | Resolved | Implemented CONFIG.getApiUrl() for dynamic URL resolution | Frontend Team |
-| 5 | 2025-12-13 | - | Draft HTML validation fails - missing </html> tag | Medium | Resolved | Added continuation generation and HTML structure validation | AI Team |
-| 6 | 2025-12-12 | - | Multi-page generation timeout for complex applications | Medium | Resolved | Optimized agent pipeline with streaming responses | Backend Team |
-| 7 | 2025-12-10 | - | OpenRouter API fallback not working correctly | Medium | Resolved | Fixed provider order configuration in ENV | LLM Client |
+| 2 | 2025-12-16 | 11:28:40 | Cerebras API token quota exceeded during peak usage | High | Resolved | Queue system implemented to manage request rate | Backend Team |
+| 3 | 2025-12-14 | 10:15:00 | WebSocket connection drops on Railway deployment | High | Resolved | Added X-Accel-Buffering header and proxy config | DevOps Team |
+| 4 | 2025-12-14 | 09:30:00 | Frontend hardcoded localhost URLs breaking production | High | Resolved | Implemented CONFIG.getApiUrl() for dynamic URL resolution | Frontend Team |
+| 5 | 2025-12-13 | 14:20:00 | Draft HTML validation fails - missing closing tags | Medium | Resolved | Added continuation generation and HTML structure validation | AI Team |
+| 6 | 2025-12-12 | 16:45:00 | Multi-page generation timeout for complex applications | Medium | Resolved | Optimized agent pipeline with streaming responses | Backend Team |
+| 7 | 2025-12-10 | 11:00:00 | OpenRouter API fallback not working correctly | Medium | Resolved | Fixed provider order configuration in ENV | LLM Client |
+| 8 | 2025-12-16 | 12:41:25 | Cerebras API error: 429 - Tokens per minute limit exceeded | Medium | Open | - | LLM Client |
+| 9 | 2025-12-16 | 12:43:45 | Cerebras API error: 429 - Tokens per minute limit exceeded | Medium | Open | - | LLM Client |
 
 ### Ringkasan Issue:
-- **Total Issues:** 7
+- **Total Issues:** 9
 - **Resolved:** 7 ✅
 - **In Progress:** 0
-- **Open:** 0
+- **Open:** 2 ⚠️
 - **High Severity:** 4
-- **Medium Severity:** 3
+- **Medium Severity:** 5
+
+### Visualisasi Issue
+
+![Issue Severity Distribution](charts/issue_severity.png)
+
+![Issue Status Overview](charts/issue_status.png)
 
 ---
 
@@ -45,6 +58,10 @@
 - **Architecture Change:** 1
 - **Deployment Change:** 1
 - **Bug Fix:** 1
+
+### Visualisasi Change Log
+
+![Change Log Timeline](charts/change_timeline.png)
 
 ---
 
@@ -75,6 +92,10 @@
 - **In Progress:** 0 (0%)
 - **Overall Progress:** 100% ✅
 
+### Visualisasi Task Progress
+
+![Task Progress Overview](charts/task_progress.png)
+
 ---
 
 ## 4. Vendor Monitoring Sheet
@@ -83,16 +104,17 @@
 
 | Aspek | Target SLA | Actual | Status |
 |-------|------------|--------|--------|
-| Response Time | < 5,000 ms | 29,350 ms avg | ❌ Not Met |
-| Uptime/Availability | 99% | 75.9% (60/79 calls) | ❌ Not Met |
-| Quality Score | > 90% | 75% | ⚠️ Below Target |
-| Error Rate | < 5% | 24.1% (19 failures) | ❌ High |
+| Response Time | < 5,000 ms | 21,067 ms avg | ❌ Not Met |
+| Uptime/Availability | 99% | 83.2% (104/125 calls) | ❌ Not Met |
+| Quality Score | > 90% | 83% | ⚠️ Below Target |
+| Error Rate | < 5% | 16.8% (21 failures) | ❌ High |
 
 **Detail:**
-- Total Calls: 79
-- Successful: 60
-- Failed: 19 (Rate limit errors - 429)
-- Last Response: 734.68 ms
+- Total Calls: 125
+- Successful: 104
+- Failed: 21 (Rate limit errors - 429)
+- Last Response: 658.02 ms
+- Last Call: 2025-12-16 12:44:04
 - Main Issue: Token quota exceeded during peak usage
 
 **Waktu Perbaikan:** N/A (External vendor, using fallback)
@@ -108,16 +130,17 @@
 
 | Aspek | Target SLA | Actual | Status |
 |-------|------------|--------|--------|
-| Response Time | < 10,000 ms | 7,189 ms avg | ✅ Met |
-| Uptime/Availability | 99% | 100% (19/19 calls) | ✅ Met |
+| Response Time | < 10,000 ms | 7,069 ms avg | ✅ Met |
+| Uptime/Availability | 99% | 100% (21/21 calls) | ✅ Met |
 | Quality Score | > 90% | 100% | ✅ Excellent |
 | Error Rate | < 5% | 0% | ✅ Perfect |
 
 **Detail:**
-- Total Calls: 19
-- Successful: 19
+- Total Calls: 21
+- Successful: 21
 - Failed: 0
-- Last Response: 2,345 ms
+- Last Response: 575.15 ms
+- Last Call: 2025-12-16 12:43:45
 - Main Role: Reliable fallback when Cerebras fails
 
 **Waktu Perbaikan:** N/A (No issues)
@@ -161,22 +184,39 @@
 - Instant deployments
 - Zero configuration needed
 
+### Visualisasi Vendor Performance
+
+![Vendor Comparison](charts/vendor_comparison.png)
+
+![Vendor Quality Scores](charts/vendor_quality.png)
+
 ---
 
 ## 5. Generation Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Generations | 4 |
-| Successful | 4 (100%) |
+| Total Generations | 6 |
+| Successful | 6 (100%) |
 | Failed | 0 (0%) |
-| Single Page | 2 |
-| Multi Page | 2 |
-| Last Generation | 2025-12-16 12:14:42 |
+| Single Page | 3 |
+| Multi Page | 3 |
+| Average Duration | 0.0 seconds |
+| Last Generation | 2025-12-16 12:44:04 |
+
+### Visualisasi Generation Stats
+
+![Generation Statistics](charts/generation_stats.png)
 
 ---
 
-## 6. Kesimpulan & Rekomendasi
+## 6. Dashboard Summary
+
+![Dashboard Summary](charts/dashboard_summary.png)
+
+---
+
+## 7. Kesimpulan & Rekomendasi
 
 ### Kesimpulan:
 1. Sistem monitoring berhasil mencatat semua aktivitas secara otomatis

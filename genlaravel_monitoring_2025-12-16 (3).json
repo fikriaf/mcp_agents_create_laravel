@@ -1,0 +1,313 @@
+{
+  "issue_log": [
+    {
+      "id": 1,
+      "date": "2025-12-16",
+      "time": "11:26:38",
+      "issue": "Cerebras API rate limit exceeded (429 - Tokens per minute limit)",
+      "severity": "High",
+      "status": "Resolved",
+      "resolution": "Implemented automatic fallback to Mistral AI",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 2,
+      "date": "2025-12-16",
+      "time": "11:28:40",
+      "issue": "Cerebras API token quota exceeded during peak usage",
+      "severity": "High",
+      "status": "Resolved",
+      "resolution": "Queue system implemented to manage request rate",
+      "pic": "Backend Team"
+    },
+    {
+      "id": 3,
+      "date": "2025-12-14",
+      "time": "10:15:00",
+      "issue": "WebSocket connection drops on Railway deployment",
+      "severity": "High",
+      "status": "Resolved",
+      "resolution": "Added X-Accel-Buffering header and proxy config",
+      "pic": "DevOps Team"
+    },
+    {
+      "id": 4,
+      "date": "2025-12-14",
+      "time": "09:30:00",
+      "issue": "Frontend hardcoded localhost URLs breaking production",
+      "severity": "High",
+      "status": "Resolved",
+      "resolution": "Implemented CONFIG.getApiUrl() for dynamic URL resolution",
+      "pic": "Frontend Team"
+    },
+    {
+      "id": 5,
+      "date": "2025-12-13",
+      "time": "14:20:00",
+      "issue": "Draft HTML validation fails - missing closing tags",
+      "severity": "Medium",
+      "status": "Resolved",
+      "resolution": "Added continuation generation and HTML structure validation",
+      "pic": "AI Team"
+    },
+    {
+      "id": 6,
+      "date": "2025-12-12",
+      "time": "16:45:00",
+      "issue": "Multi-page generation timeout for complex applications",
+      "severity": "Medium",
+      "status": "Resolved",
+      "resolution": "Optimized agent pipeline with streaming responses",
+      "pic": "Backend Team"
+    },
+    {
+      "id": 7,
+      "date": "2025-12-10",
+      "time": "11:00:00",
+      "issue": "OpenRouter API fallback not working correctly",
+      "severity": "Medium",
+      "status": "Resolved",
+      "resolution": "Fixed provider order configuration in ENV",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 8,
+      "date": "2025-12-16",
+      "time": "12:41:25",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    },
+    {
+      "id": 9,
+      "date": "2025-12-16",
+      "time": "12:43:45",
+      "issue": "Cerebras API error: Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type",
+      "severity": "Medium",
+      "status": "Open",
+      "resolution": "",
+      "pic": "LLM Client"
+    }
+  ],
+  "change_log": [
+    {
+      "id": 1,
+      "date": "2025-12-08",
+      "change_type": "Feature Addition",
+      "description": "Penambahan fitur Multi-Page Generation",
+      "reason": "Kebutuhan user untuk generate aplikasi lengkap dengan multiple pages",
+      "impact": "Major",
+      "approved_by": "Project Manager"
+    },
+    {
+      "id": 2,
+      "date": "2025-12-11",
+      "change_type": "Architecture Change",
+      "description": "Unified WebSocket endpoint untuk single/multi mode",
+      "reason": "Simplifikasi backend dan enable queue system",
+      "impact": "Medium",
+      "approved_by": "Tech Lead"
+    },
+    {
+      "id": 3,
+      "date": "2025-12-14",
+      "change_type": "Deployment Change",
+      "description": "Migrasi dari localhost ke Railway + Vercel",
+      "reason": "Enable public access dan demo capability",
+      "impact": "Major",
+      "approved_by": "Project Manager"
+    },
+    {
+      "id": 4,
+      "date": "2025-12-15",
+      "change_type": "Feature Addition",
+      "description": "Auto-monitoring system untuk tracking",
+      "reason": "Kebutuhan dokumentasi proyek dan analisis performa",
+      "impact": "Medium",
+      "approved_by": "Tech Lead"
+    },
+    {
+      "id": 5,
+      "date": "2025-12-16",
+      "change_type": "Bug Fix",
+      "description": "Queue status polling optimization",
+      "reason": "Mengurangi server load dan mencegah request blocking",
+      "impact": "Minor",
+      "approved_by": "Backend Team"
+    }
+  ],
+  "task_monitoring": [
+    {
+      "id": 1,
+      "task": "Prompt Expander Agent",
+      "status": "Completed",
+      "pic": "Fikri",
+      "progress": 100
+    },
+    {
+      "id": 2,
+      "task": "Draft Agent (HTML Generator)",
+      "status": "Completed",
+      "pic": "Fikri",
+      "progress": 100
+    },
+    {
+      "id": 3,
+      "task": "Prompt Planner Agent",
+      "status": "Completed",
+      "pic": "Fikri",
+      "progress": 100
+    },
+    {
+      "id": 4,
+      "task": "Page Architect Agent",
+      "status": "Completed",
+      "pic": "Fikri",
+      "progress": 100
+    },
+    {
+      "id": 5,
+      "task": "UI Generator Agent",
+      "status": "Completed",
+      "pic": "Fikri",
+      "progress": 100
+    },
+    {
+      "id": 6,
+      "task": "Route Generator Agent",
+      "status": "Completed",
+      "pic": "Fikri",
+      "progress": 100
+    },
+    {
+      "id": 7,
+      "task": "Component Agent",
+      "status": "Completed",
+      "pic": "Fikri",
+      "progress": 100
+    },
+    {
+      "id": 8,
+      "task": "Validator Agent",
+      "status": "Completed",
+      "pic": "Fikri",
+      "progress": 100
+    },
+    {
+      "id": 9,
+      "task": "Project Mover Agent",
+      "status": "Completed",
+      "pic": "Fikri",
+      "progress": 100
+    },
+    {
+      "id": 10,
+      "task": "Frontend UI Development",
+      "status": "Completed",
+      "pic": "Frontend Team",
+      "progress": 100
+    },
+    {
+      "id": 11,
+      "task": "WebSocket Streaming",
+      "status": "Completed",
+      "pic": "Backend Team",
+      "progress": 100
+    },
+    {
+      "id": 12,
+      "task": "Multi-Page Support",
+      "status": "Completed",
+      "pic": "Backend Team",
+      "progress": 100
+    },
+    {
+      "id": 13,
+      "task": "Queue System",
+      "status": "Completed",
+      "pic": "Backend Team",
+      "progress": 100
+    },
+    {
+      "id": 14,
+      "task": "Monitoring Dashboard",
+      "status": "Completed",
+      "pic": "Backend Team",
+      "progress": 100
+    },
+    {
+      "id": 15,
+      "task": "Production Deployment (Railway)",
+      "status": "Completed",
+      "pic": "DevOps Team",
+      "progress": 100
+    },
+    {
+      "id": 16,
+      "task": "Production Deployment (Vercel)",
+      "status": "Completed",
+      "pic": "DevOps Team",
+      "progress": 100
+    }
+  ],
+  "vendor_monitoring": [
+    {
+      "id": 1,
+      "vendor": "Cerebras",
+      "service": "LLM API",
+      "total_calls": 125,
+      "successful_calls": 104,
+      "failed_calls": 21,
+      "avg_response_ms": 21067.19680901245,
+      "sla_target_ms": 5000,
+      "sla_met": false,
+      "quality_score": 83,
+      "last_call": "2025-12-16 12:44:04",
+      "last_response_ms": 658.0216884613037,
+      "last_success": true,
+      "last_error": "Error code: 429 - {'message': 'Tokens per minute limit exceeded - too many tokens processed.', 'type': 'too_many_tokens_error', 'param': 'quota', 'code': 'token_quota_exceeded'}"
+    },
+    {
+      "id": 2,
+      "vendor": "Mistral",
+      "service": "LLM API",
+      "total_calls": 21,
+      "successful_calls": 21,
+      "failed_calls": 0,
+      "avg_response_ms": 7069.3240318371,
+      "sla_target_ms": 10000,
+      "sla_met": false,
+      "quality_score": 100,
+      "last_call": "2025-12-16 12:43:45",
+      "last_response_ms": 575.150728225708,
+      "last_success": true
+    },
+    {
+      "id": 3,
+      "vendor": "Railway",
+      "service": "Backend Hosting",
+      "sla_met": true,
+      "quality_score": 95,
+      "notes": "Deployment successful"
+    },
+    {
+      "id": 4,
+      "vendor": "Vercel",
+      "service": "Frontend Hosting",
+      "sla_met": true,
+      "quality_score": 98,
+      "notes": "Excellent CDN performance"
+    }
+  ],
+  "generation_stats": {
+    "total_generations": 6,
+    "successful": 6,
+    "failed": 0,
+    "single_page": 3,
+    "multi_page": 3,
+    "avg_duration_seconds": 0.0,
+    "last_generation": "2025-12-16T12:44:04.582087"
+  }
+}
