@@ -1,0 +1,81 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{fontspec}
+\usepackage{setspace}
+
+% Define colors
+\definecolor{primaryblue}{RGB}{30, 64, 175}
+\definecolor{accentred}{RGB}{220, 38, 38}
+
+\begin{document}
+\pagestyle{empty}
+
+% Background decoration
+\begin{tikzpicture}[remember picture, overlay]
+    \fill[primaryblue] (current page.north west) rectangle ([yshift=-4cm]current page.north east);
+    \fill[accentred] ([yshift=-4cm]current page.north west) rectangle ([yshift=-4.3cm]current page.north east);
+\end{tikzpicture}
+
+\vspace*{2cm}
+
+\begin{center}
+    % Logo GenLaravel
+    \includegraphics[width=6cm]{../../demo/logo_GenLaravel.png}
+    
+    \vspace{1.5cm}
+    
+    {\Huge\bfseries\color{primaryblue} GenLaravel}
+    
+    \vspace{0.3cm}
+    
+    {\Large\color{gray} AI-Powered Laravel Project Generator}
+    
+    \vspace{2cm}
+    
+    \rule{0.8\textwidth}{0.5pt}
+    
+    \vspace{1cm}
+    
+    {\LARGE\bfseries TUGAS UAS}
+    
+    \vspace{0.5cm}
+    
+    {\Large\bfseries Mata Kuliah Project Management}
+    
+    \vspace{2cm}
+    
+    {\large\bfseries Disusun Oleh:}
+    
+    \vspace{0.5cm}
+    
+    {\large Kelompok 7}
+    
+    \vspace{0.3cm}
+    
+    \begin{tabular}{l l}
+        Fikri Armia Fahmi & (2023071018) \\
+        Nadia & (2024071004) \\
+    \end{tabular}
+    
+    \vspace{2cm}
+    
+    \rule{0.8\textwidth}{0.5pt}
+    
+    \vspace{1.5cm}
+    
+    {\Large\bfseries UNIVERSITAS PEMBANGUNAN JAYA}
+    
+    \vspace{0.3cm}
+    
+    {\large Program Studi Informatika}
+    
+    \vspace{0.3cm}
+    
+    {\large 2025}
+    
+\end{center}
+
+\end{document}
