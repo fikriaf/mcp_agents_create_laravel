@@ -266,26 +266,54 @@
         .badge-item i {
             margin-right: 0.5rem;
         }
+
+        /* Mobile Sidebar Menu */
+        .mobile-sidebar {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .mobile-sidebar.active {
+            transform: translateX(0);
+        }
+        
+        .mobile-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .mobile-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
     </style>
     <script src="./config.js"></script>
 </head>
 
-<body class="bg-dark text-white">
+<body class="bg-dark text-white overflow-x-hidden">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 bg-darker/90 backdrop-blur-lg border-b border-white/10">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
+    <nav class="fixed top-0 w-full z-50 bg-darker/90 backdrop-blur-lg border-b border-white/10 overflow-x-hidden">
+        <div class="container mx-auto px-4 md:px-6 py-4">
+            <div class="flex items-center justify-between flex-wrap gap-2">
                 <div class="flex items-center space-x-3">
                     <img src="./single/GenLaravel.png" alt="GenLaravel" class="w-10 h-10">
                     <span class="text-xl font-bold">GenLaravel</span>
                 </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#features" class="hover:text-primary transition">Features</a>
-                    <a href="#architecture" class="hover:text-primary transition">Architecture</a>
-                    <a href="#docs" class="hover:text-primary transition">Documentation</a>
-                    <a href="./monitoring/" class="hover:text-primary transition">Monitoring</a>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-white p-2 hover:text-primary transition">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-4 lg:space-x-8 flex-wrap">
+                    <a href="#features" class="hover:text-primary transition text-sm lg:text-base">Features</a>
+                    <a href="#architecture" class="hover:text-primary transition text-sm lg:text-base">Architecture</a>
+                    <a href="#docs" class="hover:text-primary transition text-sm lg:text-base">Documentation</a>
+                    <a href="./monitoring/" class="hover:text-primary transition text-sm lg:text-base">Monitoring</a>
                     <a href="#generator"
-                        class="gradient-orange px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition">
+                        class="gradient-orange px-3 lg:px-5 py-2 rounded-lg font-semibold hover:opacity-90 transition text-sm lg:text-base whitespace-nowrap">
                         Try Generator
                     </a>
                 </div>
@@ -293,8 +321,44 @@
         </div>
     </nav>
 
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-overlay" class="mobile-overlay fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"></div>
+
+    <!-- Mobile Sidebar Menu -->
+    <div id="mobile-menu" class="mobile-sidebar fixed top-0 right-0 h-full w-64 bg-darker shadow-2xl z-50 md:hidden">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-between p-6 border-b border-white/10">
+                <span class="text-xl font-bold">Menu</span>
+                <button id="mobile-menu-close" class="text-white hover:text-primary transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Sidebar Links -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-4">
+                <a href="#features" class="block hover:text-primary transition py-3 border-b border-white/10">
+                    <i class="fas fa-star mr-3"></i>Features
+                </a>
+                <a href="#architecture" class="block hover:text-primary transition py-3 border-b border-white/10">
+                    <i class="fas fa-diagram-project mr-3"></i>Architecture
+                </a>
+                <a href="#docs" class="block hover:text-primary transition py-3 border-b border-white/10">
+                    <i class="fas fa-book mr-3"></i>Documentation
+                </a>
+                <a href="./monitoring/" class="block hover:text-primary transition py-3 border-b border-white/10">
+                    <i class="fas fa-chart-line mr-3"></i>Monitoring
+                </a>
+                <a href="#generator"
+                    class="block gradient-orange px-5 py-3 rounded-lg font-semibold hover:opacity-90 transition text-center mt-6">
+                    <i class="fas fa-magic mr-2"></i>Try Generator
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Hero Section -->
-    <section class="gradient-hero min-h-screen flex flex-col justify-center pt-20 relative overflow-hidden">
+    <section class="gradient-hero min-h-screen flex flex-col justify-center relative overflow-hidden">
         <!-- Full Width Marquee -->
         <div class="marquee-container mb-8">
             <div class="marquee-content">
@@ -376,7 +440,7 @@
                         <div class="sparkle"></div>
                         <div class="sparkle"></div>
                         <img src="./single/GenLaravel.png" alt="GenLaravel"
-                            class="w-96 mx-auto drop-shadow-2xl logo-float">
+                            class="w-64 md:w-80 lg:w-96 mx-auto drop-shadow-2xl logo-float">
                     </div>
                 </div>
             </div>
@@ -797,6 +861,55 @@
             triggerShootingStar();
             scheduleNextStar();
         }, 1000);
+    </script>
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        
+        console.log('Mobile menu elements:', { mobileMenuBtn, mobileMenu, mobileOverlay, mobileMenuClose });
+        
+        function openMobileMenu() {
+            console.log('Opening mobile menu');
+            mobileMenu.classList.add('active');
+            mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileMenu() {
+            console.log('Closing mobile menu');
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function(e) {
+                console.log('Hamburger clicked!');
+                e.preventDefault();
+                openMobileMenu();
+            });
+        } else {
+            console.error('Mobile menu button not found!');
+        }
+        
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', closeMobileMenu);
+        }
+        
+        if (mobileOverlay) {
+            mobileOverlay.addEventListener('click', closeMobileMenu);
+        }
+        
+        // Close mobile menu when clicking on a link
+        if (mobileMenu) {
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+        }
     </script>
 </body>
 
